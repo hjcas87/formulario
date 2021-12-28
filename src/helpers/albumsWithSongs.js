@@ -1,8 +1,8 @@
 
 
 export const albumsWithSongs = ( albums, songs, propiedad = 'cancion' ) => {
-console.log(albums)
-console.log(songs)
+// console.log(albums)
+// console.log(songs)
     let canciones = [];
     for (let i = 0; i < albums.length; i++) {
             let cancion = []
@@ -14,6 +14,7 @@ console.log(songs)
             }
             canciones = [...canciones, cancion]  
     }
+    console.log(canciones)
     return canciones;
 
 

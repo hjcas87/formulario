@@ -1,10 +1,11 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { createInputsSongs } from "../../actions/ui";
-import { useDinamicForm } from "../../hooks/useDinamicForm"
 import { useForm } from "../../hooks/useForm"
-import { albumsWithSongs } from "../../helpers/albumsWithSongs";
+import { useFormInside } from "../../hooks/useFormInside";
+import { useDinamicForm } from "../../hooks/useDinamicForm"
+import { createInputsSongs } from "../../actions/ui";
 
 import 'animate.css';
 
@@ -16,15 +17,27 @@ export const SelectNumberOfAlbums = () => {
     const dataAlbumSong = JSON.parse(localStorage.getItem('album&SongsValues')) || [];
     
     const dispatch = useDispatch();
-    
+
+    // console.log(dataAlbumSong)
+    const [ campos, , , changes, createArrays, createArraysOfSongs ] = useDinamicForm( dataSong )
     const { amountObj = dataAlbumSong || [] } = useSelector(state => state.ui);
-    
+    localStorage.setItem( 'songsValues', JSON.stringify(campos) );
+    localStorage.setItem( 'album&SongsValues', JSON.stringify(amountObj) );
+    const [ ,changess ] = useFormInside(amountObj || [])
+    // console.log(fields)
+    console.log(amountObj)
+    useEffect(() => {
+        
+        const arr = createArraysOfSongs(amountObj);
+        dispatch( createInputsSongs( arr ) )
+        
+    }, [campos])
+
     const [ formValues, handleInputChange ] = useForm({
         numero_volumenes: data.length || '',
     })
     
-    const [ campos, , , changes, createArrays, createArraysOfSongs ] = useDinamicForm( dataSong )
-    
+    console.log(campos)
     let { numero_volumenes: numVol } = formValues;
 
     const handleClick = ( e ) => {
@@ -33,31 +46,30 @@ export const SelectNumberOfAlbums = () => {
         localStorage.setItem( 'albumValues', JSON.stringify(arr) );
     }
 
-    const handleInputSongsPerAlbum = ( e ) => {
-        e.preventDefault()
-        localStorage.setItem( 'songsValues', JSON.stringify(campos) );
-        const arr = createArraysOfSongs();
-        dispatch( createInputsSongs( arr ) )
-    }
-    const handleInputSongs = ( e ) => {
-        e.preventDefault();
-        const canciones = [...document.querySelectorAll('.canciones')]
-        const arr = albumsWithSongs( amountObj, canciones )
-        localStorage.setItem( 'album&SongsValues', JSON.stringify(arr) );
-    }
+    // const handleInputSongsPerAlbum = ( e ) => {
+    //     e.preventDefault()
+    //     const arr = createArraysOfSongs(amountObj);
+    //     dispatch( createInputsSongs( arr ) )
+    // }
+    // const handleInputSongs = ( e ) => {
+    //     e.preventDefault();
+    //     // const canciones = [...document.querySelectorAll('.canciones')]
+    //     // const arr = albumsWithSongs( fields, canciones )
+    //     // console.log(fields)
+    // }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const inputs = [...document.querySelectorAll('input')];
+        // const inputs = [...document.querySelectorAll('input')];
         
-        if (inputs.every( ipt => ipt.value !== '')) {
-            const canciones = [...document.querySelectorAll('.canciones')]
-            canciones.forEach( ( s, i ) => s.value = canciones[i].value)
-            // inputs.forEach( ipt => ipt.readOnly = true)
-            // navigate('/album/songs');
-        }else{
-            console.log('rellena todos los campos')
-        }
+        // if (inputs.every( ipt => ipt.value !== '')) {
+        //     const canciones = [...document.querySelectorAll('.canciones')]
+        //     canciones.forEach( ( s, i ) => s.value = canciones[i].value)
+        //     // inputs.forEach( ipt => ipt.readOnly = true)
+        navigate('/album/songs');
+        // }else{
+        //     console.log('rellena todos los campos')
+        // }
         
     }
 
@@ -121,14 +133,14 @@ export const SelectNumberOfAlbums = () => {
                         ))
                             
                     }
-                    {
+                    {/* {
                         campos.length !== 0 &&
                             <button
                                 onClick={ handleInputSongsPerAlbum }
                             >
                                 ok
                             </button> 
-                    }
+                    } */}
                 </div>
 
                 {
@@ -139,30 +151,32 @@ export const SelectNumberOfAlbums = () => {
                         >
                             <h6>Titulos de las canciones del disco {i + 1}</h6>
                             {
-                                amountObj[i].map( (f, x) => (
+                                amountObj[i].map( (j, x) => (
                                     <div key={ f + x }
                                     >
-                                        {x + 1}-<input
-                                                    type="text"
-                                                    className="canciones"
-                                                    name={ Object.keys( f )[0] }
-                                                    defaultValue={ Object.values( f )[0] }
-                                                />
-                                                {/* <p>Actualizar</p> */}
+                                        {x + 1}-
+                                        <input
+                                            type="text"
+                                            className="canciones animate__animated animate__fadeInUp"
+                                            name={ Object.keys( j )[0] }
+                                            value={ Object.values( j )[0] }
+                                            onChange={ (e) => changess( amountObj, e, x, i) }
+                                        />
+                                        {/* <p>Actualizar</p> */}
                                     </div>
                                 ))
                             }
                         </div>  
                     ))
                 }
-                {
-                    amountObj.length !== 0 &&
+                {/* {
+                    // amountObj.length !== 0 &&
                         <button
                             onClick={ handleInputSongs }
                         >
                             ok
                         </button>
-                }
+                } */}
 
                 <hr />
                 <button>

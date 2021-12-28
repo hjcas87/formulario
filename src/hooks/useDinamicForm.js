@@ -16,6 +16,8 @@ export const useDinamicForm = ( initialValue = {} ) => {
         })
         setFields([...newData])
     };
+
+    
     
     const addInputField = ( propiedad ) => {
         if ( fields.length < 50 ) {
@@ -33,18 +35,6 @@ export const useDinamicForm = ( initialValue = {} ) => {
         const data = fields.filter( (f, index) => i !== index)
         setFields( [...data] )
     };
-
-    
-    // const createArray = ({ target }) => {
-    //     let arr = [];
-    //     for (let i = 0; i < [target.value]; i++) {
-    //         arr = [...arr, `cancion_numero_${ i + 1 }`];
-    //     }
-    //     setFields({
-    //         ...fields,
-    //         [ target.name ]: arr
-    //     });
-    // } 
     const createArray = (cantidad, propiedad) => {
         let arr = []
         let arrValue = fields.map( f => Object.values(f)[0]);
@@ -52,7 +42,7 @@ export const useDinamicForm = ( initialValue = {} ) => {
             const obj = {};
             fields[i]  
                 ? obj[ `${propiedad}_${i + 1}` ] = arrValue[i]
-                : obj[ `${propiedad}_${i + 1}` ] = ''; // Esta propiedad puede o debe variar segun se necesite (name del input) 
+                : obj[ `${propiedad}_${i + 1}` ] = '1'; // Esta propiedad puede o debe variar segun se necesite (name del input) 
             arr = [...arr, {...obj}];
         }
         setFields([...arr]);
@@ -60,27 +50,66 @@ export const useDinamicForm = ( initialValue = {} ) => {
     } 
 
 
-    const createArraysOfSongs = (propiedad = 'cancion') => {
-
+    const createArraysOfSongs = ( amountObj, propiedad = 'cancion') => {
+        // console.log(Object.values(amountObj[0][0]))
+        // console.log(fields)
         let canciones = [];
         for (let i = 0; i < fields.length; i++) {
             let cancion = []
             for (let x = 0; x < Object.values(fields[i])[0]; x++) {
                 const obj = {};
-                obj[ `${propiedad}_${x + 1}` ] = '';
+                // console.log(amountObj[i])
+                // console.log(amountObj[i][x])
+                // console.log(amountObj[i][x])
+                if (amountObj[i] && amountObj[i][x]) {
+                    if (Object.values(amountObj[i][x]) !== '' && Object.values(amountObj[i][x]) !== []) {
+                        obj[ `${propiedad}_${x + 1}` ] = Object.values(amountObj[i][x])[0]
+                
+                    }
+                }else{
+
+                    obj[ `${propiedad}_${x + 1}` ] = ''
+                }
+                
+                
                 cancion = [...cancion, {...obj} ]
             }
             canciones = [...canciones, cancion]
-        // setFields([...canciones]);  
-    }
+            
+        }
+        console.log(canciones)  
         return canciones
         
 
     }
+    // const handleInputChangess = ( caca, { target } , index, x ) => {
+    //     console.log(caca)
+    //     const newData = caca.map((element, i) => {
+    //         if ( i === x ) {
+                    
+    //             const data = element.map((f, j) => {
+    //                 if ( index === j ) {
+    //                     f[target.name] = target.value;
+    //                 }
+    //                 return f;
+    //             })
+    //             return data
+    //         }
+    //         return element
+    //     });
+    //     setFields([...newData])
+    // };
     
 
 
 
-    return [ fields, addInputField, deleteInputFields, handleInputChanges, createArray, createArraysOfSongs ];
+    return [
+        fields,
+        addInputField,
+        deleteInputFields,
+        handleInputChanges,
+        createArray,
+        createArraysOfSongs,
+    ];
 
 }

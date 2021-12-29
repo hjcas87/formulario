@@ -10,66 +10,43 @@ import { createInputsSongs } from "../../actions/ui";
 import 'animate.css';
 
 export const SelectNumberOfAlbums = () => {
-
-    const navigate = useNavigate()
+    
     const data = JSON.parse(localStorage.getItem('albumValues')) || [];
     const dataSong = JSON.parse(localStorage.getItem('songsValues')) || [];
     const dataAlbumSong = JSON.parse(localStorage.getItem('album&SongsValues')) || [];
-    
-    const dispatch = useDispatch();
 
-    // console.log(dataAlbumSong)
-    const [ campos, , , changes, createArrays, createArraysOfSongs ] = useDinamicForm( dataSong )
-    const { amountObj = dataAlbumSong || [] } = useSelector(state => state.ui);
-    localStorage.setItem( 'songsValues', JSON.stringify(campos) );
-    localStorage.setItem( 'album&SongsValues', JSON.stringify(amountObj) );
-    const [ ,changess ] = useFormInside(amountObj || [])
-    // console.log(fields)
-    console.log(amountObj)
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { amountObj = dataAlbumSong } = useSelector( state => state.ui );
+
+    const [ campos, , , changes, createArrays, createArraysOfSongs ] = useDinamicForm( dataSong );
+    const [ ,changess ] = useFormInside( amountObj );
+    const [ formValues, handleInputChange ] = useForm({
+        numero_volumenes: data.length || '',
+    });
+    const { numero_volumenes: numVol } = formValues;
+    
+    localStorage.setItem( 'songsValues', JSON.stringify( campos ) );
+    localStorage.setItem( 'album&SongsValues', JSON.stringify( amountObj ) );
+
+    
     useEffect(() => {
         
         const arr = createArraysOfSongs(amountObj);
-        dispatch( createInputsSongs( arr ) )
+        dispatch( createInputsSongs( arr ) );
         
-    }, [campos])
-
-    const [ formValues, handleInputChange ] = useForm({
-        numero_volumenes: data.length || '',
-    })
+    }, [campos]);
     
-    console.log(campos)
-    let { numero_volumenes: numVol } = formValues;
 
     const handleClick = ( e ) => {
-        e.preventDefault()
+        e.preventDefault();
         const arr = createArrays(numVol, 'disco');
         localStorage.setItem( 'albumValues', JSON.stringify(arr) );
     }
 
-    // const handleInputSongsPerAlbum = ( e ) => {
-    //     e.preventDefault()
-    //     const arr = createArraysOfSongs(amountObj);
-    //     dispatch( createInputsSongs( arr ) )
-    // }
-    // const handleInputSongs = ( e ) => {
-    //     e.preventDefault();
-    //     // const canciones = [...document.querySelectorAll('.canciones')]
-    //     // const arr = albumsWithSongs( fields, canciones )
-    //     // console.log(fields)
-    // }
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        // const inputs = [...document.querySelectorAll('input')];
-        
-        // if (inputs.every( ipt => ipt.value !== '')) {
-        //     const canciones = [...document.querySelectorAll('.canciones')]
-        //     canciones.forEach( ( s, i ) => s.value = canciones[i].value)
-        //     // inputs.forEach( ipt => ipt.readOnly = true)
         navigate('/album/songs');
-        // }else{
-        //     console.log('rellena todos los campos')
-        // }
         
     }
 
@@ -133,16 +110,8 @@ export const SelectNumberOfAlbums = () => {
                         ))
                             
                     }
-                    {/* {
-                        campos.length !== 0 &&
-                            <button
-                                onClick={ handleInputSongsPerAlbum }
-                            >
-                                ok
-                            </button> 
-                    } */}
-                </div>
 
+                </div>
                 {
                     amountObj.map(( f, i ) => (
                         <div 
@@ -162,21 +131,12 @@ export const SelectNumberOfAlbums = () => {
                                             value={ Object.values( j )[0] }
                                             onChange={ (e) => changess( amountObj, e, x, i) }
                                         />
-                                        {/* <p>Actualizar</p> */}
                                     </div>
                                 ))
                             }
                         </div>  
                     ))
                 }
-                {/* {
-                    // amountObj.length !== 0 &&
-                        <button
-                            onClick={ handleInputSongs }
-                        >
-                            ok
-                        </button>
-                } */}
 
                 <hr />
                 <button>

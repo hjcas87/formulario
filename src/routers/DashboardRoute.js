@@ -3,7 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { AlbumScreen } from "../components/album/AlbumScreen";
 import { SelectNumberOfAlbums } from "../components/album/SelectNumberOfAlbums";
-import { SongsScreen } from "../components/album/SongsScreen";
+import { SongList } from "../components/album/SongList";
+import { SongScreen } from "../components/album/SongScreen";
 import { SimpleScreen } from "../components/simple/SimpleScreen";
 import { Navbar } from "../components/ui/Navbar";
 import { UpcScreen } from "../components/ui/UpcScreen";
@@ -32,9 +33,13 @@ export const DashboardRoute = () => {
                     }/>
 
                     <Route path="album/songs" element={
-                        <PrivateRoute>
-                            <SongsScreen />
-                        </PrivateRoute>
+                            <SongList />
+                    }/>
+
+                    <Route path="edit/:id" element={
+                        // <PrivateRoute>
+                            <SongScreen />
+                        // </PrivateRoute>
                     }/>
 
                 </Routes>

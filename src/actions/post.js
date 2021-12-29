@@ -8,3 +8,12 @@ export const infoFormAlbum = ( form ) => {
         }
     }
 }
+
+export const infoFormAlbumWithSongs = ( abmsWthSng ) => {
+    return {
+        type: types.postSongs,
+        payload: {
+            abmsWthSng
+        }
+    }
+}

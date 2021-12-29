@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 
@@ -9,8 +9,6 @@ import { infoFormAlbum } from "../../actions/post";
 export const AlbumScreen = () => {
 
     const dispatch = useDispatch()
-
-    const { post } = useSelector(state => state.form);
 
     const navigate = useNavigate();
 
@@ -31,16 +29,12 @@ export const AlbumScreen = () => {
         
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        // if ( isValidate( formValues ) ) {
-            formValues.artistas_secundarios = artistasSecundarios;
-            dispatch( infoFormAlbum( formValues ) );
-            localStorage.setItem( 'formValues', JSON.stringify(formValues) );
-            navigate('/upc');
-        // }
+        formValues.artistas_secundarios = artistasSecundarios;
+        dispatch( infoFormAlbum( formValues ) );
+        localStorage.setItem( 'formValues', JSON.stringify(formValues) );
+        navigate('/upc');
     };
 
-    console.log(artistasSecundarios)
     return (
         <>
             <header className="header centrar-texto">

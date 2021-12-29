@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-
-
 export const useFormInside = (initialValue = {}) => {
     
     const [fields, setFields] = useState( initialValue );

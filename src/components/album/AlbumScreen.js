@@ -26,7 +26,6 @@ export const AlbumScreen = () => {
     
     const { msgError } = useSelector( state => state.ui);
   
-    
     const { data, dataSong } = useMemo(() => getLocalStorage(counter), [counter]);
 
     const artistas = useMemo(() => allArtists( data, dataSong ), [ data, dataSong ]);

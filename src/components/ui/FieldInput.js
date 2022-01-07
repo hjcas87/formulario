@@ -2,9 +2,9 @@ import React from "react";
 
 
 
-export const FieldInput = React.memo(({ indexParent, type, name, value, onChange, id, checked, className }) => {
+export const FieldInput = React.memo(({ indexParent, type, name, value, onChange, id, checked, className, values }) => {
  
-    console.log('me volvi a generar')
+    console.log('fock')
     return (
 
 

@@ -20,7 +20,7 @@ console.log(arr)
                 <ul className="nav nav-pills flex-column mb-auto">
                     <li>
                         <NavLink 
-                            className={ ({ isActive }) => 'nav-link text-white ' + (isActive ? 'active nav-item' : '') } 
+                            className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
                             to="/album"
                         >
                             Información básica
@@ -28,21 +28,21 @@ console.log(arr)
                     </li>
                     <li>
                         <NavLink 
-                            className={ ({ isActive }) => 'nav-link text-white ' + (isActive ? 'active nav-item' : '') } 
+                            className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
                             to="/upc"
                         >
                             Código de barras/Upc
                         </NavLink>
                     </li>
                         <NavLink 
-                            className={ ({ isActive }) => 'nav-link text-white ' + (isActive ? 'active nav-item' : '') } 
+                            className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
                             to="/selection"
                         >
                             Información del álbum
                         </NavLink>
                     <li>
                         <NavLink 
-                            className={ ({ isActive }) => 'nav-link text-white ' + (isActive ? 'active nav-item' : '') } 
+                            className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
                             to="/songs"
                         >
                             Canciones
@@ -51,7 +51,7 @@ console.log(arr)
                     <hr />
                     <li>
                         <NavLink 
-                            className={ ({ isActive }) => 'nav-link text-white ' + (isActive ? 'active nav-item' : '') } 
+                            className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
                             to="/genders"
                         >
                             Géneros/Localización
@@ -60,7 +60,7 @@ console.log(arr)
                     <hr />
                     <li>
                         <NavLink 
-                            className={ ({ isActive }) => 'nav-link text-white ' + (isActive ? 'active nav-item' : '') } 
+                            className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
                             to="/isrc"
                         >
                             Códigos ISRC
@@ -68,7 +68,7 @@ console.log(arr)
                     </li>
                     <li>
                         <NavLink 
-                            className={ ({ isActive }) => 'nav-link text-white ' + (isActive ? 'active nav-item' : '') } 
+                            className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
                             to="/distribution"
                         >
                             Distribución
@@ -76,7 +76,7 @@ console.log(arr)
                     </li>
                     <li>
                         <NavLink 
-                            className={ ({ isActive }) => 'nav-link text-white ' + (isActive ? 'active nav-item' : '') } 
+                            className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
                             to="/extended-songs"
                         >
                             Canciones Extendidas

@@ -15,7 +15,17 @@ export const useDinamicForm = ( initialValue = {} ) => {
         });
         setFields([...newData]);
     };
+    // const onChange = (indexParent, event) => {
+    //     const newData = data.map((d, index) => {
+    //     if (index === indexParent) {
+    //         d[event.target.name] = event.target.value;
+    //     }
 
+    //     return d;
+    //     });
+
+    //     setData([...newData]);
+    // };
 
     
     const addInputField = ( propiedad ) => {
@@ -40,7 +50,7 @@ export const useDinamicForm = ( initialValue = {} ) => {
             const obj = {};
             fields[i]  
                 ? obj[ `${propiedad}_${i + 1}` ] = arrValue[i]
-                : obj[ `${propiedad}_${i + 1}` ] = '1'; // Esta propiedad puede o debe variar segun se necesite (name del input) 
+                : obj[ `${propiedad}_${i + 1}` ] = ''; // Esta propiedad puede o debe variar segun se necesite (name del input) 
             arr = [...arr, {...obj}];
         }
         setFields([...arr]);

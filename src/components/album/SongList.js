@@ -1,53 +1,76 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Navigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 
 import { infoFormAlbumWithSongs } from "../../actions/post"
-import { albumsWithSongsAndId } from "../../helpers/albumsWithSongsAndId"
+import { albumWithSongs } from "../../helpers/albumsWithSongsAndId"
 import { SongCard } from "./SongCard"
 
-
 export const SongList = () => {
-
-    const data = JSON.parse(localStorage.getItem('formValues')) || {}
-    const { amountObj } = useSelector(state => state.ui)
-    const canciones = albumsWithSongsAndId( amountObj );
-    const dispatch = useDispatch();
-    console.log(canciones)
-    // console.log(data.canciones)
     
-    useEffect(() => {
-        
-        dispatch( infoFormAlbumWithSongs( canciones ) );
-        if(canciones) {
-            data.canciones = [...canciones]
-        }
-        localStorage.setItem( 'formValues', JSON.stringify(data) );
-        
-    }, []);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { post = {}, postSongs } = useSelector(state => state.form);
+    let data = JSON.parse(localStorage.getItem('albumFormValues')) || [[]];
+    console.log( postSongs)
+    console.log(data)
+    let newDatos;
+    if (!postSongs) {
+        console.log('chi')
+        newDatos = data;
+    } else {
+        console.log('chiqchi')
+        newDatos = albumWithSongs( data , postSongs );
+    }
 
-    if ( !canciones ) { return <Navigate to= '/' />}
+    
+    localStorage.setItem( 'albumFormValues', JSON.stringify(newDatos) );
+    console.log(newDatos)
+
+    
+    // if ( !newDatos ) { return <Navigate to= '/' />}
+    
+    const handleClick = (e) => {
+        e.preventDefault();
+        dispatch( infoFormAlbumWithSongs( newDatos ) );
+        navigate( '/genders' )
+    }
 
     return (
-        <div>
+        <>
             
-            {
-                canciones.map( (cancion, i) => (
-                    <div key={ i }>
-                    <h4>Canciones del disco { i + 1} </h4>
+            <div className="text-secondary px-4 py-5 text-center flex-fill animate__animated animate__fadeIn">
+                <div  className="py-5">
+                    {
+                        newDatos.map( (cancion, i) => (
+                        
+                                <div key={ i }>
+                                <h1 className="display-5 fw-bold text-white">Canciones del disco { i + 1}</h1>
+                                    <div className="col-automx-auto">
+                                        {
+                                            cancion.map( (song, x ) => (
+                                                
+                                                <SongCard key={ cancion[x].id }
+                                                    indice={x} 
+                                                    { ...song }
+                                                />
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+                        ))
+                    }
 
-                        {
-                            cancion.map( (song, x ) => (
-                                
-                                <SongCard key={ cancion[x].id } 
-                                    { ...song }
-                                />
-                            ))
-                        }
-                    </div>
-                ))
-            }
+                    <button
+                        className="btn btn-outline-info btn-lg px-4 fw-bold mt-5"
+                        onClick={ handleClick }
+                    >
+                        Continuar
+                    </button>
+                </div>
+            </div>
 
-        </div>
+            <div className="fill"></div>
+        </>
     )
 }

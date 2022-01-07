@@ -17,3 +17,12 @@ export const infoFormAlbumWithSongs = ( abmsWthSng ) => {
         }
     }
 }
+
+export const infoFormAlbumAllArtists = ( artists ) => {
+    return {
+        type: types.allArtists,
+        payload: {
+            artists
+        }
+    }
+}

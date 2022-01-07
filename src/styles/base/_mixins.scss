@@ -1,0 +1,29 @@
+
+
+@mixin flex ( $direction: row, $just-cont: center, $align: center ) {
+    display: flex;
+    justify-content: $just-cont;
+    flex-direction: $direction;
+    align-items: $align;
+}
+
+@mixin phone {
+    @media (max-width: 480px) {
+        @content;
+    }
+}
+@mixin phoneMin {
+    @media (max-width: 350px) {
+        @content;
+    }
+}
+@mixin tablet {
+    @media (max-width: 768px) {
+        @content;
+    }
+}
+@mixin desktop {
+    @media (max-width: 992px) {
+        @content;
+    }
+}

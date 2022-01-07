@@ -1,5 +1,8 @@
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate, useParams } from "react-router-dom"
+import { infoFormAlbumWithSongs } from "../../actions/post";
+import { createInputsSongs } from "../../actions/ui";
 import { useForm } from "../../hooks/useForm";
 import { useFormDinamic } from "../../hooks/useFormDinamic";
 import { getSongById } from "../../selectors/getSongById";
@@ -9,53 +12,89 @@ import { FieldInput } from "../ui/FieldInput";
 
 export const SongScreen = () => {
 
-    const data = JSON.parse(localStorage.getItem('formValues')) || {}
+    // const [ counter, setCounter] = useState(0)
     const navigate = useNavigate();
-    const { post = {}, postSongs } = useSelector(state => state.form);
-    const { artista_principal = '', artistas_secundarios = [] } = post
+    const basicData = JSON.parse(localStorage.getItem('basicInfo')) || {};
+    const { postSongs } = useSelector(state => state.form);
+    const data = JSON.parse(localStorage.getItem('albumFormValues')) || postSongs
+    const { artista_principal = '', artistas_secundarios = [] } = basicData
     const { id } = useParams();
+    // console.log(post)
+    const dispatch = useDispatch();
+    console.log(data)
+    
+    const song = getSongById( data, id ) || {};
+    const {
+        artistas_destacados,
+        composicion,
+        compositores: composers,
+        id: uid,
+        idioma,
+        lenguaje_explicito,
+        nombre,
+        otro_idioma,
+        version_en_vivo,
+        
+    } = song;
+    console.log(song.length)
 
-    const song = getSongById( postSongs, id );
+    // const rol = `rol_autor_${ counter }`
 
     const initialValue = {
-        compositor: ''
+        compositor: '',
+        // [rol]: ''
     }
-    const [ compositores, onAdd, onDelete, changes ] = useFormDinamic(initialValue);
+    // initialValue[rol] = ''
+    console.log(initialValue)
+    const [ compositores, onAdd, onDelete, changes ] = useFormDinamic( song.compositores);
     const initialValues = {
         artista_destacado: '',
         rol: ''
     }
-    const [ artistaDestacado, addArtist, deleteArtist, changesArtist ] = useFormDinamic(initialValues);
+    // useEffect(() => {
+    //     setCounter(counter + 1)
+    // }, [compositores.length])
+    const [ artistaDestacado, addArtist, deleteArtist, changesArtist ] = useFormDinamic(artistas_destacados);
 
+    console.log(compositores)
     const [ formValues, handleInputChange ] = useForm({
-        lenguaje_explicito: '',
-        version_en_vivo: '',
-        composicion: '',
-        idioma: '',
-        otro_idioma: ''
+        lenguaje_explicito: song.lenguaje_explicito || '',
+        version_en_vivo: song.version_en_vivo || '',
+        composicion: song.composicion || '',
+        idioma: song.idioma || '',
+        otro_idioma: song.otro_idioma || ''
     });
 
-    console.log( artistaDestacado )
-    console.log( compositores )
 
     const handleClick = (e) => {
         e.preventDefault();
+        // formValues.artistas_destacados = artistaDestacado;
+        // formValues.compositores = compositores;
+        // formValues.id = id;
+        // formValues.nombre = nombre;
+        song.artistas_destacados = artistaDestacado;
+        song.composicion = formValues.composicion;
+        song.compositores = [...compositores];
+        song.id = id;
+        song.idioma = formValues.idioma;
+        song.lenguaje_explicito = formValues.lenguaje_explicito 
+        song.nombre = song.nombre;
+        song.otro_idioma = formValues.otro_idioma;
+        song.version_en_vivo = formValues.version_en_vivo;
+        console.log(postSongs)
         console.log(data)
-        formValues.artistas_destacados = artistaDestacado;
-        formValues.compositores = compositores;
-        formValues.id = id;
-        formValues.nombre_cancion = song.nombre;
-        data.canciones = [];
-        data.canciones = [...data.canciones, formValues]
-        console.log(data)
-        localStorage.setItem( 'formValues', JSON.stringify(data) );
-        navigate('/album/songs');
+    console.log( song )
+    console.log( formValues )
+        localStorage.setItem( 'albumFormValues', JSON.stringify(data) );
+        dispatch( createInputsSongs( data ) );
+        navigate('/songs');
+    }
+
+    if (!Object.keys(song).length) {
+        return <Navigate to='/album/songs' />
     }
 
 
-    if ( !song ) {
-        return <Navigate to= '/album/songs' />
-    }
 
     return (
         <section>
@@ -102,7 +141,8 @@ export const SongScreen = () => {
                     artistaDestacado.map( ( artist, index ) => (
                         <div key={ `artist_${index}`}>
                             <div>
-                                <select name="rol" onChange={(e) => changesArtist(index, e)}>
+                                <select name="rol" onChange={(e) => changesArtist(index, e)} value={artist.rol}>
+                                    <option value="">Seleccioná un rol</option>
                                     <option value="artista_destacado">Artista Destacado</option>
                                     <option value="productor">Productor</option>
                                     <option value="remixer">Remixer</option>
@@ -111,7 +151,7 @@ export const SongScreen = () => {
                                 <input
                                     type="text"
                                     name="artista_destacado"
-                                    value={ artist.artista_destacado }
+                                    value={ artist.artista_destacado || ''}
                                     onChange={(e) => changesArtist(index, e)}
                                 />
                             </div>
@@ -129,7 +169,6 @@ export const SongScreen = () => {
                 <div className="detalles_canciones">
                     <p className="negrita-medium">1-¿Esta canción contiene lenguaje explícito?</p>                
                 </div>
-
                 <div className="radio">
 
                     <input
@@ -138,6 +177,7 @@ export const SongScreen = () => {
                         value="No"
                         id="no_lenguaje"
                         name="lenguaje_explicito"
+                        checked={formValues.lenguaje_explicito=== 'No'}
                         onChange={ handleInputChange }
                     />
 
@@ -152,18 +192,18 @@ export const SongScreen = () => {
                         id="si_lenguaje"
                         value="Si"
                         name="lenguaje_explicito"
+                        checked={formValues.lenguaje_explicito === 'Si'}
                         onChange={ handleInputChange }
                     />
 
                     <label htmlFor="si_lenguaje" className="radio__label">Si</label>
-
                 </div>
 
                 <p className="negrita-medium">2-Idioma de la letra</p>
 
                 <label>
                     En que idioma se canta la letra de tu cancion:
-                <select onChange={ handleInputChange } name="idioma">
+                <select onChange={ handleInputChange } name="idioma" value={ formValues.idioma }>
                     <option value="">Seleccioná un idioma</option>
                     <option value="Español">Español</option>
                     <option value="Ingles">Ingles</option>
@@ -197,6 +237,7 @@ export const SongScreen = () => {
                         id="no_vivo"
                         name="version_en_vivo"
                         value="No"
+                        checked={formValues.version_en_vivo=== 'No'}
                         onChange={ handleInputChange }
                     />
 
@@ -210,6 +251,7 @@ export const SongScreen = () => {
                         id="en_vivo"
                         name="version_en_vivo"
                         value="Si"
+                        checked={formValues.version_en_vivo=== 'Si'}
                         onChange={ handleInputChange }
                     />
 
@@ -227,6 +269,7 @@ export const SongScreen = () => {
                         id="original"
                         name="composicion"
                         value="original"
+                        checked={formValues.composicion=== 'original'}
                         onChange={ handleInputChange }
                     />
 
@@ -241,6 +284,7 @@ export const SongScreen = () => {
                         id="cover"
                         name="composicion"
                         value="cover"
+                        checked={formValues.composicion=== 'cover'}
                         onChange={ handleInputChange }
                     />
 
@@ -255,22 +299,24 @@ export const SongScreen = () => {
                         id="dominio"
                         name="composicion"
                         value="dominio_publico"
+                        checked={formValues.composicion=== 'dominio_publico'}
                         onChange={ handleInputChange }
                     />
 
                     <label htmlFor="dominio" className="radio__label">Dominio Público</label>
 
-                </div>  
+                </div>
 
                 {
                     compositores.map( ( field, index ) => (
+                        // console.log(field.rol_autor_1)
                         <div key={ index }>
                             <p>Nombre del compositor de esta canción.</p>
                             <FieldInput
                                 type="text"
                                 indexParent={ index }
                                 name="compositor"
-                                value={ field.compositor }
+                                value={ field.compositor || ''}
                                 onChange={ changes }
                             />
 
@@ -282,6 +328,7 @@ export const SongScreen = () => {
                                         indexParent={ index }
                                         id={`letra_${index + 1}`}
                                         name={ `rol_autor_${index + 1}` }
+                                        checked={ field[`rol_autor_${index + 1}`] === 'Letra'}
                                         value="Letra"
                                         onChange={ changes }
                                     />
@@ -293,6 +340,7 @@ export const SongScreen = () => {
                                         indexParent={ index }
                                         id={`musica_${index + 1}`}
                                         name={ `rol_autor_${index + 1}` }
+                                        checked={ field[`rol_autor_${index + 1}`] === 'Música'}
                                         value="Música"
                                         onChange={ changes }
                                     />
@@ -304,6 +352,7 @@ export const SongScreen = () => {
                                         indexParent={ index }
                                         id={`letra_y_musica_${index + 1}`}
                                         name={ `rol_autor_${index + 1}` }
+                                        checked={ field[`rol_autor_${index + 1}`] === 'Letra y Música'}
                                         value="Letra y Música" 
                                         onChange={ changes }
                                     />
@@ -315,6 +364,7 @@ export const SongScreen = () => {
                                         indexParent={index}
                                         id={`no_sabe_${index + 1}`}
                                         name={ `rol_autor_${index + 1}` }
+                                        checked={ field[`rol_autor_${index + 1}`] === 'no_sabe'}
                                         value="no_sabe"
                                         onChange={ changes }
                                     />
@@ -335,6 +385,9 @@ export const SongScreen = () => {
                         + Agregar Compositor
                     </button>
 
+                    <button onClick={ () => {navigate('/songs')} }>
+                        Atras
+                    </button>
                     <button onClick={ handleClick }>
                         Guardar
                     </button>

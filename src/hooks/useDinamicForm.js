@@ -6,6 +6,7 @@ export const useDinamicForm = ( initialValue = {} ) => {
     const [fields, setFields] = useState( initialValue );
 
     const handleInputChanges = ( { target } , index ) => {
+        console.log('chi')
         const newData = fields.map(( field, i ) => {
             if (index === i) {
                 field[target.name] = target.value;

@@ -5,7 +5,8 @@ import { useState } from "react";
 export const useFormDinamic = ( initialValue = {} ) => {
     
     
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(initialValue);
+    console.log(data)
 
     // Utilizamos el index del grupo de campos para eliminar ese grupo de la lista
     const onDelete = (indexToDelete) => {
@@ -16,7 +17,16 @@ export const useFormDinamic = ( initialValue = {} ) => {
     // Agregamos el nuevo grupo de campos al final de la lista
     const onAdd = () => {
         setData([...data, { ...initialValue }]);
+        console.log(data)
     };
+
+    const add = ( arr ) => {
+        console.log(arr)
+        for (let i = 0; i < arr.length; i++) {
+            setData([...data, { ...initialValue }]);  
+            console.log(data)
+        }
+    }
 
     // Utilizamos el index del grupo de campos para buscar ese grupo
     // y editar el campo correspondiente
@@ -37,6 +47,7 @@ export const useFormDinamic = ( initialValue = {} ) => {
         onAdd,
         onDelete,
         onChange,
+        add
     ]
 
 }

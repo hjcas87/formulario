@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 
 export const useForm = ( initialState = {} ) => {
@@ -8,6 +8,16 @@ export const useForm = ( initialState = {} ) => {
         setValues( initialState );
     }
 
+    // const handleInputChange = useCallback(
+    //     ({ target }) => {
+    //         setValues( v => {
+    //             return {
+    //             ...v,
+    //             [ target.name ]: target.value
+    //         }});
+    //     },
+    //     [setValues]
+    // )
 
     const handleInputChange = ({ target }) => {
         setValues({

@@ -2,9 +2,15 @@
 import { types } from "../types/types";
 
 
-export const uiReducer = ( state = {}, action ) => {
 
-    switch ( action.type ) {
+const initialState = {
+    loading: false,
+    msgError: null
+};
+
+export const uiReducer = ( state = initialState, action ) => {
+
+    switch (action.type) {
         case types.uiInputs:
             return {
                 ...state,
@@ -16,10 +22,18 @@ export const uiReducer = ( state = {}, action ) => {
                 ...state,
                 amountObj: action.payload.amountObj
             }
+        case types.uiSetError:
+            return {
+                ...state,
+                msgError: action.payload
+            }
+        case types.uiRemoveError:
+            return {
+                ...state,
+                msgError: null
+            }
     
         default:
             return state;
     }
-
-
-}
+};

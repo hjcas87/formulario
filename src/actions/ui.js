@@ -10,6 +10,7 @@ export const createInput = ( amount ) => {
 }
 
 export const createInputsSongs = ( amountObj ) => {
+    console.log(amountObj)
     return {
         type: types.uiInputsSongs,
         payload: {
@@ -17,3 +18,13 @@ export const createInputsSongs = ( amountObj ) => {
         }
     }
 }
+
+
+export const setError = ( err ) => ({
+    type: types.uiSetError,
+    payload: err
+});
+
+export const removeError = () => ({
+    type: types.uiRemoveError
+});

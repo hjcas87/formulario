@@ -1,0 +1,34 @@
+@import '../base/mixins.scss';
+
+.sidebar {
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    height: 100vh;
+    margin-top: 0;
+    max-height: 100vh;
+    padding: 10rem 5rem 5rem 5rem;
+    position: sticky;
+    top: 0;
+    width: 30rem;
+    z-index: 2;
+    @include tablet{
+        display: none!important;
+    }
+}
+
+.fill{
+    width: 30rem;
+    padding: 1rem;
+    
+    @include desktop{
+        width: 5rem;
+    }
+    @include tablet{
+        display: none!important;
+    }
+}
+.navegacion {
+    z-index: 3;
+    height: 7rem;
+}

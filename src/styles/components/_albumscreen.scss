@@ -1,0 +1,35 @@
+@import '../base/mixins.scss';
+
+.contenedor {
+    max-width: 80rem;
+    margin: 0 auto;
+}
+
+.input_group {
+    flex-basis: 90%;
+}
+.help-container{
+    display: flex;
+    flex-basis: 10%;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 1rem;
+}
+.help-item {
+    align-items: center;
+    border: 1px solid rgba($color: #fff, $alpha: .5);
+    border-radius: 50%;
+    display: flex;
+    font-size: 1.5rem;
+    font-weight: bold;
+    height: 3rem;
+    justify-content: center;
+    width: 3rem;
+    @include phone{
+        height: 2.5rem;
+        width: 2.5rem;
+    }
+    &:hover {
+        cursor: pointer;
+    }
+}

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { removeError, setError } from "../../actions/ui";
 import { getLocalStorage } from "../../helpers/getLocalStorage";
 import { useForm } from "../../hooks/useForm";
@@ -154,6 +154,8 @@ export const UpcScreen = () => {
         </div>
         
         <div className="fill"></div>
+{/*         
+        <Outlet /> */}
         </>
     )
 }

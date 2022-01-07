@@ -1,5 +1,6 @@
 import { Provider } from 'react-redux';
-import { AppRouter } from './routers/AppRouter';
+import { Outlet } from 'react-router-dom';
+// import { AppRouter } from './routers/AppRouter';
 import { DashboardRoute } from './routers/DashboardRoute';
 import { store } from './store/store';
 

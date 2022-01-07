@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 
 
 import { AlbumScreen } from "../components/album/AlbumScreen";
@@ -15,6 +15,7 @@ import { SimpleScreen } from "../components/simple/SimpleScreen";
 import { Navbar } from "../components/ui/Navbar";
 import { UpcScreen } from "../components/album/UpcScreen";
 import { PrivateRoute } from "./PrivateRoute";
+import { AlbumRouter } from "./AlbumRouter";
 
 export const DashboardRoute = () => {
     return (
@@ -22,78 +23,23 @@ export const DashboardRoute = () => {
            <BrowserRouter>
                 <Navbar />
                 <main className="main d-flex pt-5">
+                    <Sidebar/>
                 {/* <div className="container-sm"> */}
                     <Routes>
-                        <Route path="album" element={<AlbumScreen />}/>
                         <Route path="simple" element={<SimpleScreen />}/>
-                        <Route path="/*" element={<AlbumScreen />}/>
-                        <Route path="upc" element={
-                            <PrivateRoute>
-                                <Sidebar />
-                                <UpcScreen />
-                            </PrivateRoute>
+                        {/* <Route path="/" element={<AlbumScreen />}/> */}
+                        <Route path="/album/*" element={
+
+                                    <AlbumRouter />
                         }/>
 
-                        <Route path="selection" element={
-                            <PrivateRoute>
-                                <Sidebar />
-                                <SelectNumberOfAlbums />
-                            </PrivateRoute>
-                        }/>
-
-                        <Route path="songs" element={
-                            
-                            <PrivateRoute>
-                                <Sidebar />
-                                <SongList />
-                            </PrivateRoute>
-                        }/>
-
-                        <Route path="edit/:id" element={
-                            <PrivateRoute>
-                                <Sidebar />
-                                <SongScreen />
-                            </PrivateRoute>
-                        }/>
-
-                        <Route path="genders" element={
-                            <PrivateRoute>
-                                <Sidebar />
-                                <GendersScreen />
-                            </PrivateRoute>
-                        }/>
-
-                        <Route path="isrc" element={
-                            <PrivateRoute>
-                                <Sidebar />
-                                <IsrcCodes />
-                            </PrivateRoute>
-                        }/>
-
-                        <Route path="distribution" element={
-                            <PrivateRoute>
-                                <Sidebar />
-                                <DistServices />
-                            </PrivateRoute>
-                        }/>
-
-                        <Route path="artist" element={
-                            <PrivateRoute>
-                                <Sidebar />
-                                <IdArtist />
-                            </PrivateRoute>
-                        }/>
-
-                        <Route path="extended-songs" element={
-                            <PrivateRoute>
-                                <Sidebar />
-                                <ExtendSongs />
-                            </PrivateRoute>
-                        }/>
+                        
 
 
                     </Routes>
+                    <div className="fill"></div>
                 </main>
+                
             </BrowserRouter> 
         </>
     )

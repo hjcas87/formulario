@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 
 import { infoFormAlbum, infoFormAlbumAllArtists } from "../../actions/post";
@@ -114,16 +114,14 @@ export const AlbumScreen = () => {
     return (
         <>
 
-            {
-                !isObjEmpty( data ) && <Sidebar arr={ arr }/>
-            }
+            
 
             <div className="text-secondary px-4 py-5 text-center flex-fill animate__animated animate__fadeIn contenedor" id="basic_info">
                 
                 <div className="py-5">
                 <h1 className="display-5 fw-bold text-white">Formulario-Álbum</h1>
                 <h2 className="display-5 fw-ligth text-white">Informacion Básica</h2>
-                <div className="col-automx-auto">
+                <div className="col-auto mx-auto">
                 <form className=" py-5">
                     { 
                         msgError &&
@@ -262,9 +260,9 @@ export const AlbumScreen = () => {
             </div>
 
             {
-                !isObjEmpty( data ) && <div className="fill"></div>
+                // !isObjEmpty( data ) && <div className="fill"></div>
             }
-
+            {/* <Outlet /> */}
         </>
     )
 }

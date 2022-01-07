@@ -1,7 +1,9 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
 export const Navbar = () => {
+    console.log(['object'])
     return (
+    <>
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark border-1 border-light border-bottom position-fixed w-100 navegacion">
         <div className="container-sm">
             <a className="navbar-brand fs-1" href="#">B D N</a>
@@ -26,13 +28,8 @@ export const Navbar = () => {
             </div>
         </div>
         </nav>
-        // <div>
-        //     <nav>
-        //         <Link to="album">Álbum</Link> 
-        //         <Link to="simple">Simple</Link>
-        //     </nav>
-            
-        // </div>
+        <Outlet />
+    </>
     )
 }
 

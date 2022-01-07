@@ -1,5 +1,5 @@
 import React from "react"
-import { NavLink } from "react-router-dom"
+import { NavLink, Outlet } from "react-router-dom"
 
 export const Sidebar = React.memo(({ arr }) => {
 console.log(arr)
@@ -12,16 +12,18 @@ console.log(arr)
         
         <>
             <div className="text-white bg-dark sidebar toggled" id="sidebar-wrapper">
-                <a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                
-                <span className="fs-4">Ir al resumen </span>
-                </a>
+                <NavLink 
+                    className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
+                    to="/"
+                >
+                    Ir al resumen
+                </NavLink>
                 <hr/>
                 <ul className="nav nav-pills flex-column mb-auto">
                     <li>
                         <NavLink 
                             className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
-                            to="/album"
+                            to="album/"
                         >
                             Información básica
                         </NavLink>
@@ -29,21 +31,21 @@ console.log(arr)
                     <li>
                         <NavLink 
                             className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
-                            to="/upc"
+                            to="/album/upc"
                         >
                             Código de barras/Upc
                         </NavLink>
                     </li>
                         <NavLink 
                             className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
-                            to="/selection"
+                            to="/album/selection"
                         >
                             Información del álbum
                         </NavLink>
                     <li>
                         <NavLink 
                             className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
-                            to="/songs"
+                            to="/album/songs"
                         >
                             Canciones
                         </NavLink>
@@ -52,7 +54,7 @@ console.log(arr)
                     <li>
                         <NavLink 
                             className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
-                            to="/genders"
+                            to="/album/genders"
                         >
                             Géneros/Localización
                         </NavLink>
@@ -61,7 +63,7 @@ console.log(arr)
                     <li>
                         <NavLink 
                             className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
-                            to="/isrc"
+                            to="/album/isrc"
                         >
                             Códigos ISRC
                         </NavLink>
@@ -69,7 +71,7 @@ console.log(arr)
                     <li>
                         <NavLink 
                             className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
-                            to="/distribution"
+                            to="/album/distribution"
                         >
                             Distribución
                         </NavLink>
@@ -77,11 +79,12 @@ console.log(arr)
                     <li>
                         <NavLink 
                             className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
-                            to="/extended-songs"
+                            to="/album/extended-songs"
                         >
                             Canciones Extendidas
                         </NavLink>
                     </li>
+                    
                 </ul>
                 <hr />
                 <div className="dropdown">

@@ -26,7 +26,7 @@ export const DashboardRoute = () => {
                     <Routes>
                         <Route path="album" element={<AlbumScreen />}/>
                         <Route path="simple" element={<SimpleScreen />}/>
-                        <Route path="/" element={<AlbumScreen />}/>
+                        <Route path="/*" element={<AlbumScreen />}/>
                         <Route path="upc" element={
                             <PrivateRoute>
                                 <Sidebar />

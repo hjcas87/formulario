@@ -5,7 +5,7 @@ export const Navbar = () => {
     return (
     <>
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark border-1 border-light border-bottom position-fixed w-100 navegacion">
-        <div className="container-sm">
+        <div className="navbar-container">
             <a className="navbar-brand fs-1" href="#">B D N</a>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>

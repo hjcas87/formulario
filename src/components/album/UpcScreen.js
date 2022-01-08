@@ -73,7 +73,7 @@ export const UpcScreen = () => {
 
     return (
         <>
-        <div className=" text-secondary px-4 py-5 text-center flex-fill animate__animated animate__fadeInRight animate__faster" id="upc_info">
+        <div className=" text-secondary px-4 py-5 text-center" id="upc_info">
                 
                 <div className="py-5">
                 <h1 className="display-5 fw-bold text-white">Código de barras (UPC)</h1>

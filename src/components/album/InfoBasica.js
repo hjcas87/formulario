@@ -112,7 +112,7 @@ export const InfoBasica = () => {
     }
 
     return (
-        <>
+        <div className="main-container">
 
             
 
@@ -263,6 +263,6 @@ export const InfoBasica = () => {
                 // !isObjEmpty( data ) && <div className="fill"></div>
             }
             {/* <Outlet /> */}
-        </>
+        </div>
     )
 }

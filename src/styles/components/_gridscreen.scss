@@ -4,8 +4,20 @@
 .grid-screen {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
+    min-height: 100vh;
+    position: relative;
     @include tablet{
         grid-template-columns: 1fr;
+        // grid-template-rows: 1fr 1fr;
+    }
+    .main-container {
+        
+        transition: opacity 1s;
+    }
+
+    .opacity {
+        opacity: 0.3;
+        transition: opacity 1s;
     }
 }
         

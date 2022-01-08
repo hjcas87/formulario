@@ -72,8 +72,8 @@ export const UpcScreen = () => {
     }
 
     return (
-        <>
-        <div className=" text-secondary px-4 py-5 text-center" id="upc_info">
+        <div className="main-container">
+        <div className=" text-secondary px-4 py-5 text-center animate__animated animate__fadeIn" id="upc_info">
                 
                 <div className="py-5">
                 <h1 className="display-5 fw-bold text-white">Código de barras (UPC)</h1>
@@ -153,6 +153,6 @@ export const UpcScreen = () => {
             </div>
         </div>
         
-        </>
+        </div>
     )
 }

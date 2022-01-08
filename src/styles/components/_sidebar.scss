@@ -1,5 +1,27 @@
 @import '../base/mixins.scss';
 
+.sidebar-cont {
+    @include tablet{
+        position: absolute;
+        width: 30rem;
+        transform: translate(-28.5rem);
+        border-right: 1px solid rgba($color: #fff, $alpha: .5);
+        transition: transform 1s;
+        z-index: 2;
+        box-shadow: 4px 0px 7px 0px rgba(0,0,0,0.7);
+-webkit-box-shadow: 4px 0px 7px 0px rgba(0,0,0,0.7);
+-moz-box-shadow: 4px 0px 7px 0px rgba(0,0,0,0.7);
+    }
+    @include phone{
+        width: 23rem;
+        transform: translate(-21.7rem);
+    }
+
+}
+.open {
+    transform: translate(0);
+    transition: transform 1s;
+}
 .sidebar {
     display: flex;
     flex-shrink: 0;
@@ -10,10 +32,28 @@
     padding: 10rem 5rem 5rem 5rem;
     position: sticky;
     top: 0;
-    width: 30rem;
-    z-index: 2;
+    @include phone{
+        padding: 10rem 1.5rem 5rem 0;
+    }
+}
+.menu-side{
+    position: relative;
+    left: 6.3rem;
+    top: 30vh;
+    justify-content: end;
+    display: none;
+    padding: .5rem;
     @include tablet{
-        display: none!important;
+        display: flex;
+    }
+    @include phone{
+        left: 3rem;
+    }
+}
+.menu-side-icon {
+    width: 3rem;
+    &:hover {
+        cursor: pointer;
     }
 }
 

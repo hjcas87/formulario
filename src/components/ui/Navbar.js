@@ -4,24 +4,24 @@ export const Navbar = () => {
     console.log(['object'])
     return (
     <>
-        <nav className="navegacion">
-        <div className="navbar-container">
-            <Link to="/" >B D N</Link>
-            <div className="menu-links">
-                <NavLink 
-                    className={ ({ isActive }) => 'nav-item nav-link fs-5 ' + (isActive ? 'active' : '') } 
-                    to="album"
-                >
-                    Álbum
-                </NavLink>
-                <NavLink 
-                    className={ ({ isActive }) => 'nav-item nav-link fs-5 ' + (isActive ? 'active' : '') } 
-                    to="simple"
-                >
-                    Simple
-                </NavLink>
+        <nav className="navegacion bg-dark">
+            <div className="navbar-container">
+                <Link to="/" className="link-item-bigger">B D N</Link>
+                <div className="menu-links">
+                    <NavLink 
+                        className={ ({ isActive }) => 'link-item ' + (isActive ? 'activ' : '') } 
+                        to="album"
+                    >
+                        Álbum
+                    </NavLink>
+                    <NavLink 
+                        className={ ({ isActive }) => 'link-item ' + (isActive ? 'activ' : '') } 
+                        to="simple"
+                    >
+                        Simple
+                    </NavLink>
+                </div>
             </div>
-        </div>
         </nav>
         {/* <nav className="navbar navbar-expand-lg navbar-dark bg-dark border-1 border-light border-bottom position-fixed w-100 navegacion">
         <div className="navbar-container">

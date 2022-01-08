@@ -7,11 +7,27 @@ console.log(arr)
     // const inputs = document.querySelectorAll('input')
     // console.log(inputs)
 
+    const handleSidebar = () => {
+
+        const container = document.querySelector('.main-container');
+        const menuAside = document.querySelector('.sidebar-cont');
+        container.classList.toggle('opacity');
+        menuAside.classList.toggle('open');
+        
+    }
+
 
     return (
         
         <>
-            <div className="text-white bg-dark sidebar toggled" id="sidebar-wrapper">
+            <div className="text-white bg-dark sidebar">
+            <div className="menu-side">
+                <div className="menu-side-icon" onClick={ handleSidebar } >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                    </svg>
+                </div>
+            </div>
                 <NavLink 
                     className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
                     to="/"
@@ -19,7 +35,7 @@ console.log(arr)
                     Ir al resumen
                 </NavLink>
                 <hr/>
-                <ul className="nav nav-pills flex-column mb-auto">
+                <ul className="nav nav-pills flex-column">
                     <li>
                         <NavLink 
                             className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
@@ -86,19 +102,7 @@ console.log(arr)
                     </li>
                     
                 </ul>
-                <hr />
-                <div className="dropdown">
-                <a href="#" className="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                 
-                </a>
-                <ul className="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                    <li><a className="dropdown-item" href="#">New project...</a></li>
-                    <li><a className="dropdown-item" href="#">Settings</a></li>
-                    <li><a className="dropdown-item" href="#">Profile</a></li>
-                    <li><hr className="dropdown-divider" /></li>
-                    <li><a className="dropdown-item" href="#">Sign out</a></li>
-                </ul>
-                </div>
             </div>
         </>
             

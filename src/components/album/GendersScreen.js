@@ -24,7 +24,7 @@ export const GendersScreen = () => {
 
     const handleClick = (e) => {
         e.preventDefault();
-        navigate( '/isrc' )
+        navigate( '/album/isrc' )
     }
 
 

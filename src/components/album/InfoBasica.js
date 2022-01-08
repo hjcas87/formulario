@@ -16,7 +16,7 @@ import { allArtists } from "../../helpers/allArtists";
 let arr = [];
 
 
-export const AlbumScreen = () => {
+export const InfoBasica = () => {
 
     const [counter, setCounter] = useState(false)
         
@@ -82,7 +82,7 @@ export const AlbumScreen = () => {
         screen.classList.add('animate__fadeOutLeft', 'animate__faster');
         screen.addEventListener('animationend', () => {
             
-            navigate( '/upc' );
+            navigate( '/album/upc' );
         
         });
     };
@@ -116,7 +116,7 @@ export const AlbumScreen = () => {
 
             
 
-            <div className="text-secondary px-4 py-5 text-center flex-fill animate__animated animate__fadeIn contenedor" id="basic_info">
+            <div className="text-secondary px-4 py-5 text-center flex-fill animate__animated animate__fadeIn" id="basic_info">
                 
                 <div className="py-5">
                 <h1 className="display-5 fw-bold text-white">Formulario-Álbum</h1>

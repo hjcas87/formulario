@@ -51,7 +51,7 @@ export const IsrcCodes = () => {
     console.log(canciones)
     const handleClick = (e) => {
         e.preventDefault();
-        navigate( '/distribution' )
+        navigate( '/album/distribution' )
     }
 
 

@@ -45,7 +45,7 @@ export const IdArtist = () => {
 
     const handleClick = (e) => {
         e.preventDefault();
-        navigate( '/extended-songs' )
+        navigate( '/album/extended-songs' )
     }
 
 

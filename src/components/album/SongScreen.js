@@ -87,7 +87,7 @@ export const SongScreen = () => {
     console.log( formValues )
         localStorage.setItem( 'albumFormValues', JSON.stringify(data) );
         dispatch( createInputsSongs( data ) );
-        navigate('/songs');
+        navigate('/album/songs');
     }
 
     if (!Object.keys(song).length) {
@@ -385,7 +385,7 @@ export const SongScreen = () => {
                         + Agregar Compositor
                     </button>
 
-                    <button onClick={ () => {navigate('/songs')} }>
+                    <button onClick={ () => {navigate('album//songs')} }>
                         Atras
                     </button>
                     <button onClick={ handleClick }>

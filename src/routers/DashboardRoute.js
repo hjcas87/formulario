@@ -1,7 +1,7 @@
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 
 
-import { AlbumScreen } from "../components/album/AlbumScreen";
+import { InfoBasica } from "../components/album/InfoBasica";
 import { DistServices } from "../components/album/DistServices";
 import { ExtendSongs } from "../components/album/ExtendSongs";
 import { GendersScreen } from "../components/album/GendersScreen";
@@ -15,31 +15,81 @@ import { SimpleScreen } from "../components/simple/SimpleScreen";
 import { Navbar } from "../components/ui/Navbar";
 import { UpcScreen } from "../components/album/UpcScreen";
 import { PrivateRoute } from "./PrivateRoute";
-import { AlbumRouter } from "./AlbumRouter";
+import { Layout } from "../components/ui/Layout";
+import { AlbumScreen } from "../components/ui/AlbumScreen";
 
 export const DashboardRoute = () => {
     return (
         <>
            <BrowserRouter>
-                <Navbar />
-                <main className="main d-flex pt-5">
-                    <Sidebar/>
-                {/* <div className="container-sm"> */}
                     <Routes>
-                        <Route path="simple" element={<SimpleScreen />}/>
-                        {/* <Route path="/" element={<AlbumScreen />}/> */}
-                        <Route path="/album/*" element={
+                        <Route path="/" element={ <Layout /> }>
+                                
+                            <Route path="/simple" element={<SimpleScreen />}/>
+                            
+                            <Route path="/album" element={ <AlbumScreen /> }>
+                                <Route index element={<InfoBasica />}/>
+                                <Route path="upc" element={
+                                    
+                                    <PrivateRoute>
+                                        <UpcScreen />
+                                    </PrivateRoute>
+                                }/>
 
-                                    <AlbumRouter />
-                        }/>
+                                <Route path="selection" element={
+                                    <PrivateRoute>
+                                        <SelectNumberOfAlbums />
+                                    </PrivateRoute>
+                                }/>
 
-                        
+                                <Route path="songs" element={
+                                    
+                                    <PrivateRoute>
+                                        <SongList />
+                                    </PrivateRoute>
+                                }/>
 
+                                <Route path="edit/:id" element={
+                                    <PrivateRoute>
+                                        <SongScreen />
+                                    </PrivateRoute>
+                                }/>
 
+                                <Route path="genders" element={
+                                    <PrivateRoute>
+                                        <GendersScreen />
+                                    </PrivateRoute>
+                                }/>
+
+                                <Route path="isrc" element={
+                                    <PrivateRoute>
+                                        <IsrcCodes />
+                                    </PrivateRoute>
+                                }/>
+
+                                <Route path="distribution" element={
+                                    <PrivateRoute>
+                                        <DistServices />
+                                    </PrivateRoute>
+                                }/>
+
+                                <Route path="artist" element={
+                                    <PrivateRoute>
+                                        <IdArtist />
+                                    </PrivateRoute>
+                                }/>
+
+                                <Route path="extended-songs" element={
+                                    <PrivateRoute>
+                                        <ExtendSongs />
+                                    </PrivateRoute>
+                                }/>
+                            </Route>
+
+                            <Route path="*" element={ <Navigate replace to="/" /> } />
+                            
+                        </Route>
                     </Routes>
-                    <div className="fill"></div>
-                </main>
-                
             </BrowserRouter> 
         </>
     )

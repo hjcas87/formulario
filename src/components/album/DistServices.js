@@ -14,7 +14,7 @@ export const DistServices = () => {
     console.log(values)
     const handleClick = (e) => {
         e.preventDefault();
-        navigate( '/artist' )
+        navigate( '/album/artist' )
     }
 
     

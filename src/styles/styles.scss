@@ -1,6 +1,7 @@
+@import './base/normalize';
 @import './base/globales';
 @import './base/mixins';
-@import './components/albumscreen';
 @import './components/error';
 
+@import './components/albumscreen';
 @import './components/sidebar';

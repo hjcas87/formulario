@@ -50,7 +50,7 @@ export const UpcScreen = () => {
         screen.classList.add('animate__fadeOutLeft', 'animate__faster');
         screen.addEventListener('animationend', () => {
             
-            navigate('/selection');
+            navigate('/album/selection');
         
         });
     };
@@ -153,9 +153,6 @@ export const UpcScreen = () => {
             </div>
         </div>
         
-        <div className="fill"></div>
-{/*         
-        <Outlet /> */}
         </>
     )
 }

@@ -33,7 +33,7 @@ export const SongList = () => {
     const handleClick = (e) => {
         e.preventDefault();
         dispatch( infoFormAlbumWithSongs( newDatos ) );
-        navigate( '/genders' )
+        navigate( '/album/genders' )
     }
 
     return (

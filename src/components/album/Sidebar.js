@@ -23,11 +23,11 @@ console.log(arr)
                     <li>
                         <NavLink 
                             className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
-                            to="album/"
+                            to="/album/"
                         >
                             Información básica
                         </NavLink>
-                    </li>
+                    </li>   
                     <li>
                         <NavLink 
                             className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 

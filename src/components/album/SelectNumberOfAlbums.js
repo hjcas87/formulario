@@ -89,7 +89,7 @@ export const SelectNumberOfAlbums = () => {
         screen.classList.add('animate__fadeOutLeft', 'animate__faster');
         screen.addEventListener('animationend', () => {
             
-            navigate('/songs');
+            navigate('/album/songs');
         
         });
     };

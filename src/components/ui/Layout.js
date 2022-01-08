@@ -4,9 +4,9 @@ import { Navbar } from "./Navbar"
 
 export const Layout = () => {
     return (
-        <main className="">
+        <main className="main">
             <Navbar />
-            
+
             <Outlet />
         </main>
     )

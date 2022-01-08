@@ -1,0 +1,11 @@
+@import '../base/mixins.scss';
+
+
+.grid-screen {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    @include tablet{
+        grid-template-columns: 1fr;
+    }
+}
+        

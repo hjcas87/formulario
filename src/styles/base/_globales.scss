@@ -20,9 +20,9 @@ body {
     //     overflow: hidden;
     // }
 }
-// main {
-//     padding-top: 5rem;
-// }
+main {
+    width: 100vw;
+}
 p {
     font-size: 2.2rem;
     font-weight: 100;
@@ -57,9 +57,4 @@ ul {
 }
 input, textarea {
     text-transform: capitalize;
-}
-
-.grid-screen {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
 }

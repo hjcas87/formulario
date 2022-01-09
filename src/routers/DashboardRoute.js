@@ -31,62 +31,62 @@ export const DashboardRoute = () => {
                                 <Route index element={<InfoBasica />}/>
                                 <Route path="upc" element={
                                     
-                                    <PrivateRoute>
+                                    // <PrivateRoute>
                                         <UpcScreen />
-                                    </PrivateRoute>
+                                    // </PrivateRoute>
                                 }/>
 
                                 <Route path="selection" element={
-                                    <PrivateRoute>
+                                    // <PrivateRoute>
                                         <SelectNumberOfAlbums />
-                                    </PrivateRoute>
+                                    // </PrivateRoute>
                                 }/>
 
                                 <Route path="songs" element={
                                     
-                                    <PrivateRoute>
+                                    // <PrivateRoute>
                                         <SongList />
-                                    </PrivateRoute>
+                                    // </PrivateRoute>
                                 }/>
 
                                 <Route path="edit/:id" element={
-                                    <PrivateRoute>
+                                    // <PrivateRoute>
                                         <SongScreen />
-                                    </PrivateRoute>
+                                    // </PrivateRoute>
                                 }/>
 
                                 <Route path="genders" element={
-                                    <PrivateRoute>
+                                    // <PrivateRoute>
                                         <GendersScreen />
-                                    </PrivateRoute>
+                                    // </PrivateRoute>
                                 }/>
 
                                 <Route path="isrc" element={
-                                    <PrivateRoute>
+                                    // <PrivateRoute>
                                         <IsrcCodes />
-                                    </PrivateRoute>
+                                    // </PrivateRoute>
                                 }/>
 
                                 <Route path="distribution" element={
-                                    <PrivateRoute>
+                                    // <PrivateRoute>
                                         <DistServices />
-                                    </PrivateRoute>
+                                    // </PrivateRoute>
                                 }/>
 
                                 <Route path="artist" element={
-                                    <PrivateRoute>
+                                    // <PrivateRoute>
                                         <IdArtist />
-                                    </PrivateRoute>
+                                    // </PrivateRoute>
                                 }/>
 
                                 <Route path="extended-songs" element={
-                                    <PrivateRoute>
+                                    // <PrivateRoute>
                                         <ExtendSongs />
-                                    </PrivateRoute>
+                                    // </PrivateRoute>
                                 }/>
                             </Route>
 
-                            <Route path="*" element={ <Navigate replace to="/" /> } />
+                            {/* <Route path="*" element={ <Navigate replace to="/" /> } /> */}
                             
                         </Route>
                     </Routes>

@@ -30,7 +30,7 @@ export const GendersScreen = () => {
 
 
     return (
-        <div>
+        <div className="main-container">
             <div className="titulo__seccion">
                 <h3>Género Musical</h3>
             </div>

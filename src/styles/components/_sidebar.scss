@@ -1,18 +1,15 @@
 @import '../base/mixins.scss';
 
 .sidebar-cont {
+    
     @include tablet{
-        position: absolute;
+        position: fixed;
         width: 30rem;
         transform: translate(-28.5rem);
-        border-right: 1px solid rgba($color: #fff, $alpha: .5);
         transition: transform 1s;
         z-index: 2;
-        box-shadow: 4px 0px 7px 0px rgba(0,0,0,0.7);
--webkit-box-shadow: 4px 0px 7px 0px rgba(0,0,0,0.7);
--moz-box-shadow: 4px 0px 7px 0px rgba(0,0,0,0.7);
     }
-    @include phone{
+    @include phoneMin{
         width: 23rem;
         transform: translate(-21.7rem);
     }
@@ -23,16 +20,16 @@
     transition: transform 1s;
 }
 .sidebar {
+    border-right: 1px solid rgba($color: #fff, $alpha: .5);    
+    box-shadow: 4px 0px 7px 0px rgba(0,0,0,0.7);
+    -webkit-box-shadow: 4px 0px 7px 0px rgba(0,0,0,0.7);
+    -moz-box-shadow: 4px 0px 7px 0px rgba(0,0,0,0.7);
+    position: sticky;
     display: flex;
-    flex-shrink: 0;
     flex-direction: column;
     height: 100vh;
-    margin-top: 0;
-    max-height: 100vh;
     padding: 10rem 5rem 5rem 5rem;
-    position: sticky;
-    top: 0;
-    @include phone{
+    @include phoneMin{
         padding: 10rem 1.5rem 5rem 0;
     }
 }
@@ -43,10 +40,11 @@
     justify-content: end;
     display: none;
     padding: .5rem;
+    z-index: -1;
     @include tablet{
         display: flex;
     }
-    @include phone{
+    @include phoneMin{
         left: 3rem;
     }
 }
@@ -57,17 +55,17 @@
     }
 }
 
-.fill{
-    width: 30rem;
-    padding: 1rem;
+// .fill{
+//     width: 30rem;
+//     padding: 1rem;
     
-    @include desktop{
-        width: 5rem;
-    }
-    @include tablet{
-        display: none!important;
-    }
-}
+//     @include desktop{
+//         width: 5rem;
+//     }
+//     // @include tablet{
+//     //     display: none!important;
+//     // }
+// }
 
 .activo {
     color: #fff;

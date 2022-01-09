@@ -119,8 +119,8 @@ export const InfoBasica = () => {
             <div className="text-secondary px-4 py-5 text-center flex-fill animate__animated animate__fadeIn" id="basic_info">
                 
                 <div className="py-5">
-                <h1 className="display-5 fw-bold text-white">Formulario-Álbum</h1>
-                <h2 className="display-5 fw-ligth text-white">Informacion Básica</h2>
+                <h1 className="text-center text-white">Formulario-Álbum</h1>
+                <h2 className="text-center text-white">Informacion Básica</h2>
                 <div className="col-auto mx-auto">
                 <form className=" py-5">
                     { 

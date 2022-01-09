@@ -97,7 +97,7 @@ export const SongScreen = () => {
 
 
     return (
-        <section>
+        <div className="main-container">
             
             <div className="left negrita-medium">
                 <h4>{ song.nombre }</h4>
@@ -393,6 +393,6 @@ export const SongScreen = () => {
                     </button>
 
                 
-        </section>
+        </div>
     )
 }

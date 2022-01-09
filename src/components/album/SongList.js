@@ -37,7 +37,7 @@ export const SongList = () => {
     }
 
     return (
-        <>
+        <div className="main-container">
             
             <div className="text-secondary px-4 py-5 text-center flex-fill animate__animated animate__fadeIn">
                 <div  className="py-5">
@@ -71,6 +71,6 @@ export const SongList = () => {
             </div>
 
             <div className="fill"></div>
-        </>
+        </div>
     )
 }

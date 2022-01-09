@@ -1,19 +1,44 @@
-import React from "react"
-import { NavLink, Outlet } from "react-router-dom"
+import React, { useEffect } from "react"
+import { NavLink, Outlet, useLocation, useParams } from "react-router-dom"
 
 export const Sidebar = React.memo(({ arr }) => {
 console.log(arr)
 
     // const inputs = document.querySelectorAll('input')
     // console.log(inputs)
+    
+  let { pathname } = useLocation();
+//   console.log(location)
+
+  useEffect(() => {
+    const container = document.querySelector('.main-container');
+    const menuAside = document.querySelector('.sidebar-cont');
+    menuAside.classList.remove('open')
+    container.classList.remove('opacity');
+
+  }, [pathname])
 
     const handleSidebar = () => {
 
         const container = document.querySelector('.main-container');
         const menuAside = document.querySelector('.sidebar-cont');
-        container.classList.toggle('opacity');
-        menuAside.classList.toggle('open');
+        if (menuAside.classList.contains('open')) {
+            menuAside.classList.remove('open');
+            container.classList.remove('opacity');
+        } else {
+            menuAside.classList.add('open');
+            container.classList.add('opacity');
+        }
         
+    }
+
+    const handleLink = () => {
+        const container = document.querySelector('.main-container');
+        const menuAside = document.querySelector('.sidebar-cont');
+        if (menuAside.classList.contains('open')) {
+            menuAside.classList.remove('open')
+            container.classList.remove('opacity');
+        }
     }
 
 
@@ -104,6 +129,7 @@ console.log(arr)
                 </ul>
                 
             </div>
+            
         </>
             
     )

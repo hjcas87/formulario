@@ -157,8 +157,8 @@ export const SelectNumberOfAlbums = () => {
     }
 
     return (
-        <>
-        <div className=" text-secondary px-4 py-5 text-center flex-fill animate__animated animate__fadeInRight animate__faster" id="album-info">
+        <div className="main-container">
+        <div className=" text-secondary px-4 py-5 text-center flex-fill animate__animated animate__fadeIn" id="album-info">
                 
             <div className="py-5">
                 <h1 className="display-5 fw-bold text-white">Número de discos</h1>
@@ -292,7 +292,6 @@ export const SelectNumberOfAlbums = () => {
             </div>
         </div>
     </div>
-           <div className="fill"></div> 
-        </>
+        </div>
     )
 }

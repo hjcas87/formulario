@@ -21,7 +21,7 @@ export const ExtendSongs = () => {
 
 
     return (
-        <div>
+        <div className="main-container">
             <div className="titulo__seccion"><h3>Canciones Extendidas</h3></div>
             <p>¿Tenes alguna canción que dure 10 o más minutos?</p>
             <div className="radio">

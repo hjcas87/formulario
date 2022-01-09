@@ -56,7 +56,7 @@ export const IsrcCodes = () => {
 
 
     return (
-        <div>
+        <div className="main-container">
             <div className="titulo__seccion">
                 <h3>Códigos ISRC</h3>
             </div>

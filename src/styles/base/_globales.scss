@@ -70,3 +70,8 @@ hr {
 hr:not([size]) {
     height: 1px;
 }
+
+label {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}

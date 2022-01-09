@@ -50,7 +50,7 @@ export const IdArtist = () => {
 
 
     return (
-        <div>
+        <div className="main-container">
             <div className="titulo__seccion"><h3>IDS de Artista</h3></div>
             <p>Algunas plataformas (como Spotify y Apple Music) asignan un ID único a cada nombre de artista para agrupar 
             los lanzamientos del artista en el perfil de artista correcto.<br/>

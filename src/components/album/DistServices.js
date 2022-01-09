@@ -21,7 +21,7 @@ export const DistServices = () => {
 
 
     return (
-        <div>
+        <div className="main-container">
             <div className="titulo__seccion"><h3>Opciones de distribución</h3></div>
             <div className="radio">
                 <input

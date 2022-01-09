@@ -32,14 +32,11 @@ export const SelectNumberOfAlbums = () => {
     const { numero_volumenes: numVol } = formValues;
     const [ campos, , , changes, createArrays, createArraysOfSongs ] = useDinamicForm( dataSongValues );
     const [ ,changess ] = useFormInside( amountObj );
-    console.log(campos)
     
     
     // localStorage.setItem( 'songsValues', JSON.stringify( campos ) );
     // localStorage.setItem( 'album&SongsValues', JSON.stringify( amountObj ) );
 
-    console.log(dataAlbumSongValues)
-    console.log(amountObj)
     useEffect(() => {
         const arr = createArraysOfSongs(amountObj);
         dispatch( createInputsSongs( arr ) );
@@ -59,7 +56,6 @@ export const SelectNumberOfAlbums = () => {
     const handleSongAmount = (e) => {
         e.preventDefault();
         if (isSongAmountValid()) {
-            console.log(['chi'])
             const arr = createArraysOfSongs(amountObj);
             dispatch( createInputsSongs( arr ) );
         }
@@ -95,7 +91,6 @@ export const SelectNumberOfAlbums = () => {
     };
     const isAlbumInputValid = () => {
 
-        console.log(numVol)
         if ( numVol.toString().trim().length === 0 ) {
             dispatch( setError('Ingresa una cantidad válida del 1 al 10') );
             return false;

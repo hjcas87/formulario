@@ -1,7 +1,7 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
 
-export const Navbar = () => {
-    console.log(['object'])
+export const Navbar = (props) => {
+    console.log(props)
     return (
     <>
         <nav className="navegacion bg-dark">

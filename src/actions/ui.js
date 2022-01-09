@@ -28,3 +28,8 @@ export const setError = ( err ) => ({
 export const removeError = () => ({
     type: types.uiRemoveError
 });
+
+export const isAlbumLink = ( navigation ) => ({
+    type: types.uiArrayOfLinks,
+    payload: navigation
+})

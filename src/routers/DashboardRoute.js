@@ -25,7 +25,9 @@ export const DashboardRoute = () => {
                     <Routes>
                         <Route path="/" element={ <Layout /> }>
                                 
-                            <Route path="/simple" element={<SimpleScreen />}/>
+                            <Route path="/simple" element={<AlbumScreen />}>
+                                <Route index element={<SimpleScreen />}/>      
+                            </Route>
                             
                             <Route path="/album" element={ <AlbumScreen /> }>
                                 <Route index element={<InfoBasica />}/>

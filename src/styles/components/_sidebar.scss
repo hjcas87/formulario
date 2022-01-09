@@ -4,48 +4,45 @@
     
     @include tablet{
         position: fixed;
-        width: 30rem;
-        transform: translate(-28.5rem);
+        width: 100%;
+        transform: translateY(-89.5vh);
         transition: transform 1s;
         z-index: 2;
     }
     @include phoneMin{
-        width: 23rem;
-        transform: translate(-21.7rem);
+        width: 100%;
+        // transform: translate(-21.7rem);
     }
 
 }
 .open {
-    transform: translate(0);
+    transform: translateY(0);
     transition: transform 1s;
 }
 .sidebar {
-    border-right: 1px solid rgba($color: #fff, $alpha: .5);    
-    box-shadow: 4px 0px 7px 0px rgba(0,0,0,0.7);
-    -webkit-box-shadow: 4px 0px 7px 0px rgba(0,0,0,0.7);
-    -moz-box-shadow: 4px 0px 7px 0px rgba(0,0,0,0.7);
+    border-bottom: 1px solid rgba($color: #fff, $alpha: .5);
+    box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.7);
+    -webkit-box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.7);
+    -moz-box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.7);
     position: sticky;
     display: flex;
     flex-direction: column;
     height: 100vh;
     padding: 10rem 5rem 5rem 5rem;
     @include phoneMin{
-        padding: 10rem 1.5rem 5rem 0;
+        padding: 10rem 0 5rem 0;
     }
 }
 .menu-side{
     position: relative;
-    left: 6.3rem;
-    top: 30vh;
-    justify-content: end;
+    margin: 0 auto;
+    top: 39vh;
+    justify-content: center;
     display: none;
     padding: .5rem;
     z-index: -1;
     @include tablet{
         display: flex;
-    }
-    @include phoneMin{
-        left: 3rem;
     }
 }
 .menu-side-icon {

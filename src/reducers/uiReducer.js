@@ -5,7 +5,8 @@ import { types } from "../types/types";
 
 const initialState = {
     loading: false,
-    msgError: null
+    msgError: null,
+    navigation: false
 };
 
 export const uiReducer = ( state = initialState, action ) => {
@@ -31,6 +32,11 @@ export const uiReducer = ( state = initialState, action ) => {
             return {
                 ...state,
                 msgError: null
+            }
+        case types.uiArrayOfLinks:
+            return {
+                ...state,
+                navigation: action.payload
             }
     
         default:

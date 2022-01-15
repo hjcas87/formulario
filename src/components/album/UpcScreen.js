@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { removeError, setError } from "../../actions/ui";
 import { getLocalStorage } from "../../helpers/getLocalStorage";
 import { useForm } from "../../hooks/useForm";
@@ -14,6 +14,10 @@ export const UpcScreen = () => {
     const dispatch = useDispatch();
 
     const { msgError } = useSelector( state => state.ui);
+
+    useEffect(() => {
+        dispatch( removeError() )
+    }, [])
 
     const { codigo_barra: codeRequested, codigo: code } = dataUpc;
 
@@ -73,14 +77,15 @@ export const UpcScreen = () => {
 
     return (
         <div className="main-container">
-        <div className=" text-secondary px-4 py-5 text-center animate__animated animate__fadeIn" id="upc_info">
+        <div className="text-secondary py-5 text-center animate__animated animate__fadeIn" id="upc_info">
                 
                 <div className="py-5">
-                <h1 className="display-5 fw-bold text-white">Código de barras (UPC)</h1>
-                <p className="fw-ligth text-white">Un código de barras (UPC) le da a tu álbum un identificador exclusivo para la distribución digital y física.</p>
-                <p className="fw-ligth text-white">Para mayor información sobre los códigos de barra (UPC)<a className="enlaces" href="https://es.wikipedia.org/wiki/C%C3%B3digo_Universal_de_Producto"> ingresa acá</a></p>
-                
-                <div className="col-automx-auto">
+                <h1 className="text-white">Código de barras (UPC)</h1>
+                <div className="p-2">
+                    <p className="text-white">Un código de barras (UPC) le da a tu álbum un identificador exclusivo para la distribución digital y física.</p>
+                    <p className="text-white">Para mayor información sobre los códigos de barra (UPC)<a className="enlaces" href="https://es.wikipedia.org/wiki/C%C3%B3digo_Universal_de_Producto"> ingresa acá</a></p>
+                </div>
+                <div className="col-auto">
 
                     <form onSubmit={ handleSubmit }>
                     { 
@@ -92,7 +97,7 @@ export const UpcScreen = () => {
                             )
                     }
                         
-                        <div className="form-check d-flex justify-content-center mt-5 gap-4">
+                        <div className="form-check d-flex">
                             <input 
                                 type="radio"
                                 className="form-check-input"
@@ -129,7 +134,7 @@ export const UpcScreen = () => {
                                 <div className="input_group">
                                     <input
                                         type="text"
-                                        className="form-control fs-4"
+                                        className="form-control"
                                         name="codigo"
                                         autoComplete="off"
                                         value={ barcode }
@@ -144,7 +149,7 @@ export const UpcScreen = () => {
                             </div>
                         }
 
-                        <button className="btn btn-outline-info btn-lg px-4 fw-bold mt-5">
+                        <button className="btn mt-5">
                             Continuar
                         </button>
 

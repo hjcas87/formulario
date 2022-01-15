@@ -12,6 +12,12 @@ export const formReducer = ( state = {}, action ) => {
                 post: action.payload.form
             }
             
+        case types.albumsAmount:
+            return {
+                ...state,
+                albumsAmount: action.payload.albumsValues
+            }
+            
         case types.postSongs:
             return {
                 ...state,

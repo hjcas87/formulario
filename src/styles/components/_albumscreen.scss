@@ -4,15 +4,20 @@
     max-width: 80rem;
     margin: 0 auto;
 }
+.input_group {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 90%;
+}
 
 .help-container{
     display: flex;
     flex-basis: 10%;
     justify-content: center;
     align-items: flex-end;
-    padding: 1rem;
+    padding: 0 0 0 1rem;
 }
-.help-item {
+.help-item, .add-item, .delete-item, .help-item-two {
     align-items: center;
     border: 1px solid rgba($color: #fff, $alpha: .5);
     border-radius: 50%;
@@ -28,5 +33,68 @@
     }
     &:hover {
         cursor: pointer;
+    }
+}
+.help-item-two{
+    margin-bottom: 1rem;
+}
+.add-item, .delete-item {
+    margin-left: 1rem;
+    font-size: 2rem;
+    padding: 1rem;
+}
+.delete-item {
+    margin-left: 1rem;
+}
+.group-input {
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+    flex-basis: 90%;
+}
+.input-item-text {
+    flex: 1 0 auto;
+    @include phone{
+        flex: auto;
+    }
+}
+
+.form-check {
+    justify-content: center;
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 3rem;
+    @include phoneMin {
+        gap: .7rem;
+    }
+}
+
+.compositor {
+    margin: 0 auto 5rem auto;
+    width: 50%;
+    @include phone {
+        width: auto;
+    }
+}
+
+.anchors-artist {
+    @include tablet {
+        font-size: 1.3rem;
+    }
+    @include phone {
+        font-size: 1.2rem;
+    }
+    @include phoneMin {
+        font-size: 1rem;
+    }
+}
+.song-card {
+    justify-content: space-around;
+    @include phone {
+        flex-direction: column;
+        justify-content: center;
+        p {
+            margin-bottom: 2rem;
+        }
     }
 }

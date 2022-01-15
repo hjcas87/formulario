@@ -1,17 +1,15 @@
 @import '../base/mixins.scss';
 
 .sidebar-cont {
-    
     @include tablet{
         position: fixed;
         width: 100%;
-        transform: translateY(-89.5vh);
+        transform: translateY(-85%);
         transition: transform 1s;
         z-index: 2;
     }
     @include phoneMin{
         width: 100%;
-        // transform: translate(-21.7rem);
     }
 
 }
@@ -19,50 +17,48 @@
     transform: translateY(0);
     transition: transform 1s;
 }
-.sidebar {
-    border-bottom: 1px solid rgba($color: #fff, $alpha: .5);
-    box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.7);
-    -webkit-box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.7);
-    -moz-box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.7);
-    position: sticky;
+.sidebar {   
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    position: sticky;
+    top: 0;
     padding: 10rem 5rem 5rem 5rem;
+    @include tablet{
+        background-color: #212529;
+        border-bottom: 1px solid rgba($color: #fff, $alpha: .5);
+        box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.7);
+        -webkit-box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.7);
+        -moz-box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.7);
+    }
     @include phoneMin{
         padding: 10rem 0 5rem 0;
     }
 }
 .menu-side{
     position: relative;
-    margin: 0 auto;
-    top: 39vh;
     justify-content: center;
     display: none;
-    padding: .5rem;
-    z-index: -1;
+    background-color: none;
+    color: rgba($color: #fff, $alpha: .7);
+    z-index: 2;
+    &:focus-visible {
+        outline: none;
+    }
     @include tablet{
         display: flex;
     }
 }
 .menu-side-icon {
     width: 3rem;
+    position: absolute;
+    top: -2.5rem;
     &:hover {
         cursor: pointer;
     }
+    &:focus-visible {
+        outline: none;
+    }
 }
-
-// .fill{
-//     width: 30rem;
-//     padding: 1rem;
-    
-//     @include desktop{
-//         width: 5rem;
-//     }
-//     // @include tablet{
-//     //     display: none!important;
-//     // }
-// }
 
 .activo {
     color: #fff;
@@ -71,9 +67,19 @@
     border-radius: 0.25rem;
 }
 .nav-item {
-    
+    margin-bottom: .3rem;
     display: block;
-    padding: 0.5rem 1rem;
+    padding: 1rem;
     text-decoration: none;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+}
+svg {
+    outline: none;
+}
+svg {
+    fill: none;
+    stroke: currentcolor;
+}
+div {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); 
 }

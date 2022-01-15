@@ -1,7 +1,5 @@
 import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 
-
-import { InfoBasica } from "../components/album/InfoBasica";
 import { DistServices } from "../components/album/DistServices";
 import { ExtendSongs } from "../components/album/ExtendSongs";
 import { GendersScreen } from "../components/album/GendersScreen";
@@ -17,6 +15,8 @@ import { UpcScreen } from "../components/album/UpcScreen";
 import { PrivateRoute } from "./PrivateRoute";
 import { Layout } from "../components/ui/Layout";
 import { AlbumScreen } from "../components/ui/AlbumScreen";
+import { AlbumInformation } from "../components/album/AlbumInformation";
+import { BasicInfo } from "../components/album/BasicInfo";
 
 export const DashboardRoute = () => {
     return (
@@ -30,7 +30,7 @@ export const DashboardRoute = () => {
                             </Route>
                             
                             <Route path="/album" element={ <AlbumScreen /> }>
-                                <Route index element={<InfoBasica />}/>
+                                <Route index element={<BasicInfo />}/>
                                 <Route path="upc" element={
                                     
                                     // <PrivateRoute>
@@ -40,7 +40,8 @@ export const DashboardRoute = () => {
 
                                 <Route path="selection" element={
                                     // <PrivateRoute>
-                                        <SelectNumberOfAlbums />
+                                        <AlbumInformation />
+                                        // <SelectNumberOfAlbums />
                                     // </PrivateRoute>
                                 }/>
 

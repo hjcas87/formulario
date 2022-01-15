@@ -1,8 +1,9 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Navigate, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 import { infoFormAlbumWithSongs } from "../../actions/post"
+import { removeError } from "../../actions/ui"
 import { albumWithSongs } from "../../helpers/albumsWithSongsAndId"
 import { SongCard } from "./SongCard"
 
@@ -12,20 +13,23 @@ export const SongList = () => {
     const navigate = useNavigate();
     const { post = {}, postSongs } = useSelector(state => state.form);
     let data = JSON.parse(localStorage.getItem('albumFormValues')) || [[]];
-    console.log( postSongs)
-    console.log(data)
+    // console.log( postSongs)
+    // console.log(data)
     let newDatos;
     if (!postSongs) {
-        console.log('chi')
+        // console.log('chi')
         newDatos = data;
     } else {
-        console.log('chiqchi')
+        // console.log('chiqchi')
         newDatos = albumWithSongs( data , postSongs );
     }
 
-    
+    useEffect(() => {
+        dispatch( removeError() )
+    }, [])
+
     localStorage.setItem( 'albumFormValues', JSON.stringify(newDatos) );
-    console.log(newDatos)
+    // console.log(newDatos)
 
     
     // if ( !newDatos ) { return <Navigate to= '/' />}
@@ -39,14 +43,14 @@ export const SongList = () => {
     return (
         <div className="main-container">
             
-            <div className="text-secondary px-4 py-5 text-center flex-fill animate__animated animate__fadeIn">
-                <div  className="py-5">
+            <div className="text-secondary text-center animate__animated animate__fadeIn">
+                <div  className="mt-7 p-2">
                     {
                         newDatos.map( (cancion, i) => (
                         
-                                <div key={ i }>
-                                <h1 className="display-5 fw-bold text-white">Canciones del disco { i + 1}</h1>
-                                    <div className="col-automx-auto">
+                                <div key={ i } className="mt-5">
+                                <h1 className="text-white">Canciones del disco { i + 1}</h1>
+                                    <div className="d-flex flex-column">
                                         {
                                             cancion.map( (song, x ) => (
                                                 
@@ -62,15 +66,13 @@ export const SongList = () => {
                     }
 
                     <button
-                        className="btn btn-outline-info btn-lg px-4 fw-bold mt-5"
+                        className="btn mt-5"
                         onClick={ handleClick }
                     >
                         Continuar
                     </button>
                 </div>
             </div>
-
-            <div className="fill"></div>
         </div>
     )
 }

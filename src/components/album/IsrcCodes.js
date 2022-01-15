@@ -15,7 +15,7 @@ export const IsrcCodes = () => {
     
     const dispatch = useDispatch()
     // const { post, postSongs} = useSelector(state => state.form);
-    const { post, postSongs = [] } = useSelector(state => state.form)
+    const { post = {}, postSongs = [] } = useSelector(state => state.form)
     let data = JSON.parse(localStorage.getItem('albumFormValues')) || [[]];
     const canciones = JustSongs( data, postSongs )
     const navigate = useNavigate();
@@ -57,44 +57,52 @@ export const IsrcCodes = () => {
 
     return (
         <div className="main-container">
-            <div className="titulo__seccion">
-                <h3>Códigos ISRC</h3>
-            </div>
-            <p>El ISRC es un código identificativo único para cada canción de un álbum. 
-            Como un código de barras, los ISRC son necesarios para la distribución digital.</p>
-            <div className="radio">
-                <input
-                    type="radio"
-                    className="radio__field"
-                    id="necesito_isrc"
-                    name="codigo_ISRC"
-                    value="necesito_isrc" 
-                    checked={ codigo_ISRC === 'necesito_isrc' }
-                    onChange={ handleInputChange }
-                />
-                <label htmlFor="necesito_isrc" className="radio__label negrita-medium">Necesito que asignen los códigos ISRC</label>
-            </div>
-            <div className="radio">
-                <input
-                    type="radio"
-                    className="radio__field"
-                    id="no_necesito_isrc"
-                    name="codigo_ISRC"
-                    value="no_necesito_isrc"
-                    checked={ codigo_ISRC === 'no_necesito_isrc' }
-                    onChange={ handleInputChange } 
-                />
-                <label htmlFor="no_necesito_isrc" className="radio__label negrita-medium">Tengo mis propios códigos</label>
-            </div>
-
-            <div>
+            <div className="text-secondary text-center animate__animated animate__fadeIn">
+                <div className="mt-7 p-2">
+                
+                    <h2>Códigos ISRC</h2>
+                
+                    <p className="text-white mb-5">El ISRC es un código identificativo único para cada canción de un álbum. 
+                    Como un código de barras, los ISRC son necesarios para la distribución digital.</p>
+                    <div className="d-flex justify-center mb-5">
+                        <div>
+                            <div className="d-flex align-center g-1">
+                                <input
+                                    type="radio"
+                                    className="radio__field"
+                                    id="necesito_isrc"
+                                    name="codigo_ISRC"
+                                    value="necesito_isrc" 
+                                    checked={ codigo_ISRC === 'necesito_isrc' }
+                                    onChange={ handleInputChange }
+                                />
+                                <label htmlFor="necesito_isrc" className="radio__label negrita-medium">Necesito que asignen los códigos ISRC</label>
+                            </div>
+                            <div className="d-flex align-center g-1">
+                                <input
+                                    type="radio"
+                                    className="radio__field"
+                                    id="no_necesito_isrc"
+                                    name="codigo_ISRC"
+                                    value="no_necesito_isrc"
+                                    checked={ codigo_ISRC === 'no_necesito_isrc' }
+                                    onChange={ handleInputChange } 
+                                />
+                                <label htmlFor="no_necesito_isrc" className="radio__label negrita-medium">Tengo mis propios códigos</label>
+                            </div>
+                        </div>
+                    </div>
+                <div>
+                    { codigo_ISRC === 'no_necesito_isrc' && 
+                        <p>Si necesitas un código ISRC para alguna canción en particular dejá el espacio en blanco y nosotros te lo asignamos.</p>}
                 {
                     codigo_ISRC === 'no_necesito_isrc' && 
                     canciones.map( (cancion, i) => (
-                        <div key={ i }>
+                        <div key={ i } className="animate__animated animate__fadeInUp">
                            <p> {cancion.nombre} </p>
                             <input
                                 type="text"
+                                className="form-control"
                                 name={ `codigo_${i+1}` }
                                 value={ value.codigos }
                                 onChange={ changes }
@@ -105,9 +113,14 @@ export const IsrcCodes = () => {
                 }
             </div>
 
-            <button onClick={ handleClick }>
-                Continuar
-            </button>
+                    <button 
+                        className="btn mt-5"
+                        onClick={ handleClick }
+                    >
+                        Continuar
+                    </button>
+                </div>
+            </div>
         </div>
     )
 }

@@ -9,7 +9,7 @@ import { getSongById } from "../../selectors/getSongById";
 import { FieldInput } from "../ui/FieldInput";
 
 
-
+let arr = ['1'];
 export const SongScreen = () => {
 
     // const [ counter, setCounter] = useState(0)
@@ -46,7 +46,8 @@ export const SongScreen = () => {
     }
     // initialValue[rol] = ''
     console.log(initialValue)
-    const [ compositores, onAdd, onDelete, changes ] = useFormDinamic( song.compositores);
+    const [ compositores, onAdd, onDelete, changes ] = useFormDinamic( song.compositores );
+    console.log(song.compositores)
     const initialValues = {
         artista_destacado: '',
         rol: ''
@@ -65,13 +66,8 @@ export const SongScreen = () => {
         otro_idioma: song.otro_idioma || ''
     });
 
-
     const handleClick = (e) => {
         e.preventDefault();
-        // formValues.artistas_destacados = artistaDestacado;
-        // formValues.compositores = compositores;
-        // formValues.id = id;
-        // formValues.nombre = nombre;
         song.artistas_destacados = artistaDestacado;
         song.composicion = formValues.composicion;
         song.compositores = [...compositores];
@@ -81,10 +77,10 @@ export const SongScreen = () => {
         song.nombre = song.nombre;
         song.otro_idioma = formValues.otro_idioma;
         song.version_en_vivo = formValues.version_en_vivo;
-        console.log(postSongs)
-        console.log(data)
-    console.log( song )
-    console.log( formValues )
+    //     console.log(postSongs)
+    //     console.log(data)
+    // console.log( song )
+    // console.log( formValues )
         localStorage.setItem( 'albumFormValues', JSON.stringify(data) );
         dispatch( createInputsSongs( data ) );
         navigate('/album/songs');
@@ -98,222 +94,280 @@ export const SongScreen = () => {
 
     return (
         <div className="main-container">
+            <div className="text-secondary text-align-left animate__animated animate__fadeIn">
             
-            <div className="left negrita-medium">
-                <h4>{ song.nombre }</h4>
-            </div>
+                <div className="py-5 mt-3">
+                    
+                    <h1 className="text-center text-transform">{ song.nombre }</h1>
 
-                <div className="campo__corto">
+                    <form onSubmit={ e => e.preventDefault() }>
 
-                    <label htmlFor="info_artista" className="campo__label negrita-medium">Información del artista</label>
+                    <div className="d-flex">
+                        <div className="input_group">
+                            <label htmlFor="info_artista" className="mb-1 text-align-left">Información del artista</label>
+                            <div className="group-input d-flex">
+                                <div className="input-item-text">
+                                    <input
+                                        type="text"
+                                        autoComplete="off"
+                                        className="form-control"
+                                        name="artista_principal"
+                                        defaultValue={ artista_principal }
+                                        readOnly
+                                        id="nombre"
+                                        onChange={ handleInputChange }
+                                    />
+                                </div>
+                                <div className="add-item"
+                                    onClick={ addArtist }
+                                >
+                                    +
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div className="help-container">
+                            <div className="help-item-two">
+                                ?
+                            </div>
+                        </div>
+                    </div>
 
-                    <input
-                        type="text"
-                        className="campo__field"
-                        defaultValue={ artista_principal }
-                        name="artista_principal"
-                        onChange={ handleInputChange }
-                    />
-                    <p
-                        onClick={ addArtist }
-                    >+</p>
 
-                </div>
 
                 {
                     artistas_secundarios.length > 0 && 
                         artistas_secundarios.map( (artist, i) => (
-                            <div className="campo__corto" key={ i }>
+                            <div key={ i } className="mb-3 d-flex">
+                                <div className="input_group text-align-left">
 
-                                <label htmlFor="info_artista" className="campo__label negrita-medium">Artista secundario</label>
+                                <label htmlFor="info_artista" className="mb-1">Artista secundario</label>
 
                                 <input
                                     type="text"
-                                    className="campo__field"
+                                    className="form-control"
+                                    autoComplete="off"
                                     defaultValue={ artist.artista_secundario }
                                     name="artista_secundario"
+                                    readOnly
                                 />
-
+                                </div>
                             </div>
                         ))
                 }
+
+
                 {
                     artistaDestacado.map( ( artist, index ) => (
-                        <div key={ `artist_${index}`}>
-                            <div>
-                                <select name="rol" onChange={(e) => changesArtist(index, e)} value={artist.rol}>
+                        <div key={ `artist_${index}`} className="d-flex g-1">
+                            <div className="d-flex flex-column w-100">
+                                <select name="rol" className="mb-1 select" onChange={(e) => changesArtist(e, index)} value={artist.rol}>
                                     <option value="">Seleccioná un rol</option>
                                     <option value="artista_destacado">Artista Destacado</option>
                                     <option value="productor">Productor</option>
                                     <option value="remixer">Remixer</option>
                                 </select>
-    
-                                <input
-                                    type="text"
-                                    name="artista_destacado"
-                                    value={ artist.artista_destacado || ''}
-                                    onChange={(e) => changesArtist(index, e)}
-                                />
+                                <div className="group-input d-flex">
+                                    <div className="input-item-text">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="artista_destacado"
+                                            value={ artist.artista_destacado || ''}
+                                            onChange={(e) => changesArtist(e, index)}
+                                        />
+                                    </div>
+                                    <div className="add-item"
+                                            onClick={() => deleteArtist(index)}
+                                        >
+                                            -
+                                    </div>
+                                    
+                                    <div className="help-container" id="help">
+                                        <div className="help-item">
+                                            ?
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <button onClick={() => deleteArtist(index)}>
-                                Quitar
-                            </button>
                         </div>
                     ))
                 }
 
-                <div className="left">
-                    <h4>Detalles de la canción</h4>
+                <h2>Detalles de la canción</h2>
+
+                <div className="d-flex align-center">
+                    <p className="text-white">1-¿Esta canción contiene lenguaje explícito?</p>
+                    <div className="help-container">
+                        <div className="help-item">
+                            ?
+                        </div>
+                    </div>
                 </div>
-
-                <div className="detalles_canciones">
-                    <p className="negrita-medium">1-¿Esta canción contiene lenguaje explícito?</p>                
-                </div>
-                <div className="radio">
-
-                    <input
-                        type="radio"
-                        className="radio__field"
-                        value="No"
-                        id="no_lenguaje"
-                        name="lenguaje_explicito"
-                        checked={formValues.lenguaje_explicito=== 'No'}
-                        onChange={ handleInputChange }
-                    />
-
-                    <label htmlFor="no_lenguaje" className="radio__label">No</label>
-
-                </div>
-                <div className="radio">
-
-                    <input
-                        type="radio"
-                        className="radio__field"
-                        id="si_lenguaje"
-                        value="Si"
-                        name="lenguaje_explicito"
-                        checked={formValues.lenguaje_explicito === 'Si'}
-                        onChange={ handleInputChange }
-                    />
-
-                    <label htmlFor="si_lenguaje" className="radio__label">Si</label>
-                </div>
-
-                <p className="negrita-medium">2-Idioma de la letra</p>
-
-                <label>
-                    En que idioma se canta la letra de tu cancion:
-                <select onChange={ handleInputChange } name="idioma" value={ formValues.idioma }>
-                    <option value="">Seleccioná un idioma</option>
-                    <option value="Español">Español</option>
-                    <option value="Ingles">Ingles</option>
-                    <option value="Instrumental">Instrumental</option>
-                    <option value="Otro">Otro</option>
-                </select>
-                </label>
-
-                {
-                    formValues.idioma === 'Otro' &&  
-                        <div className="campo__corto">
-
+                <div className="d-flex justify-left">
+                    <div>
+                        <div className="d-flex align-center g-1">
                             <input
-                                type="text"
-                                className="campo__field"
-                                name="otro_idioma"
+                                type="radio"
+                                className="radio__field"
+                                value="No"
+                                id="no_lenguaje"
+                                name="lenguaje_explicito"
+                                checked={formValues.lenguaje_explicito=== 'No'}
                                 onChange={ handleInputChange }
                             />
-
+                            <label htmlFor="no_lenguaje">No</label>
                         </div>
 
-                }
-
-                <p className="negrita-medium">3-¿Esta version esta grabada en vivo?</p>
-                
-                <div className="radio">
-
-                    <input
-                        type="radio"
-                        className="radio__field"
-                        id="no_vivo"
-                        name="version_en_vivo"
-                        value="No"
-                        checked={formValues.version_en_vivo=== 'No'}
-                        onChange={ handleInputChange }
-                    />
-
-                    <label htmlFor="no_vivo" className="radio__label">No</label>
-
+                        <div className="d-flex align-center g-1">
+                            <input
+                                type="radio"
+                                className="radio__field"
+                                id="si_lenguaje"
+                                value="Si"
+                                name="lenguaje_explicito"
+                                checked={formValues.lenguaje_explicito === 'Si'}
+                                onChange={ handleInputChange }
+                            />
+                            <label htmlFor="si_lenguaje">Si</label>
+                        </div>
+                    </div>
                 </div>
-                <div className="radio">
-                    <input
-                        type="radio"
-                        className="radio__field"
-                        id="en_vivo"
-                        name="version_en_vivo"
-                        value="Si"
-                        checked={formValues.version_en_vivo=== 'Si'}
-                        onChange={ handleInputChange }
-                    />
 
-                    <label htmlFor="en_vivo" className="radio__label">Si</label>
-
-                </div>    
-                
-                <p className="negrita-medium">4-Tipo de composición</p>
-                
-                <div className="radio">
-
-                    <input
-                        type="radio"
-                        className="radio__field"
-                        id="original"
-                        name="composicion"
-                        value="original"
-                        checked={formValues.composicion=== 'original'}
-                        onChange={ handleInputChange }
-                    />
-
-                    <label htmlFor="original" className="radio__label">Composición original</label>
-
+                <div className="d-flex align-center">
+                    <p className="text-white">2-Idioma de la letra</p>
+                    <div className="help-container">
+                        <div className="help-item">
+                            ?
+                        </div>
+                    </div>
                 </div>
-                <div className="radio">
 
-                    <input
-                        type="radio"
-                        className="radio__field"
-                        id="cover"
-                        name="composicion"
-                        value="cover"
-                        checked={formValues.composicion=== 'cover'}
-                        onChange={ handleInputChange }
-                    />
+                <p className="mb-1">En que idioma se canta la letra de tu cancion:</p>
+                <div className="d-flex flex-column w-100">
+                    <select onChange={ handleInputChange } name="idioma" value={ formValues.idioma } className="select mb-1">
+                        <option value="">Seleccioná un idioma</option>
+                        <option value="Español">Español</option>
+                        <option value="Ingles">Ingles</option>
+                        <option value="Instrumental">Instrumental</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                    
 
-                    <label htmlFor="cover" className="radio__label">Cover</label>
+                    {
+                        formValues.idioma === 'Otro' &&  
+                            <div className="w-50">
 
-                </div>    
-                <div className="radio">
+                                <input
+                                    type="text"
+                                    autoComplete="off"
+                                    className="form-control"
+                                    name="otro_idioma"
+                                    onChange={ handleInputChange }
+                                />
 
-                    <input
-                        type="radio"
-                        className="radio__field"
-                        id="dominio"
-                        name="composicion"
-                        value="dominio_publico"
-                        checked={formValues.composicion=== 'dominio_publico'}
-                        onChange={ handleInputChange }
-                    />
+                            </div>
 
-                    <label htmlFor="dominio" className="radio__label">Dominio Público</label>
+                    }
+                </div>
 
+                <div className="d-flex align-center">
+                    <p className="text-white">3-¿Esta version esta grabada en vivo?</p>
+                    <div className="help-container">
+                        <div className="help-item">
+                            ?
+                        </div>
+                    </div>
+                </div>
+                
+                <div className="d-flex justify-left">
+                    <div>
+                        <div className="d-flex align-center g-1">
+                            <input
+                                type="radio"
+                                className="radio__field"
+                                id="no_vivo"
+                                name="version_en_vivo"
+                                value="No"
+                                checked={formValues.version_en_vivo=== 'No'}
+                                onChange={ handleInputChange }
+                            />
+                            <label htmlFor="no_vivo" className="radio__label">No</label>
+
+                        </div>
+                        <div className="d-flex align-center g-1">
+                            <input
+                                type="radio"
+                                className="radio__field"
+                                id="en_vivo"
+                                name="version_en_vivo"
+                                value="Si"
+                                checked={formValues.version_en_vivo=== 'Si'}
+                                onChange={ handleInputChange }
+                            />
+                            <label htmlFor="en_vivo" className="radio__label">Si</label>
+
+                        </div>
+                    </div>
+                </div>   
+                
+                <div className="d-flex align-center">
+                    <p className="text-white">4-Tipo de composición</p>
+                    <div className="help-container">
+                        <div className="help-item">
+                            ?
+                        </div>
+                    </div>
+                </div>
+                <div className="d-flex justify-left mb-5">
+                    <div>
+                        <div className="d-flex align-center g-1">
+                            <input
+                                type="radio"
+                                className="radio__field"
+                                id="original"
+                                name="composicion"
+                                value="original"
+                                checked={formValues.composicion=== 'original'}
+                                onChange={ handleInputChange }
+                            />
+                            <label htmlFor="original" className="radio__label">Composición original</label>
+                        </div>
+                        <div className="d-flex align-center g-1">
+                            <input
+                                type="radio"
+                                className="radio__field"
+                                id="cover"
+                                name="composicion"
+                                value="cover"
+                                checked={formValues.composicion=== 'cover'}
+                                onChange={ handleInputChange }
+                            />
+                            <label htmlFor="cover" className="radio__label">Cover</label>
+                        </div>    
+                        <div className="d-flex align-center g-1">
+                            <input
+                                type="radio"
+                                className="radio__field"
+                                id="dominio"
+                                name="composicion"
+                                value="dominio_publico"
+                                checked={formValues.composicion=== 'dominio_publico'}
+                                onChange={ handleInputChange }
+                            />
+                            <label htmlFor="dominio" className="radio__label">Dominio Público</label>
+                        </div>
+                    </div>
                 </div>
 
                 {
                     compositores.map( ( field, index ) => (
                         // console.log(field.rol_autor_1)
-                        <div key={ index }>
+                        <div key={ index } className="m-auto">
                             <p>Nombre del compositor de esta canción.</p>
                             <FieldInput
                                 type="text"
+                                className="form-control"
                                 indexParent={ index }
                                 name="compositor"
                                 value={ field.compositor || ''}
@@ -322,77 +376,93 @@ export const SongScreen = () => {
 
                             <div className="radio__field--generado">
                                 <p>Como contribuyó este artista en esta canción.</p>
-                                <div>
-                                    <FieldInput
-                                        type="radio"
-                                        indexParent={ index }
-                                        id={`letra_${index + 1}`}
-                                        name={ `rol_autor_${index + 1}` }
-                                        checked={ field[`rol_autor_${index + 1}`] === 'Letra'}
-                                        value="Letra"
-                                        onChange={ changes }
-                                    />
-                                    <label htmlFor={`letra_${index + 1}`} className="radio__label negrita-medium">Letra.</label>
-                                </div>
-                                <div>
-                                    <FieldInput
-                                        type="radio"
-                                        indexParent={ index }
-                                        id={`musica_${index + 1}`}
-                                        name={ `rol_autor_${index + 1}` }
-                                        checked={ field[`rol_autor_${index + 1}`] === 'Música'}
-                                        value="Música"
-                                        onChange={ changes }
-                                    />
-                                    <label htmlFor={`musica_${index + 1}`} className="radio__label negrita-medium">Música.</label>
-                                </div>
-                                <div>
-                                    <FieldInput
-                                        type="radio"
-                                        indexParent={ index }
-                                        id={`letra_y_musica_${index + 1}`}
-                                        name={ `rol_autor_${index + 1}` }
-                                        checked={ field[`rol_autor_${index + 1}`] === 'Letra y Música'}
-                                        value="Letra y Música" 
-                                        onChange={ changes }
-                                    />
-                                    <label htmlFor={`letra_y_musica_${index + 1}`} className="radio__label negrita-medium">Letra y Música.</label>
-                                </div>
-                                <div>
-                                    <FieldInput
-                                        type="radio"
-                                        indexParent={index}
-                                        id={`no_sabe_${index + 1}`}
-                                        name={ `rol_autor_${index + 1}` }
-                                        checked={ field[`rol_autor_${index + 1}`] === 'no_sabe'}
-                                        value="no_sabe"
-                                        onChange={ changes }
-                                    />
-                                    <label htmlFor={`no_sabe_${index + 1}`} className="radio__label negrita-medium">No se.</label>
-                                </div> 
-
-                                <button onClick={ () => onDelete( index ) } >
-                                    Eliminar
-                                </button>
+                                <div className="d-flex justify-left mb-5">
+                                    <div>
+                                        <div className="d-flex align-center g-1">
+                                            <FieldInput
+                                                type="radio"
+                                                indexParent={ index }
+                                                id={`letra_${index + 1}`}
+                                                name={ `rol_autor_${index + 1}` }
+                                                checked={ field[`rol_autor_${index + 1}`] === 'Letra'}
+                                                value="Letra"
+                                                onChange={ (e) => changes(e, index) }
+                                            />
+                                            <label htmlFor={`letra_${index + 1}`} className="radio__label negrita-medium">Letra.</label>
+                                        </div>
+                                        <div className="d-flex align-center g-1">
+                                            <FieldInput
+                                                type="radio"
+                                                indexParent={ index }
+                                                id={`musica_${index + 1}`}
+                                                name={ `rol_autor_${index + 1}` }
+                                                checked={ field[`rol_autor_${index + 1}`] === 'Música'}
+                                                value="Música"
+                                                onChange={ changes }
+                                            />
+                                            <label htmlFor={`musica_${index + 1}`} className="radio__label negrita-medium">Música.</label>
+                                        </div>
+                                        <div className="d-flex align-center g-1">
+                                            <FieldInput
+                                                type="radio"
+                                                indexParent={ index }
+                                                id={`letra_y_musica_${index + 1}`}
+                                                name={ `rol_autor_${index + 1}` }
+                                                checked={ field[`rol_autor_${index + 1}`] === 'Letra y Música'}
+                                                value="Letra y Música" 
+                                                onChange={ changes }
+                                            />
+                                            <label htmlFor={`letra_y_musica_${index + 1}`} className="radio__label negrita-medium">Letra y Música.</label>
+                                        </div>
+                                        <div className="d-flex align-center g-1">
+                                            <FieldInput
+                                                type="radio"
+                                                indexParent={index}
+                                                id={`no_sabe_${index + 1}`}
+                                                name={ `rol_autor_${index + 1}` }
+                                                checked={ field[`rol_autor_${index + 1}`] === 'no_sabe'}
+                                                value="no_sabe"
+                                                onChange={ changes }
+                                            />
+                                            <label htmlFor={`no_sabe_${index + 1}`} className="radio__label negrita-medium">No se.</label>
+                                        </div> 
+                                        </div>
+                                        </div>
+                                        <button 
+                                            className="btn mb-5"
+                                            onClick={ () => onDelete( index ) } 
+                                        >
+                                            Eliminar
+                                        </button>
                             </div> 
                         </div>
                     ))
                 }
-                 
-                    <button
-                        onClick={ onAdd }
-                    >
-                        + Agregar Compositor
-                    </button>
-
-                    <button onClick={ () => {navigate('album//songs')} }>
-                        Atras
-                    </button>
-                    <button onClick={ handleClick }>
-                        Guardar
-                    </button>
-
-                
+                    <div className="d-flex ">
+                        <button
+                            className="btn p-2 compositor"
+                            onClick={ onAdd }
+                        >
+                            + Agregar Compositor
+                        </button>
+                    </div>
+                    </form>
+                    <div className="d-flex justify-evenly">
+                        <button 
+                            className="btn"
+                            onClick={ () => {navigate('/album/songs')} }
+                        >
+                            Atras
+                        </button>
+                        <button 
+                            className="btn"
+                            onClick={ handleClick }
+                        >
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

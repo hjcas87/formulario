@@ -4,6 +4,7 @@ export const types = {
 
     post: '[POST] infoAlbum',
     postSongs: '[POST] infoAbmYSong',
+    albumsAmount: '[POST] albumAmount',
     allArtists: '[POST] artists',
     
     spotifyArtists: '[GET] artists',

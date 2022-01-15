@@ -10,7 +10,7 @@ export const Navbar = (props) => {
                 <div className="menu-links">
                     <NavLink 
                         className={ ({ isActive }) => 'link-item ' + (isActive ? 'activ' : '') } 
-                        to="/album"
+                        to="album"
                     >
                         Álbum
                     </NavLink>

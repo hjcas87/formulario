@@ -6,7 +6,6 @@ export const useDinamicForm = ( initialValue = {} ) => {
     const [fields, setFields] = useState( initialValue );
 
     const handleInputChanges = ( { target } , index ) => {
-        console.log('chi')
         const newData = fields.map(( field, i ) => {
             if (index === i) {
                 field[target.name] = target.value;
@@ -15,18 +14,7 @@ export const useDinamicForm = ( initialValue = {} ) => {
         });
         setFields([...newData]);
     };
-    // const onChange = (indexParent, event) => {
-    //     const newData = data.map((d, index) => {
-    //     if (index === indexParent) {
-    //         d[event.target.name] = event.target.value;
-    //     }
-
-    //     return d;
-    //     });
-
-    //     setData([...newData]);
-    // };
-
+    
     
     const addInputField = ( propiedad ) => {
         const obj = {};

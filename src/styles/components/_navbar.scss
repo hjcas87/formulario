@@ -5,7 +5,7 @@
     z-index: 4;
     position: fixed;
     width: 100%;
-    padding: 1.2rem;
+    padding: 1.7rem 1.2rem;
     border-bottom: 1px solid rgba($color: #fff, $alpha: .5);
     box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.7);
     -webkit-box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.7);
@@ -18,7 +18,8 @@
     flex-wrap: inherit;
     justify-content: space-between;
     margin: auto;
-    width: 90%;
+    max-width: 1200px;
+    margin: auto;
 }
 .menu-links {
     display: flex;

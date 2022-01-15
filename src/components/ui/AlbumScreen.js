@@ -13,6 +13,7 @@ export const AlbumScreen = () => {
         ['/album/genders', 'Géneros/Localización'],
         ['/album/isrc', 'Códigos ISRC'],
         ['/album/distribution', 'Distribución'],
+        ['/album/artist', 'Perfil de artista'],
         ['/album/extended-songs', 'Canciones extendidas'],
     ];
 
@@ -20,7 +21,7 @@ export const AlbumScreen = () => {
 
     return (
         <section className="grid-screen">
-            <aside className="sidebar-cont bg-dark">
+            <aside className="sidebar-cont">
                 <Sidebar 
                     actualRoute={ pathname }
                     albumRoutes={ albumRoutes }

@@ -4,38 +4,69 @@
 .grid-screen {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
-    width: 100vw;
+    max-width: 1200px;
+    margin: auto;
     min-height: 100vh;
     position: relative;
+    @include desktop{
+        max-width: none;
+        width: 100%;
+    }
     @include tablet{
         grid-template-columns: 1fr;
-        // grid-template-rows: 1fr 1fr;
     }
     .main-container {
         transition: opacity 1s;
-        margin: auto;
+        margin: 0 auto;
         font-weight: 300;
         width: 100%;
+        padding-top: 3rem;
         @include phone {
             h1 {
                 font-size: 3rem;
                 font-weight: 300;
+                @include phoneMin {
+                    font-size: 2.5rem;
+                }
             }
             h2 {
                 font-size: 2.5rem;
                 font-weight: 300;
+                @include phoneMin {
+                    padding: .5rem;
+                }
             }
             
         }
         h1 {
             font-weight: 300;
+            color: #40e0d0;
         }
         h2 {
             font-weight: 300;
+            color: #40e0d0;
         }
         form {
-            padding-left: 3rem;
-            padding-right: 2rem;
+            padding: 2rem;
+            @include phoneMin {
+                padding: .7rem;
+            }
+        }
+        p {
+            font-size: 2rem;
+            @include phoneMin {
+                font-size: 1.5rem;
+            }
+        }
+
+        a{
+            color: turquoise;
+            &:active{
+                color: turquoise;
+            }
+            &:visited{
+                color: turquoise;
+            }
         }
     }
 
@@ -46,9 +77,5 @@
 }
 
 
-.input_group {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 90%;
-}
+
         

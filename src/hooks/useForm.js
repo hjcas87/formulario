@@ -19,14 +19,25 @@ export const useForm = ( initialState = {} ) => {
     //     [setValues]
     // )
 
-    const handleInputChange = ({ target }) => {
-        setValues({
-            ...values,
-            [ target.name ]: target.value
-        });
+    const handleInputChange = useCallback(
+        ({ target }) => {
+            setValues( v => (
+                { ...v,
+                [ target.name ]: target.value
+                }
+            ));
+        },
+        [setValues],
+    )
+
+    // const handleInputChange = ({ target }) => {
+    //     setValues({
+    //         ...values,
+    //         [ target.name ]: target.value
+    //     });
         
 
-    } 
+    // } 
 
 
     return [ values, handleInputChange, reset ];

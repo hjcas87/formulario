@@ -1,4 +1,4 @@
-
+@import '../base/mixins.scss';
 
 html{
     font-size: 62.5%;
@@ -12,7 +12,7 @@ html{
 }
 body {
     font-family: 'Open Sans', sans-serif;
-    background-color: #212529;
+    background-color: #1b1d20;
     // color: v.$blanco;
     font-size: 1.6rem;
     overflow-x: hidden;
@@ -58,6 +58,12 @@ ul {
 input, textarea {
     text-transform: capitalize;
 }
+input[type=radio] {
+    margin-bottom: 2rem;
+}
+input[type=radio] + label {
+    margin-bottom: 2rem;
+}
 
 hr {
     margin: 1rem 0;
@@ -73,5 +79,10 @@ hr:not([size]) {
 
 label {
     font-size: 2rem;
-    margin-bottom: 1rem;
+    @include phone {
+        font-size: 1.7rem;
+    }
+    @include phoneMin {
+        font-size: 1.5rem;
+    }
 }

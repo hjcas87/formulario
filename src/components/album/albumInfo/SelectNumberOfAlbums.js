@@ -1,55 +1,69 @@
 import React from 'react'
-import { useCallback, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
+import { isChange, removeError, setError } from "../../../actions/ui";
+import { InputNumberOfAlbums } from "../../ui/InputNumberOfAlbums"
+import { useForm } from '../../../hooks/useForm'
+import { createArray } from '../../../helpers/createArrayOfAlbumsWithSongs';
 
-import { InputNumberOfAlbums } from "../ui/InputNumberOfAlbums"
-import { createArrayOfAlbums } from '../../helpers/createArrayOfAlbums'
-import { formAlbumInfoAmount } from '../../actions/post'
+export const SelectNumberOfAlbums = React.memo(({ local }) => {
 
-export const SelectNumberOfAlbums = React.memo((props) => {
+    // console.log('SelectNumberOfAlbums')
 
-    console.log('SelectNumberOfAlbums')
+//     const { dataalbumValues, dataSongValues, dataAlbumSongValues } = useMemo(() => getLocalStorage(boolean), [boolean]);
+    const dispatch = useDispatch()
+    // const { albumValues = [], albumInfo } = useSelector(state => state.form)
+    const { localChanges } = useSelector(state => state.ui)
+    const [formValues, handleInputChanges] = useForm({
+        numero_volumenes: local.length || ''
+    })
+    // console.log(albumValues)
+    const { numero_volumenes } = formValues;
+    
+    // const handleClick = ( e ) => {
+        //         e.preventDefault();
+        //         if (isAlbumInputValid()) {
+        //             const arr = createArrays(numVol, 'disco');
+        //             localStorage.setItem( 'albumValues', JSON.stringify(arr) );
+        //             setBoolean( !boolean );
+        //         }
+        //     }
 
-//     const dispatch = useDispatch()
-//     // const { albumsAmount } = useSelector(state => state.form)
-//     // console.log(albumsAmount)
-//     const [form, setForm] = useState({
-//         numero_volumenes: ''
-//     })
-//     const { numero_volumenes } = form;
+    const handleClick = ( e ) => {
+        e.preventDefault();
+        if (isFormValid()) {
+            const arr = createArray( numero_volumenes, local );
+            // dispatch( albumInfoAmount( arr ) )
+            console.log(arr)
+            localStorage.setItem( 'albumAmount', JSON.stringify(arr) );
+            dispatch( isChange(!localChanges))
+            // localStorage.setItem( 'songsAmount', JSON.stringify(arr) );
 
-// console.log(form)
-//     const handleClick = ( e ) => {
-//         e.preventDefault();
-//         const arr = createArrayOfAlbums( numero_volumenes );
-//         dispatch( formAlbumInfoAmount( arr ) )
-//     }
+        }
+    }
 
-//     const handleInputChange = 
-//     // () => {console.log('object')} 
-//     useCallback(
-//         ({target}) => {
-//             setForm(val => {
-//                 return {
-//                     ...val,
-//                     [ target.name ]: target.value
-//                 }
-//             });
-//         },
-//         [setForm]
-//     )
+    const isFormValid = () => {
+        if ( numero_volumenes.toString().trim().length === 0) {
+            dispatch( setError('Decinos el número de discos que tiene tú lanzamiento') );
+            return false;
+        }
+        dispatch( removeError() );
+        return true;
+    }
 
 
     return (
-        <div className="mb-3 d-flex justify-center">
+        <div className="mb-3 d-flex justify-center" id="first-input">
             <div className="d-flex flex-column">
                 <label htmlFor="nombre" className="mb-1">Número de Discos/Volúmenes</label>
                 <div className="d-flex w-100 g-1 mb-1">
-                    <InputNumberOfAlbums />
+                    <InputNumberOfAlbums 
+                        value={ numero_volumenes }
+                        onChange={ handleInputChanges }
+                    />
                 <button
                     className="btn"
-                    // onClick={ handleClick }
+                    onClick={ handleClick }
                 >
                     Ok
                 </button> 
@@ -89,7 +103,7 @@ export const SelectNumberOfAlbums = React.memo((props) => {
 // import { createInputsSongs, removeError, setError } from "../../actions/ui";
 
 // import { albumsWithSongsAndId, albumsWithSongsUpdated } from "../../helpers/albumsWithSongsAndId";
-// import { infoFormAlbumWithSongs } from "../../actions/post";
+// import { albumsWithSongsInfo } from "../../actions/post";
 // import { getLocalStorage } from "../../helpers/getLocalStorage";
 
 // let arr = []
@@ -102,12 +116,12 @@ export const SelectNumberOfAlbums = React.memo((props) => {
     
 //     const { msgError = false } = useSelector( state => state.ui);
 
-//     const { dataAlbumsValues, dataSongValues, dataAlbumSongValues } = useMemo(() => getLocalStorage(boolean), [boolean]);
+//     const { dataalbumValues, dataSongValues, dataAlbumSongValues } = useMemo(() => getLocalStorage(boolean), [boolean]);
 
 //     const { amountObj = dataAlbumSongValues } = useSelector( state => state.ui );
     
 //     const [ formValues, handleInputChange ] = useForm({
-//         numero_volumenes: dataAlbumsValues.length || '',
+//         numero_volumenes: dataalbumValues.length || '',
 //     });
 //     const { numero_volumenes: numVol } = formValues;
 //     const [ campos, , , changes, createArrays, createArraysOfSongs ] = useDinamicForm( dataSongValues );
@@ -118,10 +132,10 @@ export const SelectNumberOfAlbums = React.memo((props) => {
 //     }, [])
 
 //     useEffect(() => {
-//         const arr = createArraysOfSongs(amountObj);
-//         dispatch( createInputsSongs( arr ) );
+        // const arr = createArraysOfSongs(amountObj);
+        // dispatch( createInputsSongs( arr ) );
         
-//     }, [dataAlbumsValues]);
+//     }, [dataalbumValues]);
     
 
 //     const handleClick = ( e ) => {
@@ -147,11 +161,11 @@ export const SelectNumberOfAlbums = React.memo((props) => {
 //         if ( isSongTitlesValid(e) ) {
 //             const canciones = albumsWithSongsAndId( amountObj );
 //             let data = JSON.parse(localStorage.getItem('albumFormValues')) || [[]];
-//             const newData = albumsWithSongsUpdated( canciones, data )
+            // const newData = albumsWithSongsUpdated( canciones, data )
 //             localStorage.setItem( 'songsValues', JSON.stringify( campos ) );
 //             localStorage.setItem( 'albumFormValues', JSON.stringify(newData) );
 //             localStorage.setItem( 'albumAndSongsValues', JSON.stringify(newData) );
-//             dispatch( infoFormAlbumWithSongs( newData ) );
+//             dispatch( albumsWithSongsInfo( newData ) );
             
 //             animationScreenNavigate()
             
@@ -306,7 +320,7 @@ export const SelectNumberOfAlbums = React.memo((props) => {
 
 //                     <div id="input-songs">
 //                         {
-//                             // console.log(campos)
+//                             // // console.log(campos)
 //                             campos.map( (vol, i) => ( 
 //                                 <div
 //                                 key={ `album ${ i }` } 

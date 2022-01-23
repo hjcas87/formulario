@@ -10,18 +10,12 @@ export const InputsFields = React.memo(({
     name,
     value,
     id,
-    onChange
+    index,
+    onChange,
+    onBlur
 
 }) => {
-
-    console.log('Se llama InputsFields')
-
-    const dispatch = useDispatch();
-    
-    const dispatchBasicInfo = ({ target }) => {
-
-    }
-
+// console.log('se llama el dinamico')
     return (
         <div className="input_group">
             <label htmlFor={ id } className="mb-1">{ label }</label>
@@ -32,9 +26,10 @@ export const InputsFields = React.memo(({
                 name={ name }
                 value={ value }
                 id={ id }
-                onChange={ onChange }
-                onBlur={ dispatchBasicInfo }
+                onChange={ (e) => onChange(e, index) }
+                onBlur={onBlur}
             />
         </div>
     )
 })
+

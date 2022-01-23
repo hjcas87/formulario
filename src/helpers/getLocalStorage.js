@@ -1,25 +1,72 @@
 
 
-export const getLocalStorage = ( counter ) => {
+export const getLocalStorage = ( ) => {
     
-    console.log(counter)
-    const data = JSON.parse(localStorage.getItem('basicInfo')) || {};
+    const formAlbumData = {
+        artista_principal: '',
+        artistas_secundarios: [],
+        fecha_lanzamiento: '',
+        idioma: '',
+        titulo_album: '',
+        UPC: '',
+        solicitaUpc: '',
+        albumsYCanciones: [],
+        albumStarted: false
+    }
+    
+    const formSimpleData = {
+        artista_principal: '',
+        artistas_secundarios: [],
+        fecha_lanzamiento: '',
+        idioma: '',
+        titulo_album: '',
+        UPC: '',
+        solicitaUpc: '',
+        cancion: {
+            artistas_destacados: [],
+            composicion: '',
+            compositores: [],
+            idioma: '',
+            lenguaje_explicito: '',
+            otro_idioma: '',
+            version_en_vivo: '',
+        },
+        generoYLocalizacion: {
+            genero_1: '',
+            genero_2: '',
+            localizacion: '',
+            artista_similar_1: '',
+            artista_similar_2: '',
+            artista_similar_3: '',
+        },
+        codigo_ISRC: '',
+        num_codigo: '',
+        simpleStarted: false
+    }
+
+    const formStarted = false;
+    
+    // // console.log(counter)
+    const started = JSON.parse(localStorage.getItem('started')) || formStarted;
+    const data = JSON.parse(localStorage.getItem('albumInfo')) || formAlbumData;
+    const simpleData = JSON.parse(localStorage.getItem('simpleInfo')) || formSimpleData;
     const dataSong = JSON.parse(localStorage.getItem('albumFormValues')) || [[]];
-    const dataUpc = JSON.parse(localStorage.getItem('upcValues')) || [] ;
-    const dataAlbumsValues = JSON.parse(localStorage.getItem('albumValues')) || [];
-    const dataSongValues = JSON.parse(localStorage.getItem('songsValues')) || [];
+    // const dataUpc = JSON.parse(localStorage.getItem('upcValues')) || [] ;
+    const dataAlbumAmount = JSON.parse(localStorage.getItem('albumAmount')) || [];
+    const dataSongsAmount = JSON.parse(localStorage.getItem('songsAmount')) || [];
     const dataAlbumSongValues = JSON.parse(localStorage.getItem('albumAndSongsValues')) || [];
 
 
-console.log(['waaaach'])
+// // console.log(['waaaach'])
 
     return {
-        counter,
+        started,
         data,
+        simpleData,
         dataSong,
-        dataUpc,
-        dataAlbumsValues,
-        dataSongValues,
+        // dataUpc,
+        dataAlbumAmount,
+        dataSongsAmount,
         dataAlbumSongValues,
     }
 

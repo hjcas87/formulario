@@ -6,7 +6,9 @@ import { types } from "../types/types";
 const initialState = {
     loading: false,
     msgError: null,
-    navigation: false
+    navigation: false,
+    localChanges: false,
+    isAlbum: false
 };
 
 export const uiReducer = ( state = initialState, action ) => {
@@ -37,6 +39,16 @@ export const uiReducer = ( state = initialState, action ) => {
             return {
                 ...state,
                 navigation: action.payload
+            }
+        case types.isChange:
+            return {
+                ...state,
+                localChanges: action.payload
+            }
+        case types.isAlbum:
+            return {
+                ...state,
+                isAlbum: action.payload
             }
     
         default:

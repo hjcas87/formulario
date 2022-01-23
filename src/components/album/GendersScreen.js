@@ -20,7 +20,7 @@ export const GendersScreen = () => {
 
     const { genero_1, genero_2, localizacion, artista_similar_1, artista_similar_2, artista_similar_3, } = values;
 
-    console.log(values)
+    // console.log(values)
 
     const handleClick = (e) => {
         e.preventDefault();

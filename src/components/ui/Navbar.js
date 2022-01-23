@@ -1,52 +1,56 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { useMemo } from "react";
+import { useDispatch } from "react-redux";
+import { NavLink, useLocation } from "react-router-dom";
+import { changeResume } from "../../actions/ui";
+import { getLocalStorage } from "../../helpers/getLocalStorage";
 
-export const Navbar = (props) => {
-    console.log(props)
+export const Navbar = () => {
+
+    const { started } = getLocalStorage();
+    
+    const dispatch = useDispatch()
+
+    const {pathname} = useLocation();
+    
+    const ruteResume = useMemo(() => pathname.includes('resume'), [pathname]);
+    const ruteHome = useMemo(() => pathname === '/', [pathname]);
+
+    const handleClick = (e) => {
+        if (e.target.classList.contains('album')) {
+            dispatch( changeResume( true ) );
+        } else {
+            dispatch( changeResume( false ) );
+        }
+    }
+
     return (
     <>
         <nav className="navegacion bg-dark">
             <div className="navbar-container">
-                <Link to="/" className="link-item-bigger">B D N</Link>
-                <div className="menu-links">
-                    <NavLink 
-                        className={ ({ isActive }) => 'link-item ' + (isActive ? 'activ' : '') } 
-                        to="album"
-                    >
-                        Álbum
-                    </NavLink>
-                    <NavLink 
-                        className={ ({ isActive }) => 'link-item ' + (isActive ? 'activ' : '') } 
-                        to="simple"
-                    >
-                        Simple
-                    </NavLink>
-                </div>
+                <a href="https://bdn.com.ar/" className="link-item-bigger">B D N</a>
+
+                {
+                    !ruteResume && !ruteHome &&
+                    <div className="menu-links">
+                        <NavLink 
+                            className={ ({ isActive }) => 'album link-item ' + (isActive ? 'active' : '') } 
+                            to="album"
+                            onClick={handleClick}
+                        >
+                            Álbum
+                        </NavLink>
+                        <NavLink 
+                            className={ ({ isActive }) => 'simple link-item ' + (isActive ? 'active' : '') } 
+                            to="simple"
+                            onClick={handleClick}
+                        >
+                            Simple
+                        </NavLink>
+                    </div>
+                }
+
             </div>
         </nav>
-        {/* <nav className="navbar navbar-expand-lg navbar-dark bg-dark border-1 border-light border-bottom position-fixed w-100 navegacion">
-        <div className="navbar-container">
-            <a className="navbar-brand fs-1" href="#">B D N</a>
-            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div className="navbar-nav w-100 d-flex justify-content-end">
-            <NavLink 
-                className={ ({ isActive }) => 'nav-item nav-link fs-5 ' + (isActive ? 'active' : '') } 
-                to="album"
-            >
-                Álbum
-            </NavLink>
-            <NavLink 
-                className={ ({ isActive }) => 'nav-item nav-link fs-5 ' + (isActive ? 'active' : '') } 
-                to="simple"
-            >
-                Simple
-            </NavLink>
-            </div>
-            </div>
-        </div>
-        </nav> */}
     </>
     )
 }

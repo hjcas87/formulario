@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 
 export const SongCard = ( { nombre, id, indice } ) => {
 
+    console.log(id)
 
     return (
         <div className="d-flex song-card flex-fill g-1 align-center">

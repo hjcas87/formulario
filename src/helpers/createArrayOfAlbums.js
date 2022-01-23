@@ -1,18 +1,17 @@
 
 
 
-export const createArrayOfAlbums = ( cantidad ) => {
+export const createArrayOfAlbums = ( cantidad, previousAlbum ) => {
    
     let arr = [];
-    // let arrValue = fields.map( f => Object.values(f)[0]);
+    let arrValue = previousAlbum.map( f => Object.values(f)[0]);
     for (let i = 0; i < cantidad; i++) {
         const obj = {};
-        // fields[i]  
-            // ? obj[ `${propiedad}_${i + 1}` ] = arrValue[i]
-        obj[ `Album_${i + 1}` ] = ''; // Esta propiedad puede o debe variar segun se necesite (name del input) 
+        previousAlbum[i]  
+            ? obj[ `Album_${i + 1}` ] = arrValue[i]
+            : obj[ `Album_${i + 1}` ] = ''; 
         arr = [...arr, {...obj}];
     }
-    // setFields([...arr]);
     return arr;
 
 }

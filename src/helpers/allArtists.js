@@ -3,9 +3,9 @@ import { isObjEmpty } from "./validates";
 
 
 
-export const allArtists = ( post, postSongs ) => {
+export const allArtists = ( post, albumsAndSongsValues ) => {
     
-    if ( !isObjEmpty(post) ) {
+    if ( post && !isObjEmpty(post) ) {
 
         let artistas = [];
     
@@ -15,7 +15,7 @@ export const allArtists = ( post, postSongs ) => {
     
         artistas_secundarios?.forEach( artist => artistas = [...artistas, artist.artista_secundario])
     
-        postSongs?.forEach( album => album.forEach( song => song.artistas_destacados.forEach( artist => artistas = [...artistas, artist.artista_destacado]) ))
+        albumsAndSongsValues?.forEach( album => album.forEach( song => song.artistas_destacados.forEach( artist => artistas = [...artistas, artist.artista_destacado]) ))
     
         const artist = artistas.map( a => a.toLowerCase());
     
@@ -64,12 +64,12 @@ export const filterArtists = ( artists, spotifyArtists ) => {
             dat.link = [ 'No encontramos ningún perfil para este artista.' ]
         }
     })
-    console.log(data)
+    // console.log(data)
 
 
-    // console.log(result)
+    // // console.log(result)
     // newArtists = [...data, ...newArtists]
-    // console.log(newArtists)
+    // // console.log(newArtists)
 
     // let newArray = [];
     // let lookupObject  = {};
@@ -78,12 +78,12 @@ export const filterArtists = ( artists, spotifyArtists ) => {
     // lookupObject[newArtists[i].name.toLowerCase()] = newArtists[i];
     // }
 
-    // console.log(lookupObject)
+    // // console.log(lookupObject)
     // for(let i in lookupObject) {
     //     newArray.push(lookupObject[i]);
     // }
  
-    // console.log(newArray)
+    // // console.log(newArray)
     
 
    

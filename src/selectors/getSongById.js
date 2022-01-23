@@ -2,11 +2,11 @@
 
 
 
-export const getSongById = ( postSongs, id = '' ) => {
+export const getSongById = ( albumsAndSongsValues, id = '' ) => {
 
-   if (!postSongs) { return }
+   if (!albumsAndSongsValues) { return }
    let songs = []
-    postSongs.forEach( album => {
+    albumsAndSongsValues.forEach( album => {
 
         album.find( song => {
             if (song.id === id) {

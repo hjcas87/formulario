@@ -4,13 +4,26 @@ import React, { useEffect, useState } from "react";
 
 export const InputNumberOfSongsPerAlbum = React.memo(({ index, volume, amount }) => {
 
+  // const dispatch = useDispatch();
+
+  
+  const [songsValues, setSongsValues] = useState(amount);
+  // console.log(songsValues[index])
+  // console.log(amount)
+  
+
     useEffect(() => {
 
         setSongsValues(amount);
 
     }, [amount])
 
-    const [songsValues, setSongsValues] = useState(amount);
+    // useEffect(() => {
+      
+    //   dispatch( albumInfoAmount( songsValues ) )
+
+    // }, [songsValues, dispatch])
+
 
     const handleInputChange = (e, i) => {
         const newData = songsValues.map((song, indx) => {
@@ -24,18 +37,18 @@ export const InputNumberOfSongsPerAlbum = React.memo(({ index, volume, amount })
         setSongsValues([...newData]);
     };
 
-  // console.log('input llamado')
+  // console.log(songsValues)
 
     return (
           <>
             <input
-              name={`Album_${ index + 1 }`}
+              name={`disco_${ index + 1 }`}
               className="form-control"
               autoComplete="off"
               min="1"
-              max="10"
+              max="50"
               type="number"
-              value={volume[`Album_${index + 1}`] || ''}
+              value={volume[`disco_${index + 1}`] || ''}
               onChange={(e) => handleInputChange(e, index)}
             />
           </>

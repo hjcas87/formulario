@@ -9,9 +9,9 @@
 // };
 
 // export const objectMap = ( objeto ) => {
-//     console.log(objeto)
+//     // console.log(objeto)
 //     for (let i = 0; i < Object.keys(objeto).length; i++) {
-//         console.log(Object.values(objeto))
+//         // console.log(Object.values(objeto))
         
 //     }
     

@@ -2,28 +2,28 @@ import { types } from "../types/types";
 
 export const infoFormAlbum = ( form ) => {
     return {
-        type: types.post,
+        type: types.albumInfo,
         payload: {
             form
         }
     }
 }
 
-export const infoFormAlbumWithSongs = ( abmsWthSng ) => {
+export const albumsWithSongsInfo = ( abmsWthSng ) => {
     return {
-        type: types.postSongs,
+        type: types.albumsAndSongsValues,
         payload: {
             abmsWthSng
         }
     }
 }
 
-export const formAlbumInfoAmount = ( albumsValues ) => {
-    console.log(albumsValues)
+export const albumInfoAmount = ( albumValues ) => {
+    // console.log(albumValues)
     return {
-        type: types.albumsAmount,
+        type: types.albumValues,
         payload: {
-            albumsValues
+            albumValues
         }
     }
 }

@@ -10,14 +10,14 @@
     flex-basis: 90%;
 }
 
-.help-container{
+.help-container, .button-container{
     display: flex;
     flex-basis: 10%;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: flex-end;
     padding: 0 0 0 1rem;
 }
-.help-item, .add-item, .delete-item, .help-item-two {
+.help-item, .help-item-two, .button-item {
     align-items: center;
     border: 1px solid rgba($color: #fff, $alpha: .5);
     border-radius: 50%;
@@ -38,14 +38,12 @@
 .help-item-two{
     margin-bottom: 1rem;
 }
-.add-item, .delete-item {
-    margin-left: 1rem;
+.button-item {
     font-size: 2rem;
-    padding: 1rem;
 }
-.delete-item {
-    margin-left: 1rem;
-}
+// .delete-item {
+//     margin-left: 1rem;
+// }
 .group-input {
     justify-content: space-between;
     align-items: flex-end;

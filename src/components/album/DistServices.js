@@ -11,7 +11,7 @@ export const DistServices = () => {
     })
     const { opcion_plataforma } = values;
 
-    console.log(values)
+    // console.log(values)
     const handleClick = (e) => {
         e.preventDefault();
         navigate( '/album/artist' )

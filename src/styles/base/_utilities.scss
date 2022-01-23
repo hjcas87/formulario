@@ -77,6 +77,9 @@
 .d-flex {
     display: flex;
 }
+.mr-1 {
+    margin-right: 1rem;
+}
 .mt-7 {
     margin-top: 7rem;
 }
@@ -98,6 +101,10 @@
 
 .mb-5{
     margin-bottom: 5rem;
+}
+
+.mb-7{
+    margin-bottom: 7rem;
 }
 .m-0 {
     margin: 0;
@@ -203,6 +210,23 @@
     font-size: 1.4rem;
     padding: 11px 15px 10px 15px;
     text-decoration: none;
+    &:hover {
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
+.btn-resume {
+    -webkit-border-radius: 5;
+    -moz-border-radius: 5;
+    border-radius: 5px;
+    // border: 1px solid turquoise;
+    color: white;
+    background-color: transparent;
+    font-size: 20px;
+    padding: 11px 20px 10px 20px;
+    text-decoration: none;
+    transition: all .3s;
     &:hover {
     text-decoration: none;
     cursor: pointer;

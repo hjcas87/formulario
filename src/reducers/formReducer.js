@@ -1,27 +1,45 @@
 
 import { types } from "../types/types";
 
+const albumInfo = {
+    // artista_principal: '',
+    // artistas_secundarios: [],
+    // fecha_lanzamiento: '',
+    // idioma: '',
+    // titulo_album: '',
+    // UPC: '',
+    // solicitaUpc: '',
+    // albumsYCanciones: [],
+    
+    // generoYLocalizacion: {
+    //     genero_1: '',
+    //     genero_2: '',
+    //     localizacion: '',
+    //     artista_similar_1: '',
+    //     artista_similar_2: '',
+    //     artista_similar_3: '',
+    // },
+}
 
-
-export const formReducer = ( state = {}, action ) => {
+export const formReducer = ( state = { albumInfo }, action ) => {
 
     switch ( action.type ) {
-        case types.post:
+        case types.albumInfo:
             return {
                 ...state,
-                post: action.payload.form
+                albumInfo: action.payload.form
             }
             
-        case types.albumsAmount:
+        case types.albumValues:
             return {
                 ...state,
-                albumsAmount: action.payload.albumsValues
+                albumValues: action.payload.albumValues
             }
             
-        case types.postSongs:
+        case types.albumsAndSongsValues:
             return {
                 ...state,
-                postSongs: action.payload.abmsWthSng
+                albumsAndSongsValues: action.payload.abmsWthSng
             }
 
         case types.allArtists:

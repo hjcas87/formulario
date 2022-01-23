@@ -1,10 +1,38 @@
 @import '../base/mixins.scss';
 
-.sidebar-cont {
+.sidebar-album {
     @include tablet{
         position: fixed;
         width: 100%;
         transform: translateY(-85%);
+        transition: transform 1s;
+        z-index: 2;
+    }
+    @include phoneMin{
+        width: 100%;
+    }
+
+}
+
+.sidebar-simple {
+    @include tablet{
+        position: fixed;
+        width: 100%;
+        transform: translateY(-85%);
+        transition: transform 1s;
+        z-index: 2;
+    }
+    @include phoneMin{
+        width: 100%;
+    }
+
+}
+
+.sidebar-resume {
+    @include tablet{
+        position: fixed;
+        width: 100%;
+        transform: translateY(-67%);
         transition: transform 1s;
         z-index: 2;
     }

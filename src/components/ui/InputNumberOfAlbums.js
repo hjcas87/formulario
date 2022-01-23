@@ -2,10 +2,10 @@ import React from "react";
 
 
 
-export const InputNumberOfAlbums = React.memo(({ indexParent, type, name, value, onChange, id, checked, className }) => {
+export const InputNumberOfAlbums = React.memo(({ value, onChange }) => {
 
   
-  console.log('fieldinput llamado')
+  // console.log('fieldinput llamado')
 
     return (
           <>
@@ -16,9 +16,9 @@ export const InputNumberOfAlbums = React.memo(({ indexParent, type, name, value,
               max="10"
               className="form-control"
               id="numero_discos"
-              // value={ numero_volumenes }
+              value={ value }
               name="numero_volumenes"
-              // onChange={ handleInputChange }
+              onChange={ onChange }
             />
           </>
     ) 

@@ -1,29 +1,32 @@
 import React, { useEffect, useMemo } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import {  NavLink, useLocation, } from "react-router-dom"
-import { isAlbumLink } from "../../actions/ui";
-import { LinksButtons } from "../ui/LinksButtons";
+
+
+import { changeResume, isAlbumLink, isChange } from "../../actions/ui";
+import { getLocalStorage } from "../../helpers/getLocalStorage";
+import { LinksButtons } from "./LinksButtons";
+import { SidebarResume } from "./SidebarResume";
 
 export const Sidebar = React.memo(({ actualRoute, albumRoutes, simpleRoutes }) => {
 
     let { pathname } = useLocation();
-    
+
+    const dispatch = useDispatch();
      
-    const rute = useMemo(() => actualRoute.includes('album'), [pathname]) ;
-
-    const dispatch = useDispatch()
-
-    const { navigation } = useSelector(state => state.ui)
+    const rute = useMemo(() => actualRoute.includes('album'), [pathname]);
+    
+    const ruteResume = useMemo(() => actualRoute.includes('resume'), [pathname]);
 
     useEffect(() => {
-    
-    dispatch( isAlbumLink( rute ) )
-
+        dispatch( changeResume( rute ) )
     }, [rute])
+    
+    console.log({rute})
 
     useEffect(() => {
         const container = document.querySelector('.main-container');
-        const menuAside = document.querySelector('.sidebar-cont');
+        const menuAside = document.querySelector('#sidebar');
         const allInputs = document.querySelectorAll('input');
         const butons = document.querySelectorAll('button');
         menuAside.classList.remove('open');
@@ -36,7 +39,7 @@ export const Sidebar = React.memo(({ actualRoute, albumRoutes, simpleRoutes }) =
     const handleSidebar = () => {
 
         const container = document.querySelector('.main-container');
-        const menuAside = document.querySelector('.sidebar-cont');
+        const menuAside = document.querySelector('#sidebar');
         const allInputs = document.querySelectorAll('input');
         const butons = document.querySelectorAll('button');
         if (menuAside.classList.contains('open')) {
@@ -53,33 +56,50 @@ export const Sidebar = React.memo(({ actualRoute, albumRoutes, simpleRoutes }) =
         
     }
 
+    // if (rute) {
+    //     const { data } = getLocalStorage();
+    //     localStorage.setItem( 'albumInfo', JSON.stringify(data) );
+    // }
+
 
     return (
         
         <>
-            <div className="text-white sidebar">
-                <NavLink 
-                    className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
-                    to="/"
-                >
-                    Ir al resumen
-                </NavLink>
-                <hr/>
+            <div className="text-white sidebar m-auto">
+
+            {
+                !ruteResume &&
+                <>
+                    <NavLink 
+                        className={ ({ isActive }) => 'nav-item text-white ' + (isActive ? 'activo nav-item' : '') } 
+                        to="/resume"
+                    >
+                        Ir al resumen
+                    </NavLink>
+                    <hr/>
+                </>
+            }   
+
                 <ul className="nav nav-pills flex-column">
                     {
-                        navigation 
-                            ?                        
-                            albumRoutes.map( (nav, i) => (
-                                <li key={ `navlink${i}` }>
-                                    <LinksButtons page={ nav[0] } name={ nav[1] }/>
-                                </li>
-                            ))
+                        !ruteResume ?
+                            rute 
+                                ?                        
+                                albumRoutes.map( (nav, i) => (
+                                    <li key={ `navlink${i}` }>
+                                        <LinksButtons page={ nav[0] } name={ nav[1] }/>
+                                    </li>
+                                ))
+                                :
+                                simpleRoutes.map( (nav, i) => (
+                                    <li key={ `navlink${i}` }>
+                                        <LinksButtons page={ nav[0] } name={ nav[1] }/>
+                                    </li>
+                                ))
                             :
-                            simpleRoutes.map( (nav, i) => (
-                                <li key={ `navlink${i}` }>
-                                    <LinksButtons page={ nav[0] } name={ nav[1] }/>
-                                </li>
-                            ))
+                            <>
+                                <SidebarResume />
+                            </>
                     }
                     
                     

@@ -2,9 +2,9 @@
 
 export const types = {
 
-    post: '[POST] infoAlbum',
-    postSongs: '[POST] infoAbmYSong',
-    albumsAmount: '[POST] albumAmount',
+    albumInfo: '[POST] infoAlbum',
+    albumsAndSongsValues: '[POST] infoAbmYSong',
+    albumValues: '[POST] albumAmount',
     allArtists: '[POST] artists',
     
     spotifyArtists: '[GET] artists',
@@ -14,6 +14,10 @@ export const types = {
     
     uiSetError: '[UI] Set Error',
     uiRemoveError: '[UI] Remove Error',
+    
+    isChange: '[UI] LocalStorage Actualizado',
+    
+    isAlbum: '[UI] Resume',
 
     uiArrayOfLinks: '[UI] Define Navigation'
 }

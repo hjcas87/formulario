@@ -4,7 +4,7 @@ import { getArtists } from "../helpers/getArtists";
 
 export const useFetchArtist = ( artists ) => {
 
-    console.log(artists)
+    // console.log(artists)
     const [state, setState] = useState({
         data: []
     });

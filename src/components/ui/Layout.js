@@ -8,6 +8,7 @@ export const Layout = () => {
             <Navbar />
 
             <Outlet />
+
         </>
     )
 }

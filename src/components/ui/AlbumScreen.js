@@ -1,5 +1,9 @@
+import { useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import { Outlet, useLocation } from 'react-router-dom'
-import { Sidebar } from '../album/Sidebar'
+import { changeResume } from '../../actions/ui';
+import { Navbar } from './Navbar';
+import { Sidebar } from './Sidebar';
 
 export const AlbumScreen = () => {
 
@@ -19,16 +23,34 @@ export const AlbumScreen = () => {
 
     const simpleRoutes = [];
 
+    const ruteAlbum = useMemo(() => pathname.includes('album'), [pathname]);
+    const ruteResume = useMemo(() => pathname.includes('resume'), [pathname]);
+
     return (
-        <section className="grid-screen">
-            <aside className="sidebar-cont">
-                <Sidebar 
-                    actualRoute={ pathname }
-                    albumRoutes={ albumRoutes }
-                    simpleRoutes={ simpleRoutes }
-                />
-            </aside>
-            <Outlet />
-        </section>
+        <>
+            {/* <Navbar /> */}
+            <section className="grid-screen">
+                
+                <aside 
+                    className={ 
+                        !ruteResume ?
+                            !ruteAlbum 
+                                ? "sidebar-simple"
+                                : "sidebar-album"
+                            : "sidebar-resume"
+                    }
+                    id="sidebar"
+                >
+                    <Sidebar 
+                        actualRoute={ pathname }
+                        albumRoutes={ albumRoutes }
+                        simpleRoutes={ simpleRoutes }
+                    />
+                </aside>
+                <Outlet />
+                
+            </section>
+                {/* <Outlet /> */}
+        </>
     )
 }

@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom"
 
 export const LinksButtons = React.memo(({ page, name }) => {
 
-    console.log('se llama')
+    // // console.log('se llama')
     return (
         <>
             <NavLink 

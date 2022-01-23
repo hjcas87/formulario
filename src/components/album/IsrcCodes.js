@@ -14,13 +14,13 @@ export const IsrcCodes = () => {
 
     
     const dispatch = useDispatch()
-    // const { post, postSongs} = useSelector(state => state.form);
-    const { post = {}, postSongs = [] } = useSelector(state => state.form)
+    // const { post, albumsAndSongsValues} = useSelector(state => state.form);
+    const { post = {}, albumsAndSongsValues = [] } = useSelector(state => state.form)
     let data = JSON.parse(localStorage.getItem('albumFormValues')) || [[]];
-    const canciones = JustSongs( data, postSongs )
+    const canciones = JustSongs( data, albumsAndSongsValues )
     const navigate = useNavigate();
 
-    const artistas = allArtists( post, postSongs )
+    const artistas = allArtists( post, albumsAndSongsValues )
 
     useEffect(() => {
         
@@ -44,11 +44,11 @@ export const IsrcCodes = () => {
     // const { codigo_ISRC } = values;
     
 
-    console.log(value)
+    // console.log(value)
 
 
 
-    console.log(canciones)
+    // console.log(canciones)
     const handleClick = (e) => {
         e.preventDefault();
         navigate( '/album/distribution' )

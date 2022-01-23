@@ -1,11 +1,11 @@
 import React from 'react'
 
-export const HelpItem = React.memo(({ content }) => {
+export const HelpItem = React.memo(({ content, classname }) => {
     
     return (
         
-        <div className="help-container">
-            <div className="help-item">
+        <div className="button-container">
+            <div className={`help-item ${classname}`} >
                 { content }
             </div>
         </div>

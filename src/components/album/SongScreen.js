@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate, useParams } from "react-router-dom"
-import { infoFormAlbumWithSongs } from "../../actions/post";
+import { albumsWithSongsInfo } from "../../actions/post";
 import { createInputsSongs } from "../../actions/ui";
 import { useForm } from "../../hooks/useForm";
 import { useFormDinamic } from "../../hooks/useFormDinamic";
@@ -15,13 +15,13 @@ export const SongScreen = () => {
     // const [ counter, setCounter] = useState(0)
     const navigate = useNavigate();
     const basicData = JSON.parse(localStorage.getItem('basicInfo')) || {};
-    const { postSongs } = useSelector(state => state.form);
-    const data = JSON.parse(localStorage.getItem('albumFormValues')) || postSongs
+    const { albumsAndSongsValues } = useSelector(state => state.form);
+    const data = JSON.parse(localStorage.getItem('albumFormValues')) || albumsAndSongsValues
     const { artista_principal = '', artistas_secundarios = [] } = basicData
     const { id } = useParams();
-    // console.log(post)
+    // // console.log(post)
     const dispatch = useDispatch();
-    console.log(data)
+    // console.log(data)
     
     const song = getSongById( data, id ) || {};
     const {
@@ -36,7 +36,7 @@ export const SongScreen = () => {
         version_en_vivo,
         
     } = song;
-    console.log(song.length)
+    // console.log(song.length)
 
     // const rol = `rol_autor_${ counter }`
 
@@ -45,9 +45,9 @@ export const SongScreen = () => {
         // [rol]: ''
     }
     // initialValue[rol] = ''
-    console.log(initialValue)
+    // console.log(initialValue)
     const [ compositores, onAdd, onDelete, changes ] = useFormDinamic( song.compositores );
-    console.log(song.compositores)
+    // console.log(song.compositores)
     const initialValues = {
         artista_destacado: '',
         rol: ''
@@ -57,7 +57,7 @@ export const SongScreen = () => {
     // }, [compositores.length])
     const [ artistaDestacado, addArtist, deleteArtist, changesArtist ] = useFormDinamic(artistas_destacados);
 
-    console.log(compositores)
+    // console.log(compositores)
     const [ formValues, handleInputChange ] = useForm({
         lenguaje_explicito: song.lenguaje_explicito || '',
         version_en_vivo: song.version_en_vivo || '',
@@ -77,10 +77,10 @@ export const SongScreen = () => {
         song.nombre = song.nombre;
         song.otro_idioma = formValues.otro_idioma;
         song.version_en_vivo = formValues.version_en_vivo;
-    //     console.log(postSongs)
-    //     console.log(data)
-    // console.log( song )
-    // console.log( formValues )
+    //     // console.log(albumsAndSongsValues)
+    //     // console.log(data)
+    // // console.log( song )
+    // // console.log( formValues )
         localStorage.setItem( 'albumFormValues', JSON.stringify(data) );
         dispatch( createInputsSongs( data ) );
         navigate('/album/songs');
@@ -362,7 +362,7 @@ export const SongScreen = () => {
 
                 {
                     compositores.map( ( field, index ) => (
-                        // console.log(field.rol_autor_1)
+                        // // console.log(field.rol_autor_1)
                         <div key={ index } className="m-auto">
                             <p>Nombre del compositor de esta canción.</p>
                             <FieldInput

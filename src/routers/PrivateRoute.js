@@ -1,14 +1,14 @@
-import { useSelector } from "react-redux"
 import { Navigate } from "react-router-dom";
+import { getLocalStorage } from "../helpers/getLocalStorage";
 
 
 
 export const PrivateRoute = ({ children }) => {
 
-    const { post } = useSelector(state => state.form);
-    // console.log(post)
 
-    return post
+    const { started } = getLocalStorage();
+
+    return started
         ? children
         : <Navigate to='/' />
 

@@ -12,35 +12,35 @@ import { InputsFieldsDinamics } from './InputsFieldsDinamics'
 export const InputsFieldsArtist = React.memo(({ data }) => {
     console.log(data)
 
-    const { artista_principal } = data;
+    const { artista_principal, artistas_secundarios } = data;
 
-    const { albumInfo } = useSelector(state => state.form);
+    const { albumInfo, albumInfo: { info_basica } } = useSelector(state => state.form);
 
-    const { artistas_secundarios } = albumInfo;
+    // const { artistas_secundarios } = albumInfo;
     
     const [artistasSecundarios, setArtistasSecundarios] = useState(artistas_secundarios);
 
     useEffect(() => {
-        albumInfo.artistas_secundarios = artistasSecundarios;
-        setArtistasSecundarios(albumInfo.artistas_secundarios);
+        info_basica.artistas_secundarios = artistasSecundarios;
+        setArtistasSecundarios(artistas_secundarios);
     }, [artistasSecundarios]);
     
     const dispatch = useDispatch()
 
-    const [artistaPrincipal, handlenputChange] = useForm({
-        artista_principal: artista_principal || ''
+    const [formValues, handlenputChange] = useForm({
+        artista_principal
     })
 
     const addInputField = () => {
         const obj = {};
         obj.artista_secundario = '';
-        albumInfo.artistas_secundarios = [...albumInfo.artistas_secundarios, {...obj}];
+        info_basica.artistas_secundarios = [...info_basica.artistas_secundarios, {...obj}];
         dispatch( infoFormAlbum( albumInfo ) )
 
     };
 
     const handleValueChange = () => {
-        albumInfo.artista_principal = artistaPrincipal.artista_principal
+        info_basica.artista_principal = formValues.artista_principal
         dispatch( infoFormAlbum( albumInfo ) )
     }
 
@@ -51,7 +51,7 @@ export const InputsFieldsArtist = React.memo(({ data }) => {
                     label="Nombre del Artista/Banda"
                     type="text"
                     name="artista_principal"
-                    value={ artistaPrincipal.artista_principal }
+                    value={ formValues.artista_principal }
                     id="nombre"
                     onChange={ handlenputChange }
                     onBlur={ handleValueChange }
@@ -64,7 +64,7 @@ export const InputsFieldsArtist = React.memo(({ data }) => {
                     <HelpItem content={ "?" }/>
                 </div>
             </div>
-            <InputsFieldsDinamics artistasSecundarios={ albumInfo.artistas_secundarios }/>
+            <InputsFieldsDinamics artistasSecundarios={ info_basica.artistas_secundarios }/>
         </>
     )
 })

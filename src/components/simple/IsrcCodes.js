@@ -1,4 +1,9 @@
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { infoFormSimple } from "../../actions/post";
+import { removeError, setError } from "../../actions/ui";
 
 import { getLocalStorage } from "../../helpers/getLocalStorage";
 import { useForm } from "../../hooks/useForm";
@@ -6,23 +11,51 @@ import { useForm } from "../../hooks/useForm";
 
 export const IsrcCodes = () => {
 
-    const { simpleData } = getLocalStorage();
-    const { codigo_ISRC, num_codigo } = simpleData;
+    const dispatch = useDispatch();
+
     const navigate = useNavigate();
+
+    const { msgError } = useSelector(state => state.ui)
+
+    const { simpleData } = getLocalStorage();
+    const { ISRC, ISRC: { codigo_ISRC, num_codigo } } = simpleData;
     
     const [ formValues, handleInputChange ] = useForm({
         codigo_ISRC,
         num_codigo
     })
 
+    useEffect(() => {
+        dispatch( infoFormSimple( simpleData ) )
+    }, [])
+    
+
     const handleClick = (e) => {
         e.preventDefault();
-        simpleData.codigo_ISRC = formValues.codigo_ISRC;
-        simpleData.num_codigo = formValues.num_codigo;
-        localStorage.setItem( 'simpleInfo', JSON.stringify( simpleData ) )
-        navigate( '/simple/distribution' )
+        if ( isFormValid () ) {
+            ISRC.codigo_ISRC = formValues.codigo_ISRC;
+            ISRC.num_codigo = formValues.num_codigo;
+            localStorage.setItem( 'simpleInfo', JSON.stringify( simpleData ) )
+            navigate( '/simple/distribution' )
+        }
     }
 
+    const isFormValid = () => {
+
+        for (const input in formValues) {
+            if ( formValues[input].trim().length === 0 ) {
+                dispatch( setError('Por favor completá todos los campos') );
+                return false
+            } else if ( formValues[input] === "no_necesito_isrc" ){
+                if ( formValues.num_codigo.trim().length === 0 ) {
+                    dispatch( setError('El número de código no puede ir vacio') );
+                    return false
+                }
+            }
+            dispatch( removeError() );
+            return true
+        }
+    }
 
     return (
         <div className="main-container">
@@ -35,6 +68,14 @@ export const IsrcCodes = () => {
                     Como un código de barras, los ISRC son necesarios para la distribución digital.</p>
                     <div className="d-flex justify-center mb-5">
                         <div>
+                        { 
+                            msgError &&
+                                (
+                                    <div className="error">
+                                        { msgError }
+                                    </div>
+                                )
+                        }
                             <div className="d-flex align-center g-1">
                                 <input
                                     type="radio"
@@ -84,7 +125,7 @@ export const IsrcCodes = () => {
                         className="btn mt-5"
                         onClick={ handleClick }
                     >
-                        Continuar
+                        Guardar y continuar
                     </button>
                 </div>
             </div>

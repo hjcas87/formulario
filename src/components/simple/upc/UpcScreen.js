@@ -2,17 +2,16 @@ import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-
-import { infoFormAlbum } from "../../../actions/post";
+import { infoFormSimple } from "../../../actions/post";
 import { removeError, setError } from "../../../actions/ui";
 import { getLocalStorage } from "../../../helpers/getLocalStorage";
 import { UpcFormScreen } from "./UpcFormScreen";
 
 export const UpcScreen = () => {
 
-    const { simpleData = {} } = useMemo(() => getLocalStorage(), []);
+    const { simpleData, simpleData: { codigo_barra } } = useMemo(() => getLocalStorage(), []);
 
-    const { albumInfo } = useSelector(state => state.form);
+    const { simpleInfo } = useSelector(state => state.simpleForm);
 
     const dispatch = useDispatch();
 
@@ -20,22 +19,19 @@ export const UpcScreen = () => {
 
     useEffect(() => {
         dispatch( removeError() )
+        dispatch( infoFormSimple( simpleData ) )
     }, [])
 
-    const { solicitaUpc, UPC } = albumInfo;
 
     const navigate = useNavigate();
-
-    // console.log(albumInfo)
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log(albumInfo)
+        console.log(simpleInfo)
         if (isUpcScreenValid()) {
-            
-        dispatch( infoFormAlbum( albumInfo ) )
-            localStorage.setItem( 'simpleInfo', JSON.stringify( albumInfo ) );
+            console.log(simpleInfo)
+            dispatch( infoFormSimple( simpleInfo ) )
+            localStorage.setItem( 'simpleInfo', JSON.stringify( simpleInfo ) );
             animationScreenNavigate();
 
         }
@@ -54,12 +50,12 @@ export const UpcScreen = () => {
 
     const isUpcScreenValid = () => {
 
-        if ( solicitaUpc.trim().length === 0) {
+        if ( simpleInfo.codigo_barra.solicitaUpc.trim().length === 0) {
             dispatch( setError('Decinos si tenes un código de barra para este lanzamiento') );
             return false;
         };
-        if ( solicitaUpc.trim() === 'no_quiere_upc' ) {
-            if ( UPC.trim().length === 0) {
+        if ( simpleInfo.codigo_barra.solicitaUpc.trim() === 'no_quiere_upc' ) {
+            if ( simpleInfo.codigo_barra.UPC.trim().length === 0) {
                 dispatch( setError('Decinos el código de barras por favor') );
                 return false;
             } 
@@ -90,7 +86,7 @@ export const UpcScreen = () => {
                                 )
                         }
                        
-                        <UpcFormScreen data={ simpleData }/>
+                        <UpcFormScreen data={ codigo_barra }/>
 
                         <button className="btn mt-5">
                             Guardar y continuar

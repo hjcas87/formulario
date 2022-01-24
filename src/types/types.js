@@ -2,7 +2,8 @@
 
 export const types = {
 
-    albumInfo: '[POST] infoAlbum',
+    albumInfo: '[POST] infoForm',
+    simpleInfoForm: '[POST] infoForm',
     albumsAndSongsValues: '[POST] infoAbmYSong',
     albumValues: '[POST] albumAmount',
     allArtists: '[POST] artists',

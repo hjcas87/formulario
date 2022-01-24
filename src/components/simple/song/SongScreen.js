@@ -1,22 +1,35 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"
+import { infoFormSimple } from "../../../actions/post";
+import { removeError, setError } from "../../../actions/ui";
 
 import { getLocalStorage } from "../../../helpers/getLocalStorage";
 import { useForm } from "../../../hooks/useForm";
 import { useFormDinamic } from "../../../hooks/useFormDinamic";
+import { useFormDinamicComposers } from "../../../hooks/useFormDinamicComposers";
 import { ButtonItem } from "../../ui/ButtonItem";
 import { FieldInput } from "../../ui/FieldInput";
 import { HelpItem } from "../../ui/HelpItem";
 
-let arr = ['1'];
+
 export const SongScreen = () => {
     
     const navigate = useNavigate();
 
+    const dispatch = useDispatch();
+
     const { simpleData } = getLocalStorage();
 
-    const { cancion, artista_principal, titulo_album, artistas_secundarios } = simpleData;
+    const { msgError } = useSelector( state => state.ui);
 
-    console.log(cancion)
+    const { cancion, info_basica } = simpleData;
+
+    const { artista_principal, titulo_album, artistas_secundarios } = info_basica;
+
+    useEffect(() => {
+        dispatch( infoFormSimple( simpleData ) )
+    }, [])
 
     const {
         artistas_destacados,
@@ -29,7 +42,9 @@ export const SongScreen = () => {
         
     } = cancion;
 
-    const [ composers, onAdd, onDelete, changes ] = useFormDinamic( compositores );
+    const [ composers, onAdd, onDelete, changes ] = useFormDinamicComposers( compositores );
+
+    console.log(composers)
 
     const [ artistaDestacado, addArtist, deleteArtist, changesArtist ] = useFormDinamic(artistas_destacados);
     
@@ -44,13 +59,64 @@ export const SongScreen = () => {
     const handleClick = (e) => {
         e.preventDefault();
         formValues.artistas_destacados = artistaDestacado;
-        formValues.compositores = [...composers];
-        simpleData.cancion = formValues;
-        console.log(simpleData.cancion)
-        localStorage.setItem( 'simpleInfo', JSON.stringify(simpleData) );
-        navigate('/simple/genders');
+        formValues.compositores = composers;
+        console.log(compositores)
+        if ( songValidate() ) {
+            simpleData.cancion = formValues;
+            console.log(simpleData.cancion)
+            localStorage.setItem( 'simpleInfo', JSON.stringify(simpleData) );
+            navigate('/simple/genders');
+        }
     }
 
+    
+    const songValidate = () => {
+
+        if ( formValues.lenguaje_explicito.trim().length === 0) {
+            window.scroll({ top: 0, left: 0, behavior: 'smooth' })
+            dispatch( setError('Por favor dinos si esta canción contiene lenguaje explícito') );
+            return false;
+        } else if (formValues.artistas_destacados.length !== 0 && formValues.artistas_destacados.some( artist => artist.rol.trim().length === 0 )) {
+            window.scroll({ top: 0, left: 0, behavior: 'smooth' })
+            dispatch( setError('Por favor dinos el rol de los artistas destacados') );
+            return false;
+        } else if (formValues.artistas_destacados.length !== 0 && formValues.artistas_destacados.some( artist => artist.artista_destacado.trim().length === 0 )) {
+            window.scroll({ top: 0, left: 0, behavior: 'smooth' })
+            dispatch( setError('Por favor dinos los nombres de los artistas destacados') );
+            return false;
+        } else if ( formValues.idioma.trim().length === 0) {
+            window.scroll({ top: 0, left: 0, behavior: 'smooth' })
+            dispatch( setError('Por favor dinos en que idioma se canta esta canción o si es una canción instrumental') );
+            return false;
+        } else if ( formValues.idioma.trim() === "Otro" && formValues.otro_idioma.trim().length === 0 ) {
+            window.scroll({ top: 0, left: 0, behavior: 'smooth' })
+            dispatch( setError('Por favor dinos en que idioma se canta esta canción o si es una canción instrumental') );
+            return false;
+        } else if ( formValues.version_en_vivo.trim().length === 0) {
+            window.scroll({ top: 0, left: 0, behavior: 'smooth' })
+            dispatch( setError('Por favor dinos si esta versión es en vivo o no') );
+            return false;
+        } else if ( formValues.composicion.trim().length === 0) {
+            window.scroll({ top: 0, left: 0, behavior: 'smooth' })
+            dispatch( setError('Por favor dinos que tipo de composición es esta') );
+            return false;
+        } else if ( formValues.compositores.length === 0 ) {
+            window.scroll({ top: 0, left: 0, behavior: 'smooth' })
+            dispatch( setError('Deberias agregar al menos un compositor para esta canción') );
+            return false;
+        } else if ( formValues.compositores.some( composer => composer.compositor.trim().length === 0  ) ) {
+            window.scroll({ top: 0, left: 0, behavior: 'smooth' })
+            console.log('fuck')
+            dispatch( setError('Dinos el nombre del compositor') );
+            return false;
+        } else if ( formValues.compositores.some( composer => composer[Object.keys(composer)[1]].trim().length === 0 ) ) {
+            window.scroll({ top: 0, left: 0, behavior: 'smooth' })
+            dispatch( setError('Completá todos los campos') );
+            return false;
+        }
+        dispatch( removeError() );
+        return true;
+    }
 
 
     return (
@@ -63,6 +129,15 @@ export const SongScreen = () => {
                     <h1 className="text-align-left text-transform">{ titulo_album }</h1>
 
                     <form onSubmit={ e => e.preventDefault() }>
+
+                        {
+                            msgError &&
+                                (
+                                    <div className="error">
+                                        { msgError }
+                                    </div>
+                                )
+                        }
                     
                         <div className="d-flex mb-3">
                             <div className="input_group">
@@ -316,7 +391,6 @@ export const SongScreen = () => {
                                 value={ field.compositor || ''}
                                 onChange={ changes }
                             />
-
                             <div className="radio__field--generado">
                                 <p>Como contribuyó este artista en esta canción.</p>
                                 <div className="d-flex justify-left mb-5">
@@ -326,8 +400,8 @@ export const SongScreen = () => {
                                                 type="radio"
                                                 indexParent={ index }
                                                 id={`letra_${index + 1}`}
-                                                name={ `rol_autor_${index + 1}` }
-                                                checked={ field[`rol_autor_${index + 1}`] === 'Letra'}
+                                                name={ Object.keys(field)[1] }
+                                                checked={ field[Object.keys(field)[1]] === 'Letra'}
                                                 value="Letra"
                                                 onChange={ (e) => changes(e, index) }
                                             />
@@ -338,8 +412,8 @@ export const SongScreen = () => {
                                                 type="radio"
                                                 indexParent={ index }
                                                 id={`musica_${index + 1}`}
-                                                name={ `rol_autor_${index + 1}` }
-                                                checked={ field[`rol_autor_${index + 1}`] === 'Música'}
+                                                name={ Object.keys(field)[1] }
+                                                checked={ field[Object.keys(field)[1]] === 'Música'}
                                                 value="Música"
                                                 onChange={ changes }
                                             />
@@ -350,8 +424,8 @@ export const SongScreen = () => {
                                                 type="radio"
                                                 indexParent={ index }
                                                 id={`letra_y_musica_${index + 1}`}
-                                                name={ `rol_autor_${index + 1}` }
-                                                checked={ field[`rol_autor_${index + 1}`] === 'Letra y Música'}
+                                                name={ Object.keys(field)[1] }
+                                                checked={ field[Object.keys(field)[1]] === 'Letra y Música'}
                                                 value="Letra y Música" 
                                                 onChange={ changes }
                                             />
@@ -362,8 +436,8 @@ export const SongScreen = () => {
                                                 type="radio"
                                                 indexParent={index}
                                                 id={`no_sabe_${index + 1}`}
-                                                name={ `rol_autor_${index + 1}` }
-                                                checked={ field[`rol_autor_${index + 1}`] === 'no_sabe'}
+                                                name={ Object.keys(field)[1] }
+                                                checked={ field[Object.keys(field)[1]] === 'no_sabe'}
                                                 value="no_sabe"
                                                 onChange={ changes }
                                             />
@@ -397,7 +471,7 @@ export const SongScreen = () => {
                             className="btn"
                             onClick={ handleClick }
                         >
-                            Guardar
+                            Guardar y continuar
                         </button>
                     </div>
                 </div>

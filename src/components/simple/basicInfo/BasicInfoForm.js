@@ -1,56 +1,42 @@
-
-
 import React from "react";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { infoFormSimple } from "../../../actions/post";
 
-
-import { infoFormAlbum } from "../../../actions/post";
 import { useForm } from "../../../hooks/useForm";
 import { HelpItem } from "../../ui/HelpItem";
 import { InputsFields } from "../../ui/InputsFields";
-import { InputsFieldsArtist } from "../../ui/InputsFieldsArtist";
-
+import { InputsFieldsArtist } from "./InputsFieldsArtist";
 
 export const BasicInfoForm = React.memo(({ simpleData }) => {
     
     const dispatch = useDispatch()
-    const { albumInfo } = useSelector(state => state.form)
-    
+    const { simpleInfo } = useSelector(state => state.simpleForm)
+
+    const { info_basica } = simpleData;
+
     const {
-        idioma,
         artista_principal,
-        titulo_album,
-        fecha_lanzamiento,
         artistas_secundarios,
-        UPC,
-        solicitaUpc,
-        cancion,
-        simpleStarted,
-        generoYLocalizacion,
-        codigo_ISRC,
-        num_codigo } = simpleData;
+        fecha_lanzamiento,
+        idioma,
+        titulo_album } = info_basica;
         
     console.log(simpleData)
 
     const [ formValues, handleInputChange ] = useForm({
-        idioma,
-        artista_principal,     
-        titulo_album,
-        fecha_lanzamiento,
+        artista_principal,
         artistas_secundarios,
-        UPC,
-        solicitaUpc,
-        cancion,
-        simpleStarted,
-        generoYLocalizacion,
-        codigo_ISRC,
-        num_codigo
+        fecha_lanzamiento,
+        idioma,
+        titulo_album 
     });
 
 
     const handleValueChange = () => {
-        dispatch( infoFormAlbum( formValues ) )
+        info_basica.titulo_album = formValues.titulo_album;
+        info_basica.fecha_lanzamiento = formValues.fecha_lanzamiento;
+        info_basica.idioma = formValues.idioma;
+        // dispatch( infoFormSimple( formValues ) )
     }
 
     return (
@@ -73,7 +59,7 @@ export const BasicInfoForm = React.memo(({ simpleData }) => {
 
             <div className="mb-3 d-flex flex-column">
                 <InputsFieldsArtist
-                    data={ simpleData }
+                    data={ info_basica }
                 />
             </div>
                 

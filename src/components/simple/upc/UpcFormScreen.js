@@ -5,12 +5,12 @@ import { useSelector } from 'react-redux';
 import { useForm } from '../../../hooks/useForm';
 import { HelpItem } from '../../ui/HelpItem';
 import { InputsFields } from '../../ui/InputsFields';
-import { infoFormAlbum } from '../../../actions/post';
+import { infoFormSimple } from '../../../actions/post';
 import { InputsRadioFields } from '../../ui/InputsRadioFields';
 
 export const UpcFormScreen = ({ data }) => {
 
-    const { albumInfo } = useSelector(state => state.form);
+    const { simpleInfo, simpleInfo: { codigo_barra } } = useSelector(state => state.simpleForm);
     const dispatch = useDispatch();
 
     // console.log(albumInfo)
@@ -34,12 +34,12 @@ export const UpcFormScreen = ({ data }) => {
 
     useEffect(() => {
 
-        console.log(albumInfo)
-        albumInfo.solicitaUpc = requestCode;
-        albumInfo.UPC = barcode;
-        dispatch( infoFormAlbum( albumInfo ) )
+        // console.log(albumInfo)
+        codigo_barra.solicitaUpc = requestCode;
+        codigo_barra.UPC = barcode;
+        dispatch( infoFormSimple( simpleInfo ) )
 
-    }, [albumInfo, requestCode, barcode, dispatch])
+    }, [simpleInfo, requestCode, barcode, dispatch])
 
     return (
         <>

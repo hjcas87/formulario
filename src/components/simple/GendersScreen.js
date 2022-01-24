@@ -1,6 +1,8 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { infoFormAlbum } from "../../actions/post";
+import { infoFormSimple } from "../../actions/post";
+import { removeError, setError } from "../../actions/ui";
 import { getLocalStorage } from "../../helpers/getLocalStorage";
 
 
@@ -12,10 +14,14 @@ export const GendersScreen = () => {
 
     const navigate = useNavigate();
 
+    const dispatch = useDispatch();
+
+    const { msgError } = useSelector(state => state.ui)
+    
     const { simpleData } = getLocalStorage();
-
+    
     const { generoYLocalizacion } = simpleData;
-
+    
     const { genero_1, genero_2, localizacion, artista_similar_1, artista_similar_2, artista_similar_3, } = generoYLocalizacion;
 
     const [ formValues, handleInputChange ] = useForm({
@@ -26,23 +32,53 @@ export const GendersScreen = () => {
         artista_similar_2,
         artista_similar_3,
     })
-
+    
+    useEffect(() => {
+        dispatch( infoFormSimple( simpleData ) )
+    }, [])
+    
     const handleClick = (e) => {
         e.preventDefault();
         simpleData.generoYLocalizacion = formValues;
-        localStorage.setItem( 'simpleInfo', JSON.stringify( simpleData ) );
-        navigate( '/simple/isrc' )
+        if ( isFormValid() ) {
+            localStorage.setItem( 'simpleInfo', JSON.stringify( simpleData ) );
+            navigate( '/simple/isrc' );
+        }
     }
 
+    const isFormValid = () => {
 
+        for (const input in formValues) {
+            if ( formValues[input].trim().length === 0 ) {
+                window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+                dispatch( setError('Por favor completá todos los campos') );
+                return false
+            } else {
+                dispatch( removeError() );
+                return true
+            }
+        }
+    }
+
+    
 
     return (
         <div className="main-container">
             <div className="text-secondary text-center animate__animated animate__fadeIn">
                 <div className="mt-7">
+
                     <h2>Género Musical</h2>
                     <p>Decinos dos generos musicales con los cuales identifiques tu musica</p>
                     <div className="d-flex flex-column p-2">
+
+                        { 
+                            msgError &&
+                                (
+                                    <div className="error">
+                                        { msgError }
+                                    </div>
+                                )
+                        }
                         <label htmlFor="genero_1" className="mb-1 mt-1">Género Nº1</label>
                         <input
                             type="text"
@@ -120,7 +156,7 @@ export const GendersScreen = () => {
                         className="btn mt-5 mb-5"
                         onClick={ handleClick }
                     >
-                        Continuar
+                        Guardar y continuar
                     </button>
                 </div>
             </div>

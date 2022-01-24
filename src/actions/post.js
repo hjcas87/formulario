@@ -8,6 +8,14 @@ export const infoFormAlbum = ( form ) => {
         }
     }
 }
+export const infoFormSimple = ( values ) => {
+    return {
+        type: types.simpleInfoForm,
+        payload: {
+            values
+        }
+    }
+}
 
 export const albumsWithSongsInfo = ( abmsWthSng ) => {
     return {

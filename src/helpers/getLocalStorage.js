@@ -15,13 +15,13 @@ export const getLocalStorage = ( ) => {
     }
     
     const formSimpleData = {
-        artista_principal: '',
-        artistas_secundarios: [],
-        fecha_lanzamiento: '',
-        idioma: '',
-        titulo_album: '',
-        UPC: '',
-        solicitaUpc: '',
+        info_basica: {
+            artista_principal: '',
+            artistas_secundarios: [],
+            fecha_lanzamiento: '',
+            idioma: '',
+            titulo_album: '',
+        },
         cancion: {
             artistas_destacados: [],
             composicion: '',
@@ -39,8 +39,19 @@ export const getLocalStorage = ( ) => {
             artista_similar_2: '',
             artista_similar_3: '',
         },
-        codigo_ISRC: '',
-        num_codigo: '',
+        codigo_barra: {
+            UPC: '',
+            solicitaUpc: '',
+        },
+        ISRC: {
+            codigo_ISRC: '',
+            num_codigo: '',
+        },
+        opciones_distribucion: '',
+        canciones_extendidas: {
+            cancion_extendida: '',
+            solo_album: ''
+        },
         simpleStarted: false
     }
 

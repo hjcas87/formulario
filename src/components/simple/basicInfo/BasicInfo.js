@@ -2,19 +2,17 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { infoFormAlbum, infoFormAlbumAllArtists } from "../../../actions/post";
+// import { infoFormSimple, infoFormSimpleAllArtists } from "../../../actions/post";
 import { removeError, setError } from "../../../actions/ui";
 import { getLocalStorage } from "../../../helpers/getLocalStorage";
-import { allArtists } from "../../../helpers/allArtists";
+// import { allArtists } from "../../../helpers/allArtists";
 import { BasicInfoForm } from "./BasicInfoForm";
 import { SimpleResume } from "../../ui/SimpleResume";
+import { infoFormSimple } from "../../../actions/post";
 
 export const BasicInfo = () => {
     
-    const [bool, setBool] = useState(false)
-    // // console.log(bool)
-
-    const { albumInfo } = useSelector(state => state.form)
+    const { simpleInfo, simpleInfo: { info_basica } } = useSelector(state => state.simpleForm)
     
     const dispatch = useDispatch();
     
@@ -22,13 +20,7 @@ export const BasicInfo = () => {
     
     const { msgError, isAlbum } = useSelector( state => state.ui);
 
-    const { simpleData, simpleDataSong, started } = useMemo(() => getLocalStorage( bool, isAlbum ), [ bool, isAlbum ])
-
-    // console.log(isAlbum)
-    // const artistas = useMemo(() => allArtists( simpleData, simpleDataSong ), [ simpleData, simpleDataSong ]);
-
-    console.log(simpleData)
-    console.log(albumInfo)
+    const { simpleData, simpleDataSong, started } = useMemo(() => getLocalStorage( isAlbum ), [ isAlbum ])
 
     useEffect(() => {
         dispatch( removeError() )
@@ -36,31 +28,15 @@ export const BasicInfo = () => {
     
     useEffect(() => {
         
-        dispatch( infoFormAlbum( simpleData ));
+        dispatch( infoFormSimple( simpleData ));
 
     }, []);
-
-    // useEffect(() => {
-    //     // // console.log('se mandan los artistas')
-    //     dispatch( infoFormAlbumAllArtists( artistas ))
-
-    // }, [artistas]);
-    
-    
-    // useEffect(() => {
-        
-    //     dispatch( getArtistForSpotify( artistas ))
-        
-    // }, [artistas]);
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        // // console.log(basicInfo)
+        console.log(info_basica)
         if ( isAlbumScreenValid() ) {
-            console.log(simpleData)
-    console.log(albumInfo)
-            localStorage.setItem( 'simpleInfo', JSON.stringify(albumInfo) );
-            setBool(true)
+            localStorage.setItem( 'simpleInfo', JSON.stringify(simpleInfo) );
             animationScreenNavigate();
         }
 
@@ -79,20 +55,20 @@ export const BasicInfo = () => {
 
     const isAlbumScreenValid = () => {
 
-        if ( albumInfo.idioma.trim().length === 0) {
+        if ( info_basica.idioma.trim().length === 0) {
             dispatch( setError('El idioma es requerido') );
             return false;
         } 
-        else if ( albumInfo.artista_principal.trim().length === 0) {
+        else if ( info_basica.artista_principal.trim().length === 0) {
             dispatch( setError('Dinos cual es el artista o banda principal') );
             return false;
-        } else if ( albumInfo.titulo_album.trim().length === 0) {
+        } else if ( info_basica.titulo_album.trim().length === 0) {
             dispatch( setError('Dinos cual es el titulo del lanzamiento') );
             return false;
-        } else if ( albumInfo.fecha_lanzamiento.trim().length === 0) {
+        } else if ( info_basica.fecha_lanzamiento.trim().length === 0) {
             dispatch( setError('Dinos cual es la fecha del lanzamiento') );
             return false;
-        } else if ( albumInfo.artistas_secundarios.some(artista => artista.artista_secundario.trim().length === 0)) {
+        } else if ( info_basica.artistas_secundarios.some(artista => artista.artista_secundario.trim().length === 0)) {
             dispatch( setError('Completá todos los campos') );
             return false;
         }

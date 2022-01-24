@@ -1,22 +1,29 @@
 import { useNavigate } from 'react-router-dom';
+import { getLocalStorage } from '../../helpers/getLocalStorage';
 import { useForm } from '../../hooks/useForm';
 
 export const ExtendSongs = () => {
 
-    
     const navigate = useNavigate();
+    
+    const { simpleData } = getLocalStorage();
 
-    const [ values, handleInputChange ] = useForm({
-        cancion_extendida: '',
-        solo_album: ''
+    const { canciones_extendidas: { cancion_extendida, solo_album } } = simpleData;
+
+
+    const [ formValues, handleInputChange ] = useForm({
+        cancion_extendida,
+        solo_album
     })
-    const { cancion_extendida, solo_album } = values;
+    
 
     // console.log(values)
 
     const handleClick = (e) => {
         e.preventDefault();
-        navigate( '/' )
+        simpleData.canciones_extendidas = formValues;
+        localStorage.setItem( 'simpleInfo', JSON.stringify( simpleData ) );
+        navigate( '/simple' )
     }
 
 
@@ -34,7 +41,7 @@ export const ExtendSongs = () => {
                             className="radio__field"
                             id="no_tengo_cancion_ext"
                             name="cancion_extendida"
-                            checked={ values.cancion_extendida === 'no' }
+                            checked={ formValues.cancion_extendida === 'no' }
                             value="no"
                             onChange={ handleInputChange }
                         />
@@ -46,7 +53,7 @@ export const ExtendSongs = () => {
                             className="radio__field"
                             id="si_tengo_cancion_ext"
                             name="cancion_extendida"
-                            checked={ values.cancion_extendida === 'si' }
+                            checked={ formValues.cancion_extendida === 'si' }
                             value="si"
                             onChange={ handleInputChange }
                         />
@@ -56,7 +63,7 @@ export const ExtendSongs = () => {
             </div>
 
             {
-                cancion_extendida === 'si' &&
+                formValues.cancion_extendida === 'si' &&
                 <div className="animate__animated animate__fadeInUp">
                     <p className="text-align-left text-white mb-5">Algunas plataformas digitales ofrecen una función de "solo álbum" para canciones extendidas de más de 10 minutos.<br/>
                     Si optas por vender tus canciones extendidas en "solo álbum", las plataformas elegibles harán que tu canción extendida 
@@ -73,7 +80,7 @@ export const ExtendSongs = () => {
                                     className="mt-1"
                                     id="solo_album"
                                     name="solo_album"
-                                    checked={ solo_album === 'no_solo_album' }
+                                    checked={ formValues.solo_album === 'no_solo_album' }
                                     value="no_solo_album"
                                     onChange={ handleInputChange }
                                 />
@@ -85,7 +92,7 @@ export const ExtendSongs = () => {
                                     className="mt-1"
                                     id="no_solo_album"
                                     name="solo_album"
-                                    checked={ solo_album === 'si_solo_album' }
+                                    checked={ formValues.solo_album === 'si_solo_album' }
                                     value="si_solo_album"
                                     onChange={ handleInputChange }
                                 />
@@ -101,7 +108,7 @@ export const ExtendSongs = () => {
                         className="btn mt-5"
                         onClick={ handleClick }
                     >
-                        Continuar
+                        Guardar y continuar
                     </button>
                 </div>
             </div>

@@ -83,29 +83,17 @@ export const AlbumInformation = (props) => {
             inputsValue.value = inputsSongsVal.length;
         }
         if ( inputs.some( ipt => ipt.value.toString().trim().length === 0 )) {
-            window.scroll({
-                top: 0,
-                left: 0,
-                behavior: 'smooth'
-            })
+            window.scroll({ top: 0, left: 0, behavior: 'smooth' })
             dispatch( setError('Los titulos de las canciones no pueden estar vacios') );
             return false;
         }       
         if ( inputs.length < titles.length ) {
-            window.scroll({
-                top: 0,
-                left: 0,
-                behavior: 'smooth'
-            })
+            window.scroll({ top: 0, left: 0, behavior: 'smooth' })
             dispatch( setError('Faltan canciones por agregar') );
             return false;
         }
         if ( allInputs.some( ipt => ipt.value.toString().trim().length === 0 )) {
-            window.scroll({
-                top: 0,
-                left: 0,
-                behavior: 'smooth'
-            })
+            window.scroll({ top: 0, left: 0, behavior: 'smooth' })
             dispatch( setError('Por favor completá todos los campos') );
             return false;
         }       

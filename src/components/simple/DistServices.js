@@ -1,24 +1,45 @@
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { removeError, setError } from "../../actions/ui";
+import { getLocalStorage } from "../../helpers/getLocalStorage";
 import { useForm } from "../../hooks/useForm";
 
 export const DistServices = () => {
 
     const navigate = useNavigate();
 
+    const dispatch = useDispatch();
+
+    const { msgError } = useSelector(state => state.ui)
+
+    const { simpleData } = getLocalStorage();
+
+    const { opciones_distribucion } = simpleData;
+
+    const [ formValues, handleInputChange ] = useForm({
+        opciones_distribucion
+    });
     
-
-    const [ values, handleInputChange ] = useForm({
-        opcion_plataforma: '',
-    })
-    const { opcion_plataforma } = values;
-
-    // console.log(values)
     const handleClick = (e) => {
         e.preventDefault();
-        navigate( '/simple/artist' )
+        if ( isFormValid() ) {
+            simpleData.opciones_distribucion = formValues.opciones_distribucion;
+            localStorage.setItem( 'simpleInfo', JSON.stringify( simpleData ) );
+            navigate( '/simple/artist' );
+        }
     }
 
-    
+    const isFormValid = () => {
+
+        for (const input in formValues) {
+            if ( formValues[input].trim().length === 0 ) {
+                dispatch( setError('Por favor decinos que opción de distribución querés') );
+                return false
+            }
+            dispatch( removeError() );
+            return true
+        }
+    }
 
 
     return (
@@ -26,14 +47,22 @@ export const DistServices = () => {
             <div className="text-secondary text-center animate__animated animate__fadeIn">
                 <div className="mt-7 p-2">
                     <h2>Opciones de distribución</h2>
+                    { 
+                        msgError &&
+                            (
+                                <div className="error">
+                                    { msgError }
+                                </div>
+                            )
+                    }
                     <div className="d-flex g-1 align-center">
                         <input
                             type="radio"
                             className="radio__field"
                             id="descargas_y_streaming"
-                            name="opcion_plataforma"
+                            name="opciones_distribucion"
                             value="descargas_y_streaming"
-                            checked={ opcion_plataforma === 'descargas_y_streaming' }
+                            checked={ formValues.opciones_distribucion === 'descargas_y_streaming' }
                             onChange={ handleInputChange }
                         />
                         <label htmlFor="descargas_y_streaming" className="radio__label negrita-medium">Servicios de Descargas + Streaming</label>
@@ -45,9 +74,9 @@ export const DistServices = () => {
                             type="radio"
                             className="radio__field"
                             id="solo_descargas"
-                            name="opcion_plataforma"
+                            name="opciones_distribucion"
                             value="solo_descargas"
-                            checked={ opcion_plataforma === 'solo_descargas' }
+                            checked={ formValues.opciones_distribucion === 'solo_descargas' }
                             onChange={ handleInputChange }
                         />
                         <label htmlFor="solo_descargas" className="radio__label negrita-medium">Solo descargas</label>
@@ -60,9 +89,9 @@ export const DistServices = () => {
                             type="radio"
                             className="radio__field"
                             id="todos"
-                            name="opcion_plataforma"
+                            name="opciones_distribucion"
                             value="todos"
-                            checked={ opcion_plataforma === 'todos' }
+                            checked={ formValues.opciones_distribucion === 'todos' }
                             onChange={ handleInputChange }
                         />
                         <label htmlFor="todos">Todos, incluso los que no sean de pago.</label>
@@ -73,7 +102,7 @@ export const DistServices = () => {
                         className="btn mt-5"
                         onClick={ handleClick }
                     >
-                        Continuar
+                        Guardar y continuar
                     </button>
                 </div>
             </div>

@@ -6,6 +6,7 @@ import { types } from "../types/types";
 const initialState = {
     loading: false,
     msgError: null,
+    msg: null,
     navigation: false,
     localChanges: false,
     isAlbum: false
@@ -34,6 +35,16 @@ export const uiReducer = ( state = initialState, action ) => {
             return {
                 ...state,
                 msgError: null
+            }
+        case types.uiSetMsg:
+            return {
+                ...state,
+                msg: action.payload
+            }
+        case types.uiRemoveMsg:
+            return {
+                ...state,
+                msg: null
             }
         case types.uiArrayOfLinks:
             return {

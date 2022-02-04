@@ -1,31 +1,67 @@
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { infoFormSimple } from '../../actions/post';
+import { removeError, removeMsg, setError } from '../../actions/ui';
 import { getLocalStorage } from '../../helpers/getLocalStorage';
 import { useForm } from '../../hooks/useForm';
 
 export const ExtendSongs = () => {
 
+    const dispatch = useDispatch();
+
+    const { msgError } = useSelector(state => state.ui);
+
     const navigate = useNavigate();
     
-    const { simpleData } = getLocalStorage();
+    const { simpleData, simpleData: { canciones_extendidas } } = getLocalStorage();
 
-    const { canciones_extendidas: { cancion_extendida, solo_album } } = simpleData;
+    const { cancion_extendida, solo_album } = canciones_extendidas;
 
+    console.log(canciones_extendidas)
 
     const [ formValues, handleInputChange ] = useForm({
         cancion_extendida,
         solo_album
     })
-    
-
+    useEffect(() => {
+        window.scroll({ top: 0, left: 0 });
+        document.querySelector('body').classList.remove('overflow');
+        dispatch( removeError() );
+        dispatch( removeMsg() );
+    }, [])
+    useEffect(() => {
+        dispatch( infoFormSimple( simpleData ) )
+    }, [])
     // console.log(values)
 
     const handleClick = (e) => {
         e.preventDefault();
-        simpleData.canciones_extendidas = formValues;
-        localStorage.setItem( 'simpleInfo', JSON.stringify( simpleData ) );
-        navigate( '/simple' )
+        if ( isFormValid() ) {
+            simpleData.canciones_extendidas = formValues;
+            localStorage.setItem( 'simpleInfo', JSON.stringify( simpleData ) );
+            navigate( '/resume' );            
+        }
     }
 
+    
+    const isFormValid = () => {
+
+        for (const input in formValues) {
+            if ( formValues[input].trim().length === 0 ) {
+                dispatch( setError('Por favor completá todos los campos') );
+                return false
+            } else if ( formValues[input] === "si" ){
+                if ( formValues.solo_album.trim().length === 0 ) {
+                    dispatch( setError('Elegi una opción por favor') );
+                    return false
+                }
+            }
+            dispatch( removeError() );
+            return true
+        }
+    }
 
     return (
         <div className="main-container">
@@ -33,6 +69,14 @@ export const ExtendSongs = () => {
             <div className="mt-5 p-2">
                 <h2>Canciones Extendidas</h2>
             <p className="text-white">¿Tenes alguna canción que dure 10 o más minutos?</p>
+                { 
+                    msgError &&
+                        (
+                            <div className="error">
+                                { msgError }
+                            </div>
+                        )
+                }
             <div className="d-flex justify-center mb-5">
                 <div>
                     <div className="d-flex align-center g-1">

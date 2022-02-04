@@ -1,0 +1,49 @@
+@import '../base/mixins.scss';
+
+.msg_container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.help_msg {
+    background-color: rgba($color: #fff, $alpha: 1);
+    border: 1px solid black;
+    border-radius: 1rem;
+    font-weight: 500;
+    color: black;
+    padding: 1.5rem 2rem 4rem 2rem;
+    max-width: 600px;
+    height: max-content;
+    margin-right: 1rem;
+    margin-left: 1rem;
+    // position: rel;
+    z-index: 10;
+}
+
+.close {
+    border: 2px solid brown;
+    color: brown;
+    font-weight: 600;
+    height: 2.5rem;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    width: 2.5rem;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.msg_background {
+    background-color: rgba($color: #000, $alpha: .5);
+    transition: .5s;
+    z-index: 10;
+}
+
+.overflow {
+    overflow: hidden;
+}

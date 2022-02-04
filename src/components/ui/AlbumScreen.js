@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
-import { useDispatch } from 'react-redux';
-import { Outlet, useLocation } from 'react-router-dom'
-import { changeResume } from '../../actions/ui';
-import { Navbar } from './Navbar';
+import { Outlet, useLocation } from 'react-router-dom';
+
 import { Sidebar } from './Sidebar';
 
 export const AlbumScreen = () => {
@@ -21,14 +19,22 @@ export const AlbumScreen = () => {
         ['/album/extended-songs', 'Canciones extendidas'],
     ];
 
-    const simpleRoutes = [];
+    const simpleRoutes = [
+        ['/simple/', 'Información básica'],
+        ['/simple/upc', 'Código de barras/Upc'],
+        ['/simple/songs', 'Canción'],
+        ['/simple/genders', 'Géneros/Localización'],
+        ['/simple/isrc', 'Códigos ISRC'],
+        ['/simple/distribution', 'Distribución'],
+        ['/simple/artist', 'Perfil de artista'],
+        ['/simple/extended-songs', 'Canciones extendidas'],
+    ];
 
     const ruteAlbum = useMemo(() => pathname.includes('album'), [pathname]);
     const ruteResume = useMemo(() => pathname.includes('resume'), [pathname]);
 
     return (
         <>
-            {/* <Navbar /> */}
             <section className="grid-screen">
                 
                 <aside 
@@ -50,7 +56,6 @@ export const AlbumScreen = () => {
                 <Outlet />
                 
             </section>
-                {/* <Outlet /> */}
         </>
     )
 }

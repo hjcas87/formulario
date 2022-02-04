@@ -1,61 +1,60 @@
 
 import { useEffect, useMemo } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { infoFormAlbum } from "../../../actions/post";
-import { removeError, setError } from "../../../actions/ui";
-import { albumsWithSongsAndId, albumsWithSongsUpdated } from "../../../helpers/albumsWithSongsAndId";
+import { removeError, removeMsg, setError, setMsg } from "../../../actions/ui";
+import { albumsWithSongsUpdated } from "../../../helpers/albumsWhitSongsUpdated";
+import { albumsWithSongsAndId } from "../../../helpers/albumsWithSongsAndId";
 import { getLocalStorage } from "../../../helpers/getLocalStorage";
+import { getMessageById } from "../../../helpers/getMessageById";
 import { HelpItem } from "../../ui/HelpItem";
 import { SelectNamesOfSongs } from "./SelectNamesOfSongs";
 import { SelectNumberOfAlbums } from "./SelectNumberOfAlbums";
 import { SelectNumberOfSongsPerAlbum } from "./SelectNumberOfSongsPerAlbum";
 
 
-
-
-
-export const AlbumInformation = (props) => {
-
-    const { albumInfo} = useSelector(state => state.form)
-    const { localChanges, amountObj = [] } = useSelector(state => state.ui)
-    // const state = useSelector(state => state.form)
-
-    // console.log(localChanges)
+export const AlbumInformation = () => {
     
-    const dispatch = useDispatch();
-    const { msgError } = useSelector( state => state.ui);
     const navigate = useNavigate();
-    const { dataAlbumAmount, dataSongsAmount, dataAlbumSongValues, data } = useMemo(() => getLocalStorage(localChanges), [localChanges]);
-    // console.log(data.albumsYCanciones.length)
-    // console.log(albumsAndSongsValues)
-    // const { albumsYCanciones } = data
-    // console.log(dataAlbumAmount)
-    // console.log(albumInfo.albumsYCanciones)
+
+    const dispatch = useDispatch();
+
+    const { albumInfo } = useSelector(state => state.albumForm)
+    
+    let { amountObj = [] } = useSelector(state => state.ui)
+
+    const { msgError, msg } = useSelector( state => state.ui);
+
+    const { data, data: { albumValues }, dataSong } = useMemo(() => getLocalStorage(), []);
+
+    useEffect(() => {
+        albumInfo.albumValues = albumValues;
+        amountObj = dataSong;
+    }, [])
+
+    useEffect(() => {
+        window.scroll({ top: 0, left: 0 })
+        document.querySelector('body').classList.remove('overflow');
+        dispatch( removeError() );
+        dispatch( removeMsg() );
+    }, [])
 
     const handleSubmit = (e) => {
         e.preventDefault()
         if (isSongTitlesValid()) {
-            console.log(albumInfo.albumsYCanciones)
             const canciones = albumsWithSongsAndId( albumInfo.albumsYCanciones );
-            let data = JSON.parse(localStorage.getItem('albumFormValues')) || [[]];
-            const newData = albumsWithSongsUpdated( canciones, data )
-            localStorage.setItem( 'albumFormValues', JSON.stringify(newData) );
-            localStorage.setItem( 'albumAndSongsValues', JSON.stringify(newData) );
-            albumInfo.albumsYCanciones = newData;
-            dispatch( infoFormAlbum( albumInfo ) )
-            const newInfo = JSON.parse(localStorage.getItem('albumInfo')) || {};
-            newInfo.albumsYCanciones = albumInfo.albumsYCanciones;
-            console.log(newInfo)
-            localStorage.setItem( 'albumInfo', JSON.stringify(newInfo) );
+            const newData = albumsWithSongsUpdated( canciones, dataSong );
+            data.albumsYCanciones = newData;
+            data.albumValues = albumInfo.albumValues;
+            localStorage.setItem( 'albumFormValues', JSON.stringify( newData ) );
+            localStorage.setItem( 'albumInfo', JSON.stringify( data ) );
             animationScreenNavigate()
         }
     }
 
     const animationScreenNavigate = () => {
-        const screen = document.querySelector('#album-info');
+        const screen = document.querySelector('#info-screen');
         screen.classList.remove('animate__fadeInRight');
         screen.classList.add('animate__fadeOutLeft', 'animate__faster');
         screen.addEventListener('animationend', () => {
@@ -67,7 +66,7 @@ export const AlbumInformation = (props) => {
 
     const isSongTitlesValid = (e) => {
 
-        console.log('hola')
+        // // console.log('hola')
         const inputTitlesSongs = document.querySelector('#input-titles');
         const firstInput = document.querySelector('#first-input');
         const inputsValue = firstInput.querySelector('input');
@@ -78,7 +77,7 @@ export const AlbumInformation = (props) => {
         const inputs = [...inputTitlesSongs.querySelectorAll('input')];
         const allInputs = [...document.querySelectorAll('input')];
 
-        console.log(inputs.length, titles.length)
+        // // console.log(inputs.length, titles.length)
         if (Number(inputsValue.value) !== inputsSongsVal.length) {
             inputsValue.value = inputsSongsVal.length;
         }
@@ -100,25 +99,57 @@ export const AlbumInformation = (props) => {
         dispatch( removeError() );
         return true;
     }
+    const handleClose = () => {
+        dispatch( removeMsg() );
+        document.querySelector('body').classList.remove('overflow');
+    }
 
+    const handleClick = (id) => {
+        const message = getMessageById( id );
+        dispatch( setMsg( message.msg ) );
+        window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+        document.querySelector('body').classList.add('overflow');
+        setTimeout(() => {
+            document.querySelector('.msg_container').classList.add('msg_background');
+        }, 600);
+    }
 
 
     return (
         <div className="main-container">
-            <div className=" text-secondary py-5 text-center animate__animated animate__fadeIn" id="album-info">
+            <div className=" text-secondary text-center animate__animated animate__fadeIn" id="info-screen">
                     
-                <div className="py-5">
-                    <div className="d-flex justify-center align-center">
-                        <h1 className="text-white">Número de discos</h1>
-                        <HelpItem content="?"/>
+                <div className="py-5 mt-5">
+                    {
+                    msg &&
+                        (
+                            <div className="msg_container">
+                                <div className="help_msg animate__animated animate__slideInDown">
+                                    <div className="d-flex justify_rigth" onClick={ handleClose }>
+                                        <div className="close d-flex justify-center align-center">
+                                            X
+                                        </div>
+                                    </div>
+                                    { msg }
+                                </div>
+                            </div>
+                        )
+                    }
+                        <div className="d-flex flex-column">
+                            <h1 className="text-align-left mb-0">Álbum</h1>
+                            <div className="d-flex align-center">
+                                <h2 className="text-align-left">Número de discos</h2>
+                                <HelpItem content={ "?" } onClick={() => handleClick('titulos')}/>
+                            </div>
+                            <hr />
                     </div>
-                    <div className="p-2">
-                        <p className="text-white">¿Cuántos discos/volúmenes tiene tu álbum? (Para la mayoría de los artistas, 
+                    <div>
+                        <p className="text-align-left">¿Cuántos discos/volúmenes tiene tu álbum? (Para la mayoría de los artistas, 
                             la respuesta será uno, pero si estás lanzando un álbum doble o una caja de colección, 
                             por favor dinos cuántos discos hay en la caja).
                         </p>
                     </div>
-                    <div className="col-auto">
+                    <div className="mt-5">
                         <form
                             onSubmit={ handleSubmit }
                         >
@@ -131,15 +162,15 @@ export const AlbumInformation = (props) => {
                                     )
                             }
 
-                            <SelectNumberOfAlbums local={dataAlbumAmount}/>
+                            <SelectNumberOfAlbums albumValues={albumValues}/>
 
-                            <SelectNumberOfSongsPerAlbum oneLocal={dataAlbumAmount} twoLocal={dataAlbumSongValues}/>
+                            <SelectNumberOfSongsPerAlbum albumValues={albumValues} twoLocal={dataSong}/>
 
                             {
                                 amountObj.length > 0 && 
                                 <>
-                                <SelectNamesOfSongs local={ data } />
-                                
+                                <SelectNamesOfSongs local={ dataSong } albumValues={albumValues} />
+                                <hr className="mt-5"/>
                                 <button className="btn btn-outline-info btn-lg px-4 fw-bold mt-5">
                                     Guardar y continuar
                                 </button>

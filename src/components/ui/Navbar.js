@@ -19,7 +19,7 @@ export const Navbar = () => {
         if (e.target.classList.contains('album')) {
             dispatch( changeResume( true ) );
         } else {
-            dispatch( changeResume( false ) );
+            dispatch( changeResume( true ) );
         }
     }
 

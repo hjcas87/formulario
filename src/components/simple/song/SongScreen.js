@@ -2,15 +2,16 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"
 import { infoFormSimple } from "../../../actions/post";
-import { removeError, setError } from "../../../actions/ui";
+import { removeError, removeMsg, setError, setMsg } from "../../../actions/ui";
 
 import { getLocalStorage } from "../../../helpers/getLocalStorage";
+import { getMessageById } from "../../../helpers/getMessageById";
 import { useForm } from "../../../hooks/useForm";
 import { useFormDinamic } from "../../../hooks/useFormDinamic";
 import { useFormDinamicComposers } from "../../../hooks/useFormDinamicComposers";
 import { ButtonItem } from "../../ui/ButtonItem";
-import { FieldInput } from "../../ui/FieldInput";
 import { HelpItem } from "../../ui/HelpItem";
+import { InputsFields } from "../../ui/InputsFields";
 
 
 export const SongScreen = () => {
@@ -21,7 +22,7 @@ export const SongScreen = () => {
 
     const { simpleData } = getLocalStorage();
 
-    const { msgError } = useSelector( state => state.ui);
+    const { msgError, msg } = useSelector( state => state.ui);
 
     const { cancion, info_basica } = simpleData;
 
@@ -31,14 +32,20 @@ export const SongScreen = () => {
         dispatch( infoFormSimple( simpleData ) )
     }, [])
 
+    useEffect(() => {
+        dispatch( removeError() )
+        dispatch( removeMsg() )
+    }, [])
+
     const {
         artistas_destacados,
         composicion,
         compositores,
+        titulo,
         idioma,
         lenguaje_explicito,
         otro_idioma,
-        version_en_vivo,
+        version,
         
     } = cancion;
 
@@ -50,16 +57,17 @@ export const SongScreen = () => {
     
     const [ formValues, handleInputChange ] = useForm({
         lenguaje_explicito,
-        version_en_vivo,
+        version,
         composicion,
         idioma,
         otro_idioma,
     });
 
-    const handleClick = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         formValues.artistas_destacados = artistaDestacado;
         formValues.compositores = composers;
+        formValues.titulo = titulo_album;
         console.log(compositores)
         if ( songValidate() ) {
             simpleData.cancion = formValues;
@@ -92,7 +100,7 @@ export const SongScreen = () => {
             window.scroll({ top: 0, left: 0, behavior: 'smooth' })
             dispatch( setError('Por favor dinos en que idioma se canta esta canción o si es una canción instrumental') );
             return false;
-        } else if ( formValues.version_en_vivo.trim().length === 0) {
+        } else if ( formValues.version.trim().length === 0) {
             window.scroll({ top: 0, left: 0, behavior: 'smooth' })
             dispatch( setError('Por favor dinos si esta versión es en vivo o no') );
             return false;
@@ -117,6 +125,14 @@ export const SongScreen = () => {
         dispatch( removeError() );
         return true;
     }
+    const handleClick = (id) => {
+        window.scroll({ top: 0, left: 0, behavior: 'smooth' })
+        const message = getMessageById( id )
+        dispatch( setMsg( message.msg ) )
+    }
+    const handleClose = () => {
+        dispatch( removeMsg() )
+    }
 
 
     return (
@@ -124,17 +140,32 @@ export const SongScreen = () => {
             <div className="text-secondary text-align-left animate__animated animate__fadeIn">
                 
             
-                <div className="py-5 mt-3">
+                <div className="py-5 mt-5">
                     
                     <h1 className="text-align-left text-transform">{ titulo_album }</h1>
 
-                    <form onSubmit={ e => e.preventDefault() }>
+                    <form onSubmit={ handleSubmit }>
 
                         {
                             msgError &&
                                 (
                                     <div className="error">
                                         { msgError }
+                                    </div>
+                                )
+                        }
+                        { 
+                            msg &&
+                                (
+                                    <div className="msg_container">
+                                        <div className="help_msg animate__animated animate__slideInDown">
+                                            <div className="d-flex justify_rigth" onClick={ handleClose }>
+                                                <div className="close d-flex justify-center align-center">
+                                                    X
+                                                </div>
+                                            </div>
+                                            { msg }
+                                        </div>
                                     </div>
                                 )
                         }
@@ -158,7 +189,7 @@ export const SongScreen = () => {
                                     content="+"
                                     onClick={ addArtist }
                                 />
-                                <HelpItem content={ "?" }/>
+                                <HelpItem content={ "?" } onClick={() => handleClick('colaboradores')}/>
                             </div>
                         </div>
                         {
@@ -189,9 +220,9 @@ export const SongScreen = () => {
                             <div className="d-flex flex-column w-100">
                                 <select name="rol" className="mb-1 select" onChange={(e) => changesArtist(e, index)} value={artist.rol}>
                                     <option value="">Seleccioná un rol</option>
-                                    <option value="artista_destacado">Artista Destacado</option>
-                                    <option value="productor">Productor</option>
-                                    <option value="remixer">Remixer</option>
+                                    <option value="Artista Destacado">Artista Destacado</option>
+                                    <option value="Productor">Productor</option>
+                                    <option value="Remixer">Remixer</option>
                                 </select>
                                 <div className="d-flex mb-3">
                                     <div className="input_group">
@@ -208,7 +239,7 @@ export const SongScreen = () => {
                                             content="-"
                                             onClick={ () => deleteArtist(index) }
                                         />
-                                        <HelpItem content={ "?" }/>
+                                        <HelpItem classname={ 'visible-hidden' }/>
                                     </div>
                                 </div>
                             </div>
@@ -220,11 +251,7 @@ export const SongScreen = () => {
 
                 <div className="d-flex align-center">
                     <p className="text-white">1-¿Esta canción contiene lenguaje explícito?</p>
-                    <div className="help-container">
-                        <div className="help-item">
-                            ?
-                        </div>
-                    </div>
+                    <HelpItem content={ "?" } onClick={() => handleClick('explicito')}/>
                 </div>
                 <div className="d-flex justify-left">
                     <div>
@@ -258,11 +285,7 @@ export const SongScreen = () => {
 
                 <div className="d-flex align-center">
                     <p className="text-white">2-Idioma de la letra</p>
-                    <div className="help-container">
-                        <div className="help-item">
-                            ?
-                        </div>
-                    </div>
+                    <HelpItem content={ "?" } onClick={() => handleClick('idioma_cancion')}/>
                 </div>
 
                 <p className="mb-1">En que idioma se canta la letra de tu cancion:</p>
@@ -283,6 +306,7 @@ export const SongScreen = () => {
                                     type="text"
                                     autoComplete="off"
                                     className="form-control"
+                                    value={ otro_idioma }
                                     name="otro_idioma"
                                     onChange={ handleInputChange }
                                 />
@@ -292,11 +316,7 @@ export const SongScreen = () => {
 
                 <div className="d-flex align-center">
                     <p className="text-white">3-¿Esta version esta grabada en vivo?</p>
-                    <div className="help-container">
-                        <div className="help-item">
-                            ?
-                        </div>
-                    </div>
+                    <HelpItem content={ "?" } onClick={() => handleClick('version')}/>
                 </div>
                 
                 <div className="d-flex justify-left">
@@ -306,9 +326,9 @@ export const SongScreen = () => {
                                 type="radio"
                                 className="radio__field"
                                 id="no_vivo"
-                                name="version_en_vivo"
-                                value="No"
-                                checked={formValues.version_en_vivo === 'No'}
+                                name="version"
+                                value="Grabación de estudio"
+                                checked={formValues.version === 'Grabación de estudio'}
                                 onChange={ handleInputChange }
                             />
                             <label htmlFor="no_vivo" className="radio__label">No</label>
@@ -319,9 +339,9 @@ export const SongScreen = () => {
                                 type="radio"
                                 className="radio__field"
                                 id="en_vivo"
-                                name="version_en_vivo"
-                                value="Si"
-                                checked={formValues.version_en_vivo === 'Si'}
+                                name="version"
+                                value="Grabación en vivo"
+                                checked={formValues.version === 'Grabación en vivo'}
                                 onChange={ handleInputChange }
                             />
                             <label htmlFor="en_vivo" className="radio__label">Si</label>
@@ -332,11 +352,7 @@ export const SongScreen = () => {
                 
                 <div className="d-flex align-center">
                     <p className="text-white">4-Tipo de composición</p>
-                    <div className="help-container">
-                        <div className="help-item">
-                            ?
-                        </div>
-                    </div>
+                    <HelpItem content={ "?" } onClick={() => handleClick('composicion')}/>
                 </div>
                 <div className="d-flex justify-left mb-5">
                     <div>
@@ -378,12 +394,13 @@ export const SongScreen = () => {
                         </div>
                     </div>
                 </div>
+                <hr />
 
                 {
                     composers.map( ( field, index ) => (
                         <div key={ index } className="m-auto">
                             <p>Nombre del compositor de esta canción.</p>
-                            <FieldInput
+                            <InputsFields
                                 type="text"
                                 className="form-control"
                                 indexParent={ index }
@@ -396,7 +413,7 @@ export const SongScreen = () => {
                                 <div className="d-flex justify-left mb-5">
                                     <div>
                                         <div className="d-flex align-center g-1">
-                                            <FieldInput
+                                            <InputsFields
                                                 type="radio"
                                                 indexParent={ index }
                                                 id={`letra_${index + 1}`}
@@ -408,7 +425,7 @@ export const SongScreen = () => {
                                             <label htmlFor={`letra_${index + 1}`} className="radio__label negrita-medium">Letra.</label>
                                         </div>
                                         <div className="d-flex align-center g-1">
-                                            <FieldInput
+                                            <InputsFields
                                                 type="radio"
                                                 indexParent={ index }
                                                 id={`musica_${index + 1}`}
@@ -420,7 +437,7 @@ export const SongScreen = () => {
                                             <label htmlFor={`musica_${index + 1}`} className="radio__label negrita-medium">Música.</label>
                                         </div>
                                         <div className="d-flex align-center g-1">
-                                            <FieldInput
+                                            <InputsFields
                                                 type="radio"
                                                 indexParent={ index }
                                                 id={`letra_y_musica_${index + 1}`}
@@ -432,7 +449,7 @@ export const SongScreen = () => {
                                             <label htmlFor={`letra_y_musica_${index + 1}`} className="radio__label negrita-medium">Letra y Música.</label>
                                         </div>
                                         <div className="d-flex align-center g-1">
-                                            <FieldInput
+                                            <InputsFields
                                                 type="radio"
                                                 indexParent={index}
                                                 id={`no_sabe_${index + 1}`}
@@ -448,32 +465,35 @@ export const SongScreen = () => {
                                 <div className="d-flex justify-center">
                                     <button 
                                         className="btn mb-5"
-                                        onClick={ () => onDelete( index ) } 
+                                        onClick={ (e) => {
+                                            e.preventDefault();
+                                            onDelete( index );
+                                        }} 
                                     >
                                         Eliminar
                                     </button>
                                 </div>
                             </div> 
+                            <hr />
                         </div>
                     ))
                 }
-                        <div className="d-flex ">
-                            <button
-                                className="btn p-2 compositor"
+                        <div className="d-flex mt-3">
+                            <div
+                                className="btn p-2 compositor text-center"
                                 onClick={ onAdd }
                             >
                                 + Agregar Compositor
+                            </div>
+                        </div>
+                        <div className="d-flex justify-evenly">
+                            <button 
+                                className="btn"
+                                >
+                                Guardar y continuar
                             </button>
                         </div>
                     </form>
-                    <div className="d-flex justify-evenly">
-                        <button 
-                            className="btn"
-                            onClick={ handleClick }
-                        >
-                            Guardar y continuar
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>

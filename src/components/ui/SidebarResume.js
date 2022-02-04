@@ -5,21 +5,21 @@ import { changeResume } from '../../actions/ui';
 
 export const SidebarResume = () => {
 
-    const { isAlbum } = useSelector(state => state.ui)
-    const dispatch = useDispatch()
+    const { isAlbum } = useSelector(state => state.ui);
+    const dispatch = useDispatch();
 
     const handleClick = (e) => {
         e.preventDefault();
         const btn = document.querySelectorAll('.btn-resume');
         if (e.target.id === 'album') {
-            btn[0].classList.add('activo')
-            btn[1].classList.remove('activo')
+            btn[0].classList.add('activo');
+            btn[1].classList.remove('activo');
         } else {
-            btn[1].classList.add('activo')
-            btn[0].classList.remove('activo')
+            btn[1].classList.add('activo');
+            btn[0].classList.remove('activo');
         }
         const isAlbum = e.target.id === 'album';
-        dispatch( changeResume( isAlbum ) )
+        dispatch( changeResume( isAlbum ) );
         handleSidebar();
     }
 
@@ -45,7 +45,7 @@ export const SidebarResume = () => {
         <>
             <li>
                 <div 
-                    className={`btn-resume mb-3 ${isAlbum && 'activo'}`} 
+                    className={`btn-resume mb-3${isAlbum ? ' activo' : ''}`} 
                     onClick={ handleClick }
                     id="album"
                 >
@@ -54,7 +54,7 @@ export const SidebarResume = () => {
             </li>
             <li>
                 <div 
-                    className={`btn-resume ${!isAlbum && 'activo'}`} 
+                    className={`btn-resume${!isAlbum ? ' activo' : ''}`} 
                     onClick={ handleClick } 
                     id="simple"
                 >

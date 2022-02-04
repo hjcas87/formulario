@@ -1,9 +1,13 @@
+import { useMemo } from "react";
 import { useState } from "react";
 
 
 export const useFormDinamicComposers = ( initialValue = {}) => {
     
-    const [ counter, setCounter] = useState(1)
+    const num = useMemo(() => initialValue.map( i => Object.keys(i)[1][Object.keys(i)[1].length - 1]), [initialValue]);
+    const max = useMemo(() => Math.max.apply(null, num), [num]);
+    const [ counter, setCounter] = useState( max === -Infinity ? 1 : max + 1 );
+    console.log(counter)
 
     const rol = `rol_autor_${ counter }`
     
@@ -13,35 +17,25 @@ export const useFormDinamicComposers = ( initialValue = {}) => {
     }
     
     const [data, setData] = useState(initialValue);
-    // // console.log(data)
 
-    // Utilizamos el index del grupo de campos para eliminar ese grupo de la lista
     const onDelete = (indexToDelete) => {
         const newFields = data.filter((d, index) => index !== indexToDelete);
         setData([...newFields]);
         
     };
 
-    // Agregamos el nuevo grupo de campos al final de la lista
     const onAdd = () => {
         setData([...data, { ...newValue }]);
         setCounter( counter + 1 )
-        // // console.log(data)
     };
 
     const add = ( arr ) => {
-        // console.log(arr)
         for (let i = 0; i < arr.length; i++) {
             setData([...data, { ...newValue }]);  
-            // // console.log(data)
         }
     }
 
-    // Utilizamos el index del grupo de campos para buscar ese grupo
-    // y editar el campo correspondiente
     const onChange = (event, indexParent) => {
-        // // console.log(data)
-        // // console.log(indexParent)
         const newData = data.map((d, index) => {
         if (index === indexParent) {
             d[event.target.name] = event.target.value;

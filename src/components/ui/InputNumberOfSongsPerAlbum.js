@@ -3,27 +3,14 @@ import React, { useEffect, useState } from "react";
 
 
 export const InputNumberOfSongsPerAlbum = React.memo(({ index, volume, amount }) => {
-
-  // const dispatch = useDispatch();
-
   
   const [songsValues, setSongsValues] = useState(amount);
-  // console.log(songsValues[index])
-  // console.log(amount)
-  
 
     useEffect(() => {
 
         setSongsValues(amount);
 
     }, [amount])
-
-    // useEffect(() => {
-      
-    //   dispatch( albumInfoAmount( songsValues ) )
-
-    // }, [songsValues, dispatch])
-
 
     const handleInputChange = (e, i) => {
         const newData = songsValues.map((song, indx) => {
@@ -36,8 +23,6 @@ export const InputNumberOfSongsPerAlbum = React.memo(({ index, volume, amount })
 
         setSongsValues([...newData]);
     };
-
-  // console.log(songsValues)
 
     return (
           <>

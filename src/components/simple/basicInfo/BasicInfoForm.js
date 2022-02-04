@@ -1,6 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { infoFormSimple } from "../../../actions/post";
+import { setMsg } from "../../../actions/ui";
+import { getMessageById } from "../../../helpers/getMessageById";
 
 import { useForm } from "../../../hooks/useForm";
 import { HelpItem } from "../../ui/HelpItem";
@@ -39,6 +41,16 @@ export const BasicInfoForm = React.memo(({ simpleData }) => {
         // dispatch( infoFormSimple( formValues ) )
     }
 
+    const handleClick = (id) => {
+        const message = getMessageById( id );
+        dispatch( setMsg( message.msg ) );
+        window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+        document.querySelector('body').classList.add('overflow');
+        setTimeout(() => {
+            document.querySelector('.msg_container').classList.add('msg_background');
+        }, 600);
+    }
+
     return (
         
 
@@ -54,7 +66,7 @@ export const BasicInfoForm = React.memo(({ simpleData }) => {
                     onChange={ handleInputChange }
                     onBlur={ handleValueChange } 
                 />
-                <HelpItem content={ "?" }/>
+                <HelpItem content={ "?" } onClick={() => handleClick('idioma_lanzamiento')}/>
             </div>
 
             <div className="mb-3 d-flex flex-column">
@@ -85,7 +97,7 @@ export const BasicInfoForm = React.memo(({ simpleData }) => {
                 onChange={ handleInputChange }
                 onBlur={ handleValueChange }
             />
-            <HelpItem content={ "?" }/>
+            <HelpItem content={ "?" } onClick={() => handleClick('fecha')}/>
         </div>
 
             

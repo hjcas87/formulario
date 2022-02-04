@@ -35,6 +35,7 @@ export const GendersScreen = () => {
     
     useEffect(() => {
         dispatch( infoFormSimple( simpleData ) )
+        window.scroll({ top: 0, left: 0 })
     }, [])
     
     const handleClick = (e) => {
@@ -48,15 +49,13 @@ export const GendersScreen = () => {
 
     const isFormValid = () => {
 
-        for (const input in formValues) {
-            if ( formValues[input].trim().length === 0 ) {
-                window.scroll({ top: 0, left: 0, behavior: 'smooth' });
-                dispatch( setError('Por favor completá todos los campos') );
-                return false
-            } else {
-                dispatch( removeError() );
-                return true
-            }
+        if ( Object.values(formValues).some( value => value.trim().length === 0) ) {
+            window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+            dispatch( setError('Por favor completá todos los campos') );
+            return false
+        } else {
+            dispatch( removeError() );
+            return true
         }
     }
 
@@ -65,12 +64,10 @@ export const GendersScreen = () => {
     return (
         <div className="main-container">
             <div className="text-secondary text-center animate__animated animate__fadeIn">
-                <div className="mt-7">
-
+                <div className="py-5 mt-5">
                     <h2>Género Musical</h2>
                     <p>Decinos dos generos musicales con los cuales identifiques tu musica</p>
-                    <div className="d-flex flex-column p-2">
-
+                    <div className="d-flex flex-column">
                         { 
                             msgError &&
                                 (
@@ -82,6 +79,7 @@ export const GendersScreen = () => {
                         <label htmlFor="genero_1" className="mb-1 mt-1">Género Nº1</label>
                         <input
                             type="text"
+                            autoComplete="off"
                             className="form-control"
                             id="genero_1"
                             name="genero_1" 
@@ -89,10 +87,11 @@ export const GendersScreen = () => {
                             onChange={ handleInputChange }
                         />
                     </div>    
-                    <div className="d-flex flex-column p-2">
+                    <div className="d-flex flex-column mt-3">
                         <label htmlFor="genero_2" className="mb-1 mt-1">Género Nº2</label>
                         <input
                             type="text"
+                            autoComplete="off"
                             className="form-control"
                             id="genero_2"
                             name="genero_2"
@@ -104,9 +103,10 @@ export const GendersScreen = () => {
                     <h2>Localización</h2>
                         
                     <p>De donde es la banda o artista?</p>
-                    <div className="d-flex flex-column p-2">
+                    <div className="d-flex flex-column mt-3">
                         <input
                             type="text"
+                            autoComplete="off"
                             className="form-control"
                             id="localizacion"
                             name="localizacion"
@@ -118,10 +118,11 @@ export const GendersScreen = () => {
                     <h2>Artistas Similares</h2>
                         
                     <p>Decinos tres artistas con los cuales te identifiques</p>
-                    <div className="d-flex flex-column p-2">
+                    <div className="d-flex flex-column mt-3">
                         <label htmlFor="artista_similar_1" className="mb-1 mt-1">Artista nº1</label>
                         <input
                             type="text"
+                            autoComplete="off"
                             className="form-control"
                             id="artista_similar_1"
                             name="artista_similar_1"
@@ -129,10 +130,11 @@ export const GendersScreen = () => {
                             onChange={ handleInputChange }
                         />
                     </div>
-                    <div className="d-flex flex-column p-2">
+                    <div className="d-flex flex-column mt-3">
                         <label htmlFor="artista_similar_2" className="mb-1 mt-1">Artista nº2</label>
                         <input
                             type="text"
+                            autoComplete="off"
                             className="form-control"
                             id="artista_similar_2"
                             name="artista_similar_2"
@@ -140,10 +142,11 @@ export const GendersScreen = () => {
                             onChange={ handleInputChange }
                         />
                     </div>
-                    <div className="d-flex flex-column p-2">
+                    <div className="d-flex flex-column mt-3">
                         <label htmlFor="artista_similar_3" className="mb-1 mt-1">Artista nº3</label>
                         <input
                             type="text"
+                            autoComplete="off"
                             className="form-control"
                             id="artista_similar_3"
                             name="artista_similar_3"

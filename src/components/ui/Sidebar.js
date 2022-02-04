@@ -19,7 +19,7 @@ export const Sidebar = React.memo(({ actualRoute, albumRoutes, simpleRoutes }) =
     const ruteResume = useMemo(() => actualRoute.includes('resume'), [pathname]);
 
     useEffect(() => {
-        dispatch( changeResume( rute ) )
+        dispatch( changeResume( rute ) );
     }, [rute])
     
     console.log({rute})

@@ -2,12 +2,24 @@
 .fs-3 {
     font-size: 3rem;
 }
+.fs-5 {
+    font-size: 5rem;
+}
+.fw-300 {
+    font-weight: 300;
+}
 .bg-dark {
     background-color: #212529;
 }
 
 .text-white {
     color: #fff;
+}
+
+.grid_base {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
 }
 
 .mb-auto {
@@ -23,6 +35,9 @@
 .justify-left {
     justify-content: flex-start;
 }
+.justify_rigth {
+    justify-content: flex-end;
+}
 
 .justify-evenly {
     justify-content: space-evenly;
@@ -30,16 +45,34 @@
 .justify-around {
     justify-content: space-around;
 }
+.justify-between {
+    justify-content: space-between;
+}
 .align-center {
     align-items: center;
 }
 .align-top {
     align-items: flex-start;
 }
+.align-self-rigth {
+    align-self: flex-end;
+}
+.align-self-left {
+    align-self: flex-start;
+}
+.align-self-center {
+    align-self: center;
+}
 .text-align-left {
     text-align: left;
 }
 .text-transform {
+    text-transform: capitalize;
+}
+.text-transform-lower {
+    text-transform: lowercase;
+}
+.capitalize {
     text-transform: capitalize;
 }
 .nav {
@@ -73,6 +106,9 @@
 .max-w-15 {
     max-width: 15rem;
 }
+.max-w-50 {
+    max-width: 50rem;
+}
 
 .d-flex {
     display: flex;
@@ -88,6 +124,9 @@
 }
 .mt-3 {
     margin-top: 3rem;
+}
+.mb-0 {
+    margin-bottom: 0;
 }
 .mt-1 {
     margin-top: 1rem;
@@ -133,7 +172,9 @@
 .g-1 {
     gap: 1rem;
 }
-
+.wrap {
+    flex-wrap: wrap;
+}
 .flex-fill {
     flex: 1;
 }

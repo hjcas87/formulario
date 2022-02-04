@@ -16,7 +16,7 @@ const simpleInfo = {
         idioma: '',
         lenguaje_explicito: '',
         otro_idioma: '',
-        version_en_vivo: '',
+        version: '',
     },
     generoYLocalizacion: {
         genero_1: '',

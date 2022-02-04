@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { infoFormSimple } from "../../../actions/post";
-import { removeError, setError } from "../../../actions/ui";
+import { removeError, removeMsg, setError } from "../../../actions/ui";
 import { getLocalStorage } from "../../../helpers/getLocalStorage";
 import { UpcFormScreen } from "./UpcFormScreen";
 
@@ -15,10 +15,11 @@ export const UpcScreen = () => {
 
     const dispatch = useDispatch();
 
-    const { msgError } = useSelector( state => state.ui);
+    const { msgError, msg } = useSelector( state => state.ui);
 
     useEffect(() => {
         dispatch( removeError() )
+        dispatch( removeMsg() )
         dispatch( infoFormSimple( simpleData ) )
     }, [])
 
@@ -63,12 +64,31 @@ export const UpcScreen = () => {
         dispatch( removeError() );
         return true;
     }
+    const handleClose = () => {
+        dispatch( removeMsg() );
+        document.querySelector('body').classList.remove('overflow');
+    }
 
     return (
         <div className="main-container">
         <div className="text-secondary py-5 text-center animate__animated animate__fadeIn" id="upc_info">
                 
-                <div className="py-5">
+                <div className="py-5 mt-5">  
+                { 
+                    msg &&
+                        (
+                            <div className="msg_container">
+                                <div className="help_msg animate__animated animate__slideInDown">
+                                    <div className="d-flex justify_rigth" onClick={ handleClose }>
+                                        <div className="close d-flex justify-center align-center">
+                                            X
+                                        </div>
+                                    </div>
+                                    { msg }
+                                </div>
+                            </div>
+                        )
+                }
                 <h1 className="text-white">Código de barras (UPC)</h1>
                 <div className="p-2">
                     <p className="text-white">Un código de barras (UPC) le da a tu álbum un identificador exclusivo para la distribución digital y física.</p>

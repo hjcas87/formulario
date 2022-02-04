@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getArtistForSpotify } from '../../actions/get';
 import { infoFormAlbumAllArtists } from '../../actions/post';
 import { allArtists, filterArtists } from '../../helpers/allArtists';
-import { useFetchArtist } from '../../hooks/useFetchArtist';
+// import { useFetchArtist } from '../../hooks/useFetchArtist';
 
 let state = [];
 export const IdArtist = () => {
@@ -13,7 +13,7 @@ export const IdArtist = () => {
     const dispatch = useDispatch()
     
 
-    const { post = [], albumsAndSongsValues = [] } = useSelector(state => state.form)
+    // const { post = [], albumsAndSongsValues = [] } = useSelector(state => state.form)
     // console.log(post)
     // console.log(albumsAndSongsValues)
 
@@ -23,9 +23,9 @@ export const IdArtist = () => {
     // // // console.log(spotifyArtists)
     // const { allArtists: allIdArtists } = useSelector(state => state.form)
     // // console.log(allIdArtists)
-    const artistas = allArtists( post, albumsAndSongsValues )
-    // console.log(artistas)
-    const data = filterArtists( artistas, spotifyArtists )
+    // const artistas = allArtists( post, albumsAndSongsValues )
+    // // console.log(artistas)
+    // const data = filterArtists( artistas, spotifyArtists )
 
 
     // useEffect(() => {
@@ -99,41 +99,41 @@ export const IdArtist = () => {
 
             {/* { loading && <p className="animate__animated animate__flash">Loading...</p>} */}
             {
-                data.map( (artist, i) => (
-                    <div key={ artist.name + i } className="mt-5">
-                        <p className="text-white text-transform text-align-left">{ artist.name }</p>
-                        {
-                            artist.link.map( (r, x ) => (
+                // data.map( (artist, i) => (
+                //     <div key={ artist.name + i } className="mt-5">
+                //         <p className="text-white text-transform text-align-left">{ artist.name }</p>
+                //         {
+                //             artist.link.map( (r, x ) => (
                                 
-                                // // console.log(r)
-                                <div key={ r + x }>
-                                    {
-                                        r === 'No encontramos ningún perfil para este artista.' 
-                                        ?
-                                            <p className="text-white text-align-left">No encontramos ningún perfil para este artista.</p>
-                                        :
-                                        <div className="d-flex g-1">
-                                            <input 
-                                                type="radio"
-                                                className="radio__field"
-                                                id="no_necesito_isrc"
-                                                name={`idArtist${i-x}`}
-                                                // value={ r.link } 
-                                            />
-                                            <a href={r} target="_blank" rel="noopener noreferrer" className="anchors-artist">{r}</a>
+                //                 // // console.log(r)
+                //                 <div key={ r + x }>
+                //                     {
+                //                         r === 'No encontramos ningún perfil para este artista.' 
+                //                         ?
+                //                             <p className="text-white text-align-left">No encontramos ningún perfil para este artista.</p>
+                //                         :
+                //                         <div className="d-flex g-1">
+                //                             <input 
+                //                                 type="radio"
+                //                                 className="radio__field"
+                //                                 id="no_necesito_isrc"
+                //                                 name={`idArtist${i-x}`}
+                //                                 // value={ r.link } 
+                //                             />
+                //                             <a href={r} target="_blank" rel="noopener noreferrer" className="anchors-artist">{r}</a>
                                             
-                                        </div>
-                                    }
-                                </div>
+                //                         </div>
+                //                     }
+                //                 </div>
                                         
                                     
                                     
-                            ))
+                //             ))
 
-                        } 
+                //         } 
 
-                    </div>
-                ))
+                //     </div>
+                // ))
             }
             
                     <button 

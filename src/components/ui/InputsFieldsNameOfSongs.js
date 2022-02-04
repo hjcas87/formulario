@@ -1,32 +1,41 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { createInput } from '../../actions/ui'
+import { newAlbumsValues } from '../../helpers/newAlbumsValues';
 
 export const InputsFieldsNameOfSongs = React.memo(({
     albumsAndSongsValues,
-    album
+    album,
+    local,
+    index
 }) => {
 
-    const { albumInfo } = useSelector(state => state.form)
-    // console.log(albumInfo.albumsYCanciones)
-    // console.log(albumsAndSongsValues)
+    const dispatch = useDispatch();
 
-    useEffect(() => {
-        
-        setFormValues(album)
-
-    }, [album])
+    const { albumInfo } = useSelector(state => state.albumForm)
+    const { amount } = useSelector(state => state.ui)
     
-    const [formValues, setFormValues] = useState()
+    useEffect(() => {
+        const newAlbum = newAlbumsValues( amount, index, local, album );
+        setFormValues(newAlbum)
+        
+    }, [albumsAndSongsValues])
+    
+    const [formValues, setFormValues] = useState([]);
+
     useEffect(() => {
         
-        albumInfo.albumsYCanciones = albumsAndSongsValues
+        albumsAndSongsValues[index] = formValues;
+        albumInfo.albumsYCanciones = albumsAndSongsValues;
 
-    }, [formValues])
+    }, [formValues]);
 
+    const handleBlur = () => {
+        dispatch( createInput(albumsAndSongsValues) )
+    }
 
     const handleInputChange = ({target}, indx) => {
-
-        // console.log(target)
         const newData = formValues.map(( field, i ) => {
             if (indx === i) {
                 field[target.name] = target.value;
@@ -37,21 +46,21 @@ export const InputsFieldsNameOfSongs = React.memo(({
     }
     return (
 
-        album.map( (cancion, i) => (
+        formValues.map( (cancion, i) => (
             <div key={ album + i }
             className="mb-3"
         >
             <div className="d-flex justify-center align-center g-1">
-                {/* <label htmlFor="nombre" className="form-label fs-2 col-auto text-white">{ x + 1} -</label> */}
+                
                 <div className="flex-fill">
                     <input
                         type="text"
                         autoComplete="off"    
                         className="form-control min-h-4 animate__animated animate__fadeInUp"
-                        name={ Object.keys( cancion )[0] }
-                        value={ Object.values( cancion )[0] }
+                        name="titulo"
+                        value={ cancion.titulo }
                         onChange={(e) => handleInputChange(e, i)}
-                        // onChange={ (e) => changess( albumsAndSongsValues, e, i, index) }
+                        onBlur={ handleBlur }
                     />
                 </div>
             </div>

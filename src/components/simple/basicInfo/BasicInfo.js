@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 // import { infoFormSimple, infoFormSimpleAllArtists } from "../../../actions/post";
-import { removeError, setError } from "../../../actions/ui";
+import { removeError, removeMsg, setError } from "../../../actions/ui";
 import { getLocalStorage } from "../../../helpers/getLocalStorage";
 // import { allArtists } from "../../../helpers/allArtists";
 import { BasicInfoForm } from "./BasicInfoForm";
@@ -11,19 +11,23 @@ import { SimpleResume } from "../../ui/SimpleResume";
 import { infoFormSimple } from "../../../actions/post";
 
 export const BasicInfo = () => {
+
+    const { msgError, isAlbum, msg } = useSelector( state => state.ui);
+
+    const { simpleData, simpleDataSong, started } = useMemo(() => getLocalStorage( isAlbum ), [ isAlbum ])
     
-    const { simpleInfo, simpleInfo: { info_basica } } = useSelector(state => state.simpleForm)
+    const { simpleInfo = simpleData } = useSelector(state => state.simpleForm)
     
+    const { info_basica } = simpleInfo;
+
     const dispatch = useDispatch();
     
     const navigate = useNavigate();
-    
-    const { msgError, isAlbum } = useSelector( state => state.ui);
-
-    const { simpleData, simpleDataSong, started } = useMemo(() => getLocalStorage( isAlbum ), [ isAlbum ])
 
     useEffect(() => {
-        dispatch( removeError() )
+        document.querySelector('body').classList.remove('overflow');
+        dispatch( removeError() );
+        dispatch( removeMsg() );
     }, [])
     
     useEffect(() => {
@@ -56,24 +60,34 @@ export const BasicInfo = () => {
     const isAlbumScreenValid = () => {
 
         if ( info_basica.idioma.trim().length === 0) {
+            window.scroll({ behavior:"smooth", top: 0, left: 0 });
             dispatch( setError('El idioma es requerido') );
             return false;
         } 
         else if ( info_basica.artista_principal.trim().length === 0) {
+            window.scroll({ behavior:"smooth", top: 0, left: 0 });
             dispatch( setError('Dinos cual es el artista o banda principal') );
             return false;
         } else if ( info_basica.titulo_album.trim().length === 0) {
+            window.scroll({ behavior:"smooth", top: 0, left: 0 });
             dispatch( setError('Dinos cual es el titulo del lanzamiento') );
             return false;
         } else if ( info_basica.fecha_lanzamiento.trim().length === 0) {
+            window.scroll({ behavior:"smooth", top: 0, left: 0 });
             dispatch( setError('Dinos cual es la fecha del lanzamiento') );
             return false;
         } else if ( info_basica.artistas_secundarios.some(artista => artista.artista_secundario.trim().length === 0)) {
+            window.scroll({ behavior:"smooth", top: 0, left: 0 });
             dispatch( setError('Completá todos los campos') );
             return false;
         }
         dispatch( removeError() );
         return true;
+    }
+
+    const handleClose = () => {
+        dispatch( removeMsg() );
+        document.querySelector('body').classList.remove('overflow');
     }
 
     return (
@@ -96,6 +110,21 @@ export const BasicInfo = () => {
                                                 </div>
                                             )
                                     }
+                                    { 
+                                        msg &&
+                                            (
+                                                <div className="msg_container">
+                                                    <div className="help_msg animate__animated animate__slideInDown">
+                                                        <div className="d-flex justify_rigth" onClick={ handleClose }>
+                                                            <div className="close d-flex justify-center align-center">
+                                                                X
+                                                            </div>
+                                                        </div>
+                                                        { msg }
+                                                    </div>
+                                                </div>
+                                            )
+                                    }
                                 
 
                                     <BasicInfoForm simpleData={ simpleData }/>
@@ -111,9 +140,9 @@ export const BasicInfo = () => {
                                 </div>
                             </div>
                         </div>
-                    :
+                    :null
 
-                        <SimpleResume isStarted={simpleData.simpleStarted}/>
+                        // <SimpleResume isStarted={simpleData.simpleStarted}/>
 
             }
 

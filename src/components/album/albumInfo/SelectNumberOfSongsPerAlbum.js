@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux";
 import { createInputsSongs, removeError, setError } from "../../../actions/ui";
@@ -7,48 +7,43 @@ import { createArraysOfSongs } from "../../../helpers/createArrayOfAlbumsWithSon
 import { infoFormAlbum } from "../../../actions/post";
 
 
-export const SelectNumberOfSongsPerAlbum = React.memo(({ oneLocal, twoLocal }) => {
+export const SelectNumberOfSongsPerAlbum = ({ albumValues, twoLocal }) => {
 
     const dispatch = useDispatch()
-    const { albumValues = oneLocal, albumInfo} = useSelector(state => state.form)
+    
+    const { albumInfo } = useSelector(state => state.albumForm)
 
     const { amountObj = twoLocal } = useSelector( state => state.ui );
 
-    // console.log(albumValues)
-    // console.log(amountObj)
     useEffect(() => {
-        
-        const arr = createArraysOfSongs(albumValues, amountObj);
-        dispatch( createInputsSongs( arr ) );
-        // const arr = createArrayOfAlbumsWithSongs(albumValues);
-        // albumInfo.albumsYCanciones = arr;
-        // console.log(albumInfo.albumsYCanciones)
-        // dispatch( infoFormAlbum( albumInfo ) );
-        
+
+        albumInfo.albumValues = albumValues;
+
     }, [albumValues]);
+
+    useEffect(() => {
+
+        const arr = createArraysOfSongs(albumInfo.albumValues, amountObj);
+        dispatch( createInputsSongs( arr ) );
+        
+    }, [ albumInfo.albumValues ]);
 
     const handleSongAmount = (e) => {
         e.preventDefault();
         if (isFormValid()) {
-            const arr = createArraysOfSongs(albumValues, amountObj);
+            const arr = createArraysOfSongs(albumInfo.albumValues, amountObj);
             dispatch( createInputsSongs( arr ) );
-            localStorage.setItem( 'albumAmount', JSON.stringify(albumValues) );
-        
-            // console.log(albumValues)
+            dispatch( infoFormAlbum( albumInfo ) )
         }
     }
-    // const handleSongAmount = (e) => {
-        //         e.preventDefault();
-        //         if (isSongAmountValid()) {
-        //             const arr = createArraysOfSongs(amountObj);
-        //             dispatch( createInputsSongs( arr ) );
-        //         }
-        
-        //     }
 
     const isFormValid = () => {
-        if ( albumValues.some((album, i) => album[`disco_${i + 1}`].trim().length === 0)) {
+        if ( albumInfo.albumValues.some((album, i) => album[`disco_${i + 1}`].trim().length === 0)) {
             dispatch( setError('Completá todos los campos') );
+            return false;
+        }
+        if (albumInfo.albumValues.some((album, i) => album[`disco_${i + 1}`].trim() > 50) ) {
+            dispatch( setError('Introduce un número válido del uno al cincuenta') );
             return false;
         }
         dispatch( removeError() );
@@ -56,20 +51,20 @@ export const SelectNumberOfSongsPerAlbum = React.memo(({ oneLocal, twoLocal }) =
     }
 
     return (
-        <div id="input-songs">
+        <div className="d-flex flex-column" id="input-songs">
             {
-                albumValues.map( (vol, i) => ( 
+                albumInfo.albumValues.map( (vol, i) => ( 
                     <div
                     key={ `album ${ i }` } 
-                    className="mb-3 d-flex justify-center mt-5 animate__animated animate__fadeInUp"
+                    className="mb-3 d-flex mt-5 animate__animated animate__fadeInUp"
                     >                     
-                    <div className="d-flex flex-column align-center">
+                    <div className="d-flex flex-column">
                         <label htmlFor="numero_canciones" className="mb-3">
                             Número de canciones para el disco { i + 1 }
                         </label>
                         <div className="d-flex w-10 g-1 mb-1 min-h-4">
                             <InputNumberOfSongsPerAlbum
-                                amount={albumValues}
+                                amount={albumInfo.albumValues}
                                 volume={vol}
                                 index={i}
                             />
@@ -79,9 +74,9 @@ export const SelectNumberOfSongsPerAlbum = React.memo(({ oneLocal, twoLocal }) =
                 ))
             }
             {
-                albumValues.length !== 0 &&
+                albumInfo.albumValues.length !== 0 &&
                 <button
-                    className="btn"
+                    className="btn align-self-left"
                     onClick={ handleSongAmount }
                 >
                     Ok
@@ -90,4 +85,4 @@ export const SelectNumberOfSongsPerAlbum = React.memo(({ oneLocal, twoLocal }) =
 
         </div>
     )
-})
+}

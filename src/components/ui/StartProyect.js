@@ -1,6 +1,8 @@
 import React from 'react'
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { infoFormAlbum, infoFormSimple } from '../../actions/post';
 import { changeResume } from '../../actions/ui';
 import { getLocalStorage } from '../../helpers/getLocalStorage';
 
@@ -13,7 +15,11 @@ export const StartProyect = ({ value }) => {
     // const { albumStarted } = data;
     // const { simpleStarted } = simpleData;
 
-    console.log(value)
+    useEffect(() => {
+        dispatch( changeResume( true ) );
+    }, [])
+
+    // console.log(value)
     const handleStart = (e) => {
         e.preventDefault();
         data.albumStarted = true;
@@ -21,7 +27,7 @@ export const StartProyect = ({ value }) => {
         localStorage.setItem( 'albumInfo', JSON.stringify(data) );
         localStorage.setItem( 'simpleInfo', JSON.stringify(simpleData) );
         dispatch( changeResume( true ) );
-        navigate( value )
+        navigate( value );
     }
 
     return (

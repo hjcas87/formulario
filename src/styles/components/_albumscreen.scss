@@ -5,6 +5,11 @@
     margin: 0 auto;
 }
 .input_group {
+    // display: flex;
+    flex-direction: column-reverse;
+    flex-basis: 90%;
+}
+.input-group {
     display: flex;
     flex-direction: column;
     flex-basis: 90%;
@@ -74,25 +79,13 @@
         width: auto;
     }
 }
-
-.anchors-artist {
-    @include tablet {
-        font-size: 1.3rem;
-    }
-    @include phone {
-        font-size: 1.2rem;
-    }
-    @include phoneMin {
-        font-size: 1rem;
-    }
-}
 .song-card {
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
     @include phone {
-        flex-direction: column;
-        justify-content: center;
-        p {
-            margin-bottom: 2rem;
+        a {
+            font-size: 1.3rem;
         }
     }
 }

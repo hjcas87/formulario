@@ -4,6 +4,8 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { infoFormSimple } from '../../../actions/post'
+import { setMsg } from '../../../actions/ui'
+import { getMessageById } from '../../../helpers/getMessageById'
 import { useForm } from '../../../hooks/useForm'
 import { ButtonItem } from '../../ui/ButtonItem'
 import { HelpItem } from '../../ui/HelpItem'
@@ -14,7 +16,9 @@ export const InputsFieldsArtist = React.memo(({ data }) => {
 
     const { artista_principal, artistas_secundarios } = data;
 
-    const { simpleInfo, simpleInfo: { info_basica } } = useSelector(state => state.simpleForm)
+    const { simpleInfo = data } = useSelector(state => state.simpleForm)
+
+    const { info_basica } = simpleInfo;
     
     const [artistasSecundarios, setArtistasSecundarios] = useState(artistas_secundarios);
 
@@ -50,6 +54,15 @@ export const InputsFieldsArtist = React.memo(({ data }) => {
         info_basica.artistas_secundarios = artistasSecundarios
         dispatch( infoFormSimple( simpleInfo ) )
     }
+    const handleClick = (id) => {
+        const message = getMessageById( id );
+        dispatch( setMsg( message.msg ) );
+        window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+        document.querySelector('body').classList.add('overflow');
+        setTimeout(() => {
+            document.querySelector('.msg_container').classList.add('msg_background');
+        }, 600);
+    }
 
     return (
         <>
@@ -68,7 +81,7 @@ export const InputsFieldsArtist = React.memo(({ data }) => {
                         content="+"
                         onClick={ addInputField }
                     />
-                    <HelpItem content={ "?" }/>
+                    <HelpItem content={ "?" } onClick={() => handleClick('artista_principal')}/>
                 </div>
             </div>
             {

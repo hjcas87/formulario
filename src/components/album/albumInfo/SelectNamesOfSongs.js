@@ -1,27 +1,27 @@
 import React, { useEffect } from "react"
-import { useDispatch } from "react-redux"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
-import { infoFormAlbum } from "../../../actions/post"
-// import { createArrayOfAlbumsWithSongs } from "../../../helpers/createArrayOfAlbumsWithSongs"
+import { createInput, createInputsSongs } from "../../../actions/ui"
+import { createArraysOfSongs } from "../../../helpers/createArrayOfAlbumsWithSongs"
 import { InputsFieldsNameOfSongs } from "../../ui/InputsFieldsNameOfSongs"
 
 
-export const SelectNamesOfSongs = React.memo(({ local }) => {
+export const SelectNamesOfSongs = React.memo(({ local, albumValues }) => {
 
-    // const { albumValues,albumsAndSongsValues, albumInfo } = useSelector(state => state.form)
-
-    const { amountObj } = useSelector( state => state.ui );
+    let { amountObj, amount } = useSelector( state => state.ui );
+    let { albumInfo } = useSelector( state => state.albumForm );
     const dispatch = useDispatch()
 
-    // console.log(local)
-    // console.log(albumValues)
-    // console.log(amountObj)
-    // useEffect(() => {
-    //     // const arr = createArrayOfAlbumsWithSongs(albumValues, albumInfo.albumsYCanciones);
-    //     // albumInfo.albumsYCanciones = arr;
-    //     dispatch( infoFormAlbum( albumInfo ) )
-    // }, [albumValues]);
+    console.log(local)
+    useEffect(() => {
+        dispatch( createInput(amountObj) )
+    }, [amount])
+    useEffect(() => {
+        console.log(albumValues)
+        const arr = createArraysOfSongs(albumInfo.albumValues);
+        console.log(arr);
+        dispatch( createInputsSongs( arr ) );
+    }, []);
 
     return (
         <>
@@ -33,19 +33,21 @@ export const SelectNamesOfSongs = React.memo(({ local }) => {
                             key={ index }
                             className="animate__animated animate__fadeInUp"
                         >
-                            <h2 className="text-white title-song">Titulos de las canciones del disco {index + 1}</h2>
+                            <h4 className="text-white text-align-left fs-3 fw-300">Titulos de las canciones del disco {index + 1}</h4>
                             {
                                 
                                 amountObj[index].length === 0 ?
 
-                                    <label htmlFor="numero_canciones">
+                                    <p className="text-align-left">
                                         Aún no has agregado canciones para este volumén
-                                    </label> 
+                                    </p> 
                                 :
 
                                 <InputsFieldsNameOfSongs 
                                     albumsAndSongsValues={ amountObj }
                                     album={album}
+                                    local={local[index]}
+                                    index={index}
                                 />
                                 
                             }

@@ -15,8 +15,8 @@ import { BasicInfo as SimpleBasicInfo } from "../components/simple/basicInfo/Bas
 import { UpcScreen } from "../components/album/upc/UpcScreen";
 import { UpcScreen as SimpleUpcScreen } from "../components/simple/upc/UpcScreen";
 import { AlbumInformation } from "../components/album/albumInfo/AlbumInformation";
-import { SongList } from "../components/album/SongList";
-import { SongScreen } from "../components/album/SongScreen";
+import { SongList } from "../components/album/songs/SongList";
+import { SongScreen } from "../components/album/songs/SongScreen";
 import { SongScreen as SimpleSongScreen } from "../components/simple/song/SongScreen";
 import { DistServices } from "../components/album/DistServices";
 import { ExtendSongs } from "../components/album/ExtendSongs";
@@ -62,9 +62,9 @@ export const DashboardRoute = () => {
                             
                             <Route path="songs" element={<SimpleSongScreen />}/>
 
-                            <Route path="genders" element={<SimpleGendersScreen />}/>
+                            <Route path="genders" element={<GendersScreen />}/>
 
-                            <Route path="isrc" element={<SimpleIsrcCodes />}/>
+                            <Route path="isrc" element={<IsrcCodes />}/>
 
                             <Route path="distribution" element={<SimpleDistServices />}/>
 
@@ -86,7 +86,7 @@ export const DashboardRoute = () => {
 
                             <Route path="songs" element={<SongList />}/>
 
-                            <Route path="edit/:id" element={<SongScreen />}/>
+                            <Route path="songs/edit/:id" element={<SongScreen />}/>
 
                             <Route path="genders" element={<GendersScreen />}/>
 

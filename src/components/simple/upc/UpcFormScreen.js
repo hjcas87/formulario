@@ -7,6 +7,8 @@ import { HelpItem } from '../../ui/HelpItem';
 import { InputsFields } from '../../ui/InputsFields';
 import { infoFormSimple } from '../../../actions/post';
 import { InputsRadioFields } from '../../ui/InputsRadioFields';
+import { setMsg } from '../../../actions/ui';
+import { getMessageById } from '../../../helpers/getMessageById';
 
 export const UpcFormScreen = ({ data }) => {
 
@@ -34,13 +36,22 @@ export const UpcFormScreen = ({ data }) => {
 
     useEffect(() => {
 
-        // console.log(albumInfo)
+        document.querySelector('body').classList.remove('overflow');
         codigo_barra.solicitaUpc = requestCode;
         codigo_barra.UPC = barcode;
         dispatch( infoFormSimple( simpleInfo ) )
 
     }, [simpleInfo, requestCode, barcode, dispatch])
 
+    const handleClick = (id) => {
+        const message = getMessageById( id );
+        dispatch( setMsg( message.msg ) );
+        window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+        document.querySelector('body').classList.add('overflow');
+        setTimeout(() => {
+            document.querySelector('.msg_container').classList.add('msg_background');
+        }, 600);
+    }
     return (
         <>
             <InputsRadioFields 
@@ -74,7 +85,7 @@ export const UpcFormScreen = ({ data }) => {
                         id="codigo"
                         onChange={ handleInputChange }
                     />
-                    <HelpItem content={ "?" }/>
+                    <HelpItem content={ "?" } onClick={() => handleClick('upc')}/>
                 </div>
             }
         </>

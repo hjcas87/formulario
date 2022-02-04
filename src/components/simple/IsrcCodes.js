@@ -1,11 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { infoFormSimple } from "../../actions/post";
-import { removeError, setError } from "../../actions/ui";
+import { removeError, removeMsg, setError } from "../../actions/ui";
+// import { songObject } from "../../helpers/albumsWithSongsAndId";
 
 import { getLocalStorage } from "../../helpers/getLocalStorage";
+import { songObject } from "../../helpers/songObject";
 import { useForm } from "../../hooks/useForm";
 
 
@@ -17,50 +19,75 @@ export const IsrcCodes = () => {
 
     const { msgError } = useSelector(state => state.ui)
 
-    const { simpleData } = getLocalStorage();
+    const { simpleData, simpleData: { cancion } } = getLocalStorage();
     const { ISRC, ISRC: { codigo_ISRC, num_codigo } } = simpleData;
-    
-    const [ formValues, handleInputChange ] = useForm({
-        codigo_ISRC,
-        num_codigo
-    })
+    const codigos = useMemo(() => songObject([cancion], num_codigo), [cancion, num_codigo]);
+
+    // const [ formValues, handleInputChange ] = useForm({
+    //     codigo_ISRC,
+    //     num_codigo
+    // })
 
     useEffect(() => {
-        dispatch( infoFormSimple( simpleData ) )
+        dispatch( infoFormSimple( simpleData ) );
+        document.querySelector('body').classList.remove('overflow');
+        dispatch( removeError() );
+        dispatch( removeMsg() );
     }, [])
     
 
-    const handleClick = (e) => {
-        e.preventDefault();
-        if ( isFormValid () ) {
-            ISRC.codigo_ISRC = formValues.codigo_ISRC;
-            ISRC.num_codigo = formValues.num_codigo;
-            localStorage.setItem( 'simpleInfo', JSON.stringify( simpleData ) )
-            navigate( '/simple/distribution' )
-        }
-    }
+    const [ formValues, handleInputChange ] = useForm({
+        codigo_ISRC
+    })
+    
+
+    const [ values, setValues ] = useState(codigos)
+
+    const changes = ( { target } , index ) => {
+        const newData = values.map(( field, i ) => {
+            if (index === i) {
+                field[target.name] = target.value;
+            }
+            return field;
+        });
+        setValues([...newData]);
+    };
 
     const isFormValid = () => {
 
-        for (const input in formValues) {
-            if ( formValues[input].trim().length === 0 ) {
-                dispatch( setError('Por favor completá todos los campos') );
+        if ( formValues.codigo_ISRC.trim().length === 0 ) {
+            window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+            dispatch( setError('Por favor completá todos los campos') );
+            return false
+        } else if ( formValues.codigo_ISRC === "no_necesito_isrc" ){
+            if ( formValues.num_codigo.some( cancion => Object.values(cancion)[0].trim().length === 0 )) {
+                window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+                dispatch( setError('El número de código no puede ir vacio') );
                 return false
-            } else if ( formValues[input] === "no_necesito_isrc" ){
-                if ( formValues.num_codigo.trim().length === 0 ) {
-                    dispatch( setError('El número de código no puede ir vacio') );
-                    return false
-                }
             }
-            dispatch( removeError() );
-            return true
+        }
+        dispatch( removeError() );
+        return true
+        
+    }
+
+
+    // console.log(canciones)
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        formValues.num_codigo = values;
+        if (isFormValid()) {
+            simpleData.ISRC = formValues
+            localStorage.setItem( 'simpleInfo', JSON.stringify( simpleData ) );
+            navigate( '/album/distribution' )
         }
     }
+
 
     return (
         <div className="main-container">
             <div className="text-secondary text-center animate__animated animate__fadeIn">
-                <div className="mt-7 p-2">
+                <div className="py-5 mt-5">
                 
                     <h2>Códigos ISRC</h2>
                 
@@ -96,34 +123,35 @@ export const IsrcCodes = () => {
                                     name="codigo_ISRC"
                                     value="no_necesito_isrc"
                                     checked={ formValues.codigo_ISRC === 'no_necesito_isrc' }
-                                    onChange={ handleInputChange } 
+                                    onChange={ handleInputChange }
                                 />
                                 <label htmlFor="no_necesito_isrc" className="radio__label negrita-medium">Tengo mis propios códigos</label>
                             </div>
                         </div>
                     </div>
                 <div>
-
-                    {
-                        formValues.codigo_ISRC === 'no_necesito_isrc' && 
-
-                            <div className="animate__animated animate__fadeInUp">
-                            <h2 className="text-align-left"> {simpleData.titulo_album} </h2>
+                    { formValues.codigo_ISRC === 'no_necesito_isrc' && values.length <= 0 && 
+                        <p className="text-align-left">Aún no has agregado canciones a tú lanzamiento.</p>}
+                {
+                    formValues.codigo_ISRC === 'no_necesito_isrc' && 
+                        values.map( (cancion, x) => (
+                            <div key={ cancion + x }>
+                                <p className="text-align-left"> {Object.keys(values[x])[0]} </p>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="num_codigo"
-                                    value={ formValues.num_codigo }
-                                    onChange={ handleInputChange }
+                                    name={ Object.keys(values[x])[0] }
+                                    value={ Object.values(values[x])[0] }
+                                    onChange={ (e) => changes(e, x) }
                                 />
                             </div>
-
-                    }
-                </div>
+                        ))
+                }
+            </div>
 
                     <button 
                         className="btn mt-5"
-                        onClick={ handleClick }
+                        onClick={ handleSubmit }
                     >
                         Guardar y continuar
                     </button>

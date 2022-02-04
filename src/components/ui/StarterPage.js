@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { infoFormAlbum } from '../../actions/post';
+import { infoFormAlbum, infoFormSimple } from '../../actions/post';
 import { changeResume } from '../../actions/ui';
 import { getLocalStorage } from '../../helpers/getLocalStorage';
 
@@ -17,6 +17,9 @@ export const StarterPage = () => {
         e.preventDefault();
         started = !started;
         localStorage.setItem('started', JSON.stringify(started));
+        // dispatch( infoFormSimple( simpleData ) );
+        // dispatch( infoFormAlbum( data ) );
+    
         if (e.target.id === 'album') {
             data.albumStarted = true;
             localStorage.setItem('albumInfo', JSON.stringify(data));
@@ -39,7 +42,7 @@ export const StarterPage = () => {
                     <div className="py-5 mt-5">
                     <h1 className="text-center text-white">Aún no has comenzado con la subida de ningún proyecto.</h1>
                     <h2 className="text-center text-white">Elegí que queres lanzar.</h2>
-                    <div className="col-auto">
+                    <div className="max-w-50 m-auto">
                         <div className="d-flex justify-around">
                             <div>
                                 <button 

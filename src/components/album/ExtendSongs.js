@@ -1,32 +1,92 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
+import { removeError, removeMsg, setError } from '../../actions/ui';
+import { getLocalStorage } from '../../helpers/getLocalStorage';
 import { useForm } from '../../hooks/useForm';
 
 export const ExtendSongs = () => {
 
     
+    const dispatch = useDispatch();
+
+    const { msgError } = useSelector(state => state.ui);
+
     const navigate = useNavigate();
+    
+    const { data, data: { canciones_extendidas } } = getLocalStorage();
 
-    const [ values, handleInputChange ] = useForm({
-        cancion_extendida: '',
-        solo_album: ''
+    const { cancion_extendida, solo_album } = canciones_extendidas;
+
+    console.log(canciones_extendidas)
+
+    const [ formValues, handleInputChange ] = useForm({
+        cancion_extendida,
+        solo_album
     })
-    const { cancion_extendida, solo_album } = values;
-
+    
+    useEffect(() => {
+        window.scroll({ top: 0, left: 0 });
+        document.querySelector('body').classList.remove('overflow');
+        dispatch( removeError() );
+        dispatch( removeMsg() );
+    }, [])
     // console.log(values)
 
     const handleClick = (e) => {
         e.preventDefault();
-        navigate( '/' )
+        if ( isFormValid() ) {
+            data.canciones_extendidas = formValues;
+            localStorage.setItem( 'albumInfo', JSON.stringify( data ) );
+            animationScreenNavigate( '/' );            
+        }
     }
 
+    const animationScreenNavigate = () => {
+        const screen = document.querySelector('#info-screen');
+        screen.classList.remove('animate__fadeInRight');
+        screen.classList.add('animate__fadeOutLeft', 'animate__faster');
+        screen.addEventListener('animationend', () => {
+            
+            navigate('/');
+        
+        });
+    };
+    
+    const isFormValid = () => {
+
+        if ( formValues.cancion_extendida.trim().length === 0 ) {
+            dispatch( setError('Por favor completá todos los campos') );
+            return false
+        } else if ( formValues.cancion_extendida === "si" ){
+            if ( formValues.solo_album.trim().length === 0 ) {
+                dispatch( setError('Elegi una opción por favor') );
+                return false
+            }
+        }
+        dispatch( removeError() );
+        return true
+        
+    }
 
     return (
         <div className="main-container">
-        <div className="text-secondary text-center animate__animated animate__fadeIn">
+        <div className="text-secondary text-center animate__animated animate__fadeIn" id="info-screen">
             <div className="mt-5 p-2">
-                <h2>Canciones Extendidas</h2>
+                <h1 className="text-align-left">Álbum</h1>
+                <h2 className="text-align-left">Canciones Extendidas</h2>
+                <hr />
             <p className="text-white">¿Tenes alguna canción que dure 10 o más minutos?</p>
-            <div className="d-flex justify-center mb-5">
+                { 
+                    msgError &&
+                        (
+                            <div className="error">
+                                { msgError }
+                            </div>
+                        )
+                }
+            <div className="d-flex mt-5 mb-5">
                 <div>
                     <div className="d-flex align-center g-1">
                         <input
@@ -34,7 +94,7 @@ export const ExtendSongs = () => {
                             className="radio__field"
                             id="no_tengo_cancion_ext"
                             name="cancion_extendida"
-                            checked={ values.cancion_extendida === 'no' }
+                            checked={ formValues.cancion_extendida === 'no' }
                             value="no"
                             onChange={ handleInputChange }
                         />
@@ -46,7 +106,7 @@ export const ExtendSongs = () => {
                             className="radio__field"
                             id="si_tengo_cancion_ext"
                             name="cancion_extendida"
-                            checked={ values.cancion_extendida === 'si' }
+                            checked={ formValues.cancion_extendida === 'si' }
                             value="si"
                             onChange={ handleInputChange }
                         />
@@ -56,7 +116,7 @@ export const ExtendSongs = () => {
             </div>
 
             {
-                cancion_extendida === 'si' &&
+                formValues.cancion_extendida === 'si' &&
                 <div className="animate__animated animate__fadeInUp">
                     <p className="text-align-left text-white mb-5">Algunas plataformas digitales ofrecen una función de "solo álbum" para canciones extendidas de más de 10 minutos.<br/>
                     Si optas por vender tus canciones extendidas en "solo álbum", las plataformas elegibles harán que tu canción extendida 
@@ -73,7 +133,7 @@ export const ExtendSongs = () => {
                                     className="mt-1"
                                     id="solo_album"
                                     name="solo_album"
-                                    checked={ solo_album === 'no_solo_album' }
+                                    checked={ formValues.solo_album === 'no_solo_album' }
                                     value="no_solo_album"
                                     onChange={ handleInputChange }
                                 />
@@ -85,7 +145,7 @@ export const ExtendSongs = () => {
                                     className="mt-1"
                                     id="no_solo_album"
                                     name="solo_album"
-                                    checked={ solo_album === 'si_solo_album' }
+                                    checked={ formValues.solo_album === 'si_solo_album' }
                                     value="si_solo_album"
                                     onChange={ handleInputChange }
                                 />
@@ -96,15 +156,16 @@ export const ExtendSongs = () => {
                 </div>
             }
             
-            
+            <hr />
                     <button 
                         className="btn mt-5"
                         onClick={ handleClick }
                     >
-                        Continuar
+                        Guardar y continuar
                     </button>
                 </div>
             </div>
         </div>
     )
 }
+

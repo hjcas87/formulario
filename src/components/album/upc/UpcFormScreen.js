@@ -7,15 +7,17 @@ import { HelpItem } from '../../ui/HelpItem';
 import { InputsFields } from '../../ui/InputsFields';
 import { infoFormAlbum } from '../../../actions/post';
 import { InputsRadioFields } from '../../ui/InputsRadioFields';
+import { getMessageById } from '../../../helpers/getMessageById';
+import { setMsg } from '../../../actions/ui';
 
-export const UpcFormScreen = ({ data }) => {
+export const UpcFormScreen = ({ data: { codigo_barra } }) => {
 
-    const { albumInfo } = useSelector(state => state.form);
+    const { albumInfo, albumInfo: { codigo_barra: bar_code } } = useSelector(state => state.albumForm);
     const dispatch = useDispatch();
 
-    console.log(albumInfo)
+    // console.log(albumInfo)
 
-    const { solicitaUpc, UPC } = data;
+    const { solicitaUpc, UPC } = codigo_barra;
 
     const values = {
         valorUno: 'Se solicitó codigo de barra para este lanzamiento',
@@ -34,15 +36,24 @@ export const UpcFormScreen = ({ data }) => {
 
     useEffect(() => {
 
-        console.log(albumInfo)
-        albumInfo.solicitaUpc = requestCode;
-        albumInfo.UPC = barcode;
+        albumInfo.albumStarted = true;
+        bar_code.solicitaUpc = requestCode;
+        bar_code.UPC = barcode;
         dispatch( infoFormAlbum( albumInfo ) )
 
     }, [albumInfo, requestCode, barcode, dispatch])
 
+    const handleClick = (id) => {
+        const message = getMessageById( id );
+        dispatch( setMsg( message.msg ) );
+        window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+        document.querySelector('body').classList.add('overflow');
+        setTimeout(() => {
+            document.querySelector('.msg_container').classList.add('msg_background');
+        }, 600);
+    }
     return (
-        <>
+        <div className="text-white mt-7 d-flex flex-column align-top">
             <InputsRadioFields 
                 name="solicitaUpc"
                 id="quiere_upc"
@@ -63,9 +74,8 @@ export const UpcFormScreen = ({ data }) => {
             {
                 requestCode === valorDos &&
                 
-                <div className="mt-5 animate__animated animate__fadeInUp d-flex align-items-center m-auto">
+                <div className="mt-5 mb-3 animate__animated animate__fadeInUp d-flex w-100">
                     
-                    <HelpItem classname={"visible-hidden"}/>
                     <InputsFields
                         label="Escribí tú código UPC"
                         type="text"
@@ -73,10 +83,12 @@ export const UpcFormScreen = ({ data }) => {
                         value={ barcode }
                         id="codigo"
                         onChange={ handleInputChange }
+                        className="form-control"
+                        flexDirection="input_group"
                     />
-                    <HelpItem content={ "?" }/>
+                    <HelpItem content={ "?" } onClick={() => handleClick('upc')}/>
                 </div>
             }
-        </>
+        </div>
     )
 }

@@ -1,19 +1,13 @@
 import React from 'react'
-import { StartProyect } from './StartProyect'
+import { Link } from 'react-router-dom'
 
 export const AlbumResume = React.memo(({ isStarted }) => {
 
     console.log(isStarted)
     return (
         <>
-            {
-                !isStarted 
-                    ? 
-                    <StartProyect value={ '/album' }/>
-                    :
-                    <h1>chau</h1>
-
-            }
+            <h1>chau</h1>
+            <Link to={ '/album' }>IR</Link>
         </>
     )
 })
